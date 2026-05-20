@@ -234,7 +234,14 @@ Page({
         storage.clearLoggedOutMark();
         app.eventBus.emit('user-login-success');
         
+        // 从云端恢复全部用户数据（await 确保完成后再提示成功）
+        await storage.syncAllFromCloud();
+        
+        // 恢复完成后刷新页面数据
+        this.loadStreak();
+        
         wx.hideLoading();
+        wx.showToast({ title: '登录成功', icon: 'success' });
         this.setData({ isLogin: true, userInfo: userData });
         wx.showToast({ title: '登录成功', icon: 'success' });
       } else {

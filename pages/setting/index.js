@@ -92,12 +92,15 @@ Page({
     wx.navigateBack();
   },
 
-  onLogout() {
+  async onLogout() {
     wx.showModal({
       title: '提示',
       content: '确定要退出登录吗？',
-      success: (res) => {
+      success: async (res) => {
         if (res.confirm) {
+          // 退出前先将本地全部数据同步到云端
+          await storage.syncAllToCloud();
+          
           // 仅清除内存中的用户信息，让 my 页面显示未登录
           app.globalData.userInfo = null;
           // 保留本地 userInfo，方便静默登录恢复
@@ -132,7 +135,12 @@ Page({
               action: 'deleteUser',
               openid: userInfo.openid,
             },
-          }).then(() => {
+          }).then(async () => {
+            // 删除 user_data 集合中的用户数据
+            await wx.cloud.callFunction({
+              name: 'syncData',
+              data: { action: 'delete' },
+            });
             app.globalData.userInfo = null;
             wx.removeStorageSync('userInfo');
             wx.removeStorageSync('infoCollected');

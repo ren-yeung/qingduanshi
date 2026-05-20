@@ -22,6 +22,10 @@ exports.main = async (event, context) => {
       return await handleUpdateUserAvatar(event, context);
     case 'updateUserNickname':
       return await handleUpdateUserNickname(event, context);
+    case 'syncFastingState':
+      return await handleSyncFastingState(event, context);
+    case 'syncAllData':
+      return await handleSyncAllData(event, context);
     default:
       return {
         success: false,
@@ -323,6 +327,83 @@ async function handleUpdateUserNickname(event, context) {
     };
   } catch (error) {
     console.error('更新昵称失败:', error);
+    return {
+      success: false,
+      message: '服务器错误',
+      error: error.message,
+    };
+  }
+}
+
+// 同步断食状态到云端
+async function handleSyncFastingState(event, context) {
+  const { fastingState } = event;
+  const wxContext = cloud.getWXContext();
+  
+  try {
+    // 查找用户
+    const existUser = await db.collection('users').where({
+      openid: wxContext.OPENID
+    }).get();
+    
+    if (!existUser.data || existUser.data.length === 0) {
+      return { success: false, message: '用户不存在' };
+    }
+    
+    const user = existUser.data[0];
+    
+    // 更新用户的断食状态
+    await db.collection('users').doc(user._id).update({
+      data: {
+        fastingState: fastingState,
+        updateTime: db.serverDate(),
+      }
+    });
+    
+    return { success: true, message: '同步成功' };
+  } catch (error) {
+    console.error('同步断食状态失败:', error);
+    return {
+      success: false,
+      message: '服务器错误',
+      error: error.message,
+    };
+  }
+}
+
+// 退出登录前：批量同步所有本地数据到云端
+async function handleSyncAllData(event, context) {
+  const { syncData } = event;
+  const wxContext = cloud.getWXContext();
+  
+  try {
+    const existUser = await db.collection('users').where({
+      openid: wxContext.OPENID
+    }).get();
+    
+    if (!existUser.data || existUser.data.length === 0) {
+      return { success: false, message: '用户不存在' };
+    }
+    
+    const user = existUser.data[0];
+    
+    await db.collection('users').doc(user._id).update({
+      data: {
+        fastingState: syncData.fastingState || null,
+        fastingHistory: syncData.fastingHistory || [],
+        weightRecords: syncData.weightRecords || [],
+        bodyData: syncData.bodyData || [],
+        dietRecords: syncData.dietRecords || [],
+        checkInHistory: syncData.checkInHistory || [],
+        streakData: syncData.streakData || null,
+        goal: syncData.goal || null,
+        updateTime: db.serverDate(),
+      }
+    });
+    
+    return { success: true, message: '全量数据同步成功' };
+  } catch (error) {
+    console.error('全量数据同步失败:', error);
     return {
       success: false,
       message: '服务器错误',

@@ -1,6 +1,66 @@
 // 本地存储数据层，统一 key 管理与序列化
 const PREFIX = 'fasting_';
 
+// ========== 云端批量同步 ==========
+
+/** 退出登录前：将所有本地用户数据同步到云端（写入 user_data 集合） */
+async function syncAllToCloud() {
+  const app = getApp();
+  if (!app.globalData.userInfo || !app.globalData.userInfo.openid) return false;
+
+  const data = {
+    fastingState: get(KEYS.FASTING_STATE, null),
+    fastingHistory: get(KEYS.FASTING_HISTORY, []),
+    weightRecords: get(KEYS.WEIGHT_RECORDS, []),
+    bodyData: get(KEYS.BODY_DATA, []),
+    dietRecords: get(KEYS.DIET_RECORDS, []),
+    checkInHistory: get(KEYS.CHECK_IN_HISTORY, []),
+    streakData: get(KEYS.STREAK_DATA, null),
+    goal: getGoal(),
+  };
+
+  try {
+    await wx.cloud.callFunction({
+      name: 'syncData',
+      data: { action: 'upload', syncData: data }
+    });
+    console.log('[syncAllToCloud] 全量数据已上传到 user_data 集合');
+    return true;
+  } catch (err) {
+    console.error('[syncAllToCloud] 失败:', err);
+    return false;
+  }
+}
+
+/** 登录成功后：从 user_data 集合拉取全量数据覆盖本地 */
+async function syncAllFromCloud() {
+  try {
+    const res = await wx.cloud.callFunction({
+      name: 'syncData',
+      data: { action: 'download' }
+    });
+    const result = res.result || res;
+    if (result.success && result.data) {
+      const d = result.data;
+      if (d.fastingState !== undefined) set(KEYS.FASTING_STATE, d.fastingState);
+      if (d.fastingHistory) set(KEYS.FASTING_HISTORY, d.fastingHistory);
+      if (d.weightRecords) set(KEYS.WEIGHT_RECORDS, d.weightRecords);
+      if (d.bodyData) set(KEYS.BODY_DATA, d.bodyData);
+      if (d.dietRecords) set(KEYS.DIET_RECORDS, d.dietRecords);
+      if (d.checkInHistory) set(KEYS.CHECK_IN_HISTORY, d.checkInHistory);
+      if (d.streakData) set(KEYS.STREAK_DATA, d.streakData);
+      if (d.goal) setGoal(d.goal);
+      console.log('[syncAllFromCloud] 已从 user_data 集合恢复全部数据');
+      return true;
+    }
+    console.log('[syncAllFromCloud] 云端 user_data 无数据');
+    return false;
+  } catch (err) {
+    console.error('[syncAllFromCloud] 失败:', err);
+    return false;
+  }
+}
+
 const KEYS = {
   USER_INFO: 'userInfo',
   SETTINGS: 'settings',
@@ -120,4 +180,6 @@ module.exports = {
   isFirstTimeLogin,
   markAsLoggedOut,
   clearLoggedOutMark,
+  syncAllToCloud,
+  syncAllFromCloud,
 };

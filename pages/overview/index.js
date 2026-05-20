@@ -61,10 +61,10 @@ Page({
     streak: 0,
   },
 
-  onShow() {
+  async onShow() {
     this.setTodayDate();
     this.refreshState();
-    this.loadTodayStats();
+    await this.loadTodayStats();
     this.loadCheckInStatus();
   },
 
@@ -156,39 +156,35 @@ Page({
 
   async loadTodayStats() {
     const today = getTodayStr();
-    // 判断是否是首次登录（未完成信息收集）
-    const isFirstLogin = !wx.getStorageSync('infoCollected');
 
     let calories = 0, carbs = 0, protein = 0, fat = 0;
 
-    // 首次登录时使用默认值，不读取本地缓存
-    if (!isFirstLogin) {
-      const dietRecords = storage.get(storage.KEYS.DIET_RECORDS, []);
-      const todayDiet = dietRecords.find((r) => r.date === today);
+    // 读取今日饮食记录
+    const dietRecords = storage.get(storage.KEYS.DIET_RECORDS, []);
+    const todayDiet = dietRecords.find((r) => r.date === today);
 
-      if (todayDiet) {
-        calories = todayDiet.totalCalories || 0;
-        carbs = todayDiet.totalCarbs || 0;
-        protein = todayDiet.totalProtein || 0;
-        fat = todayDiet.totalFat || 0;
-      }
+    if (todayDiet) {
+      calories = todayDiet.totalCalories || 0;
+      carbs = todayDiet.totalCarbs || 0;
+      protein = todayDiet.totalProtein || 0;
+      fat = todayDiet.totalFat || 0;
+    }
 
-      // 容错：如果营养素字段为0或undefined，从foods数组重新计算
-      if (todayDiet && (carbs === 0 || protein === 0 || fat === 0)) {
-        let totalCarbs = 0, totalProtein = 0, totalFat = 0, totalCalories = 0;
-        Object.values(todayDiet.meals || {}).forEach((meal) => {
-          (meal.foods || []).forEach((food) => {
-            totalCarbs += food.carbs || 0;
-            totalProtein += food.protein || 0;
-            totalFat += food.fat || 0;
-            totalCalories += food.calories || 0;
-          });
+    // 容错：如果营养素字段为0或undefined，从foods数组重新计算
+    if (todayDiet && (carbs === 0 || protein === 0 || fat === 0)) {
+      let totalCarbs = 0, totalProtein = 0, totalFat = 0, totalCalories = 0;
+      Object.values(todayDiet.meals || {}).forEach((meal) => {
+        (meal.foods || []).forEach((food) => {
+          totalCarbs += food.carbs || 0;
+          totalProtein += food.protein || 0;
+          totalFat += food.fat || 0;
+          totalCalories += food.calories || 0;
         });
-        carbs = Math.round(totalCarbs * 10) / 10;
-        protein = Math.round(totalProtein * 10) / 10;
-        fat = Math.round(totalFat * 10) / 10;
-        calories = totalCalories;
-      }
+      });
+      carbs = Math.round(totalCarbs * 10) / 10;
+      protein = Math.round(totalProtein * 10) / 10;
+      fat = Math.round(totalFat * 10) / 10;
+      calories = totalCalories;
     }
 
     const goal = storage.getGoal();
@@ -198,37 +194,32 @@ Page({
     // 体重：优先取今日记录，没有则取最近一次记录的体重
     let todayWeight = null;
 
-    // 首次登录时跳过本地缓存，直接使用 firstWeight
-    if (!isFirstLogin) {
-      const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+    // 1. 先看本地有没有今天的记录
+    const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+    todayWeight = weightRecords.find((r) => r.date === today);
 
-      // 1. 先看本地有没有今天的记录
-      todayWeight = weightRecords.find((r) => r.date === today);
+    // 2. 如果今天没有，取本地最近一条记录
+    if (!todayWeight && weightRecords.length > 0) {
+      const latest = weightRecords[weightRecords.length - 1];
+      todayWeight = { date: latest.date, weight: latest.weight, bmi: latest.bmi };
+    }
 
-      // 2. 如果今天没有，取本地最近一条记录
-      if (!todayWeight && weightRecords.length > 0) {
-        const latest = weightRecords[weightRecords.length - 1];
-        todayWeight = { date: latest.date, weight: latest.weight, bmi: latest.bmi };
-      }
-
-      // 3. 如果本地没有，从云端获取最近一条体重记录
-      if (!todayWeight) {
-        try {
-          const res = await wx.cloud.callFunction({
-            name: 'bodyData',
-            data: { action: 'getList', limit: 30, endDate: today },
-          });
-          if (res.result && res.result.success && res.result.data && res.result.data.length > 0) {
-            const records = res.result.data;
-            // 找今天或最近的记录
-            const todayRecord = records.find((r) => r.date === today);
-            const latestRecord = records[records.length - 1];
-            const target = todayRecord || latestRecord;
-            todayWeight = { date: target.date, weight: target.weight, bmi: target.bmi };
-          }
-        } catch (err) {
-          console.error('获取云端体重失败:', err);
+    // 3. 如果本地没有，从云端获取最近一条体重记录
+    if (!todayWeight) {
+      try {
+        const res = await wx.cloud.callFunction({
+          name: 'bodyData',
+          data: { action: 'getList', limit: 30, endDate: today },
+        });
+        if (res.result && res.result.success && res.result.data && res.result.data.length > 0) {
+          const records = res.result.data;
+          const todayRecord = records.find((r) => r.date === today);
+          const latestRecord = records[records.length - 1];
+          const target = todayRecord || latestRecord;
+          todayWeight = { date: target.date, weight: target.weight, bmi: target.bmi };
         }
+      } catch (err) {
+        console.error('获取云端体重失败:', err);
       }
     }
 

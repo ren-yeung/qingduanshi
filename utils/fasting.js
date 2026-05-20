@@ -131,6 +131,9 @@ function startPlan(planId, customHours, startTime) {
   // 首次开始计划时请求一次订阅权限
   requestReminder();
   
+  // 同步到云端
+  syncToCloud(state);
+  
   return state;
 }
 
@@ -154,6 +157,7 @@ function toggleState() {
       endTime: end.toISOString(),
     };
     storage.set(storage.KEYS.FASTING_STATE, newState);
+    syncToCloud(newState);
     return newState;
   } else {
     const end = new Date(now.getTime() + fastHours * 3600 * 1000);
@@ -165,6 +169,7 @@ function toggleState() {
       currentCycleStart: nowStr,
     };
     storage.set(storage.KEYS.FASTING_STATE, newState);
+    syncToCloud(newState);
     return newState;
   }
 }
@@ -183,6 +188,10 @@ function stopPlan() {
   storage.set(storage.KEYS.FASTING_HISTORY, history.slice(0, 100));
 
   storage.set(storage.KEYS.FASTING_STATE, { status: STATUS.IDLE });
+  
+  // 同步 idle 状态到云端
+  syncToCloud({ status: STATUS.IDLE });
+  
   return true;
 }
 
@@ -229,12 +238,55 @@ function sendPhaseNotification(title, content, endTime) {
   });
 }
 
+// ========== 云端同步 ==========
+
+/** 将当前本地断食状态推送到云端（仅已登录时生效，fire-and-forget） */
+function syncToCloud(state) {
+  const app = getApp();
+  if (!app.globalData.userInfo || !app.globalData.userInfo.openid) return;
+
+  const cloudData = {
+    status: state.status,
+    planId: state.planId || null,
+    customFastHours: state.customFastHours || null,
+    customEatHours: state.customEatHours || null,
+    startTime: state.startTime || null,
+    endTime: state.endTime || null,
+    currentCycleStart: state.currentCycleStart || null,
+  };
+
+  wx.cloud.callFunction({
+    name: 'syncData',
+    data: { action: 'upload', syncData: { fastingState: cloudData } }
+  }).catch(err => console.error('[syncToCloud] 失败:', err));
+}
+
+/** 从云端拉取断食状态并覆盖本地存储 */
+async function syncFromCloud() {
+  try {
+    const res = await wx.cloud.callFunction({ name: 'getUserInfo' });
+    const result = res.result || res;
+    if (result.success && result.data && result.data.fastingState) {
+      storage.set(storage.KEYS.FASTING_STATE, result.data.fastingState);
+      console.log('[syncFromCloud] 已从云端恢复断食状态');
+      return true;
+    }
+    console.log('[syncFromCloud] 云端无断食记录');
+    return false;
+  } catch (err) {
+    console.error('[syncFromCloud] 失败:', err);
+    return false;
+  }
+}
+
 module.exports = {
   STATUS,
   getCurrentState,
   startPlan,
   toggleState,
   stopPlan,
+  syncToCloud,
+  syncFromCloud,
   requestReminder,
   sendPhaseNotification,
   TEMPLATE_IDS,

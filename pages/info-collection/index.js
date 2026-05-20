@@ -136,6 +136,9 @@ Page({
 
       // 标记登录成功，跳转到我的页面
       app.eventBus.emit('user-login-success');
+      
+      // 从云端恢复全部用户数据（await 确保完成后再跳转）
+      await storage.syncAllFromCloud();
 
       setTimeout(() => {
         wx.switchTab({ url: '/pages/my/index' });

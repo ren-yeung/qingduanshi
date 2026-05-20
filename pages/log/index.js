@@ -38,22 +38,6 @@ Page({
 
   loadDayData() {
     const date = this.data.currentDate;
-    // 判断是否是首次登录（未完成信息收集）
-    const isFirstLogin = !wx.getStorageSync('infoCollected');
-
-    // 首次登录时返回空数据，不读取本地缓存
-    if (isFirstLogin) {
-      const emptyDietRecord = { date, meals: {}, totalCalories: 0, totalProtein: 0, totalCarbs: 0, totalFat: 0 };
-      MEAL_TYPES.forEach((m) => {
-        emptyDietRecord.meals[m.key] = { foods: [], totalCalories: 0 };
-      });
-      this.setData({
-        dietRecord: emptyDietRecord,
-        bodyRecord: null,
-        weightRecord: null,
-      });
-      return;
-    }
 
     const dietRecords = storage.get(storage.KEYS.DIET_RECORDS, []);
     let dietRecord = dietRecords.find((r) => r.date === date);
