@@ -1,15 +1,173 @@
-<view class="page leaderboard-page">
-  <view class="leaderboard-header">
-    <text class="header-title">本周打卡排行</text>
-    <text class="header-sub">与好友一起坚持断食</text>
-  </view>
-  <view class="leaderboard-list">
-    <view class="leader-item {{item.name === '我' ? 'leader-item--me' : ''}}" wx:for="{{list}}" wx:key="rank">
-      <text class="rank-num">{{item.rank}}</text>
-      <view class="user-info">
-        <text class="user-name">{{item.name}}</text>
-      </view>
-      <text class="streak">{{item.streak}} 天</text>
+<view class="container leaderboard-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
     </view>
+    <view class="navbar-title">排行榜</view>
+  </view>
+
+  <view class="page-content">
+
+  <!-- ========== 1. 顶部筛选栏 ========== -->
+  <view class="filter-bar">
+    <button 
+      wx:for="{{filterTypes}}" 
+      wx:key="type"
+      class="filter-chip {{currentFilter === item.type ? 'active' : ''}}"
+      data-type="{{item.type}}"
+      bindtap="onSwitchFilter">
+      <text>{{item.icon}} {{item.name}}</text>
+    </button>
+  </view>
+
+
+  <!-- ========== 2. 本周冠军卡片 ========== -->
+  <view class="champion-card" wx:if="{{champion}}">
+    <view class="champion-header">
+      <view class="champion-badge">👑</view>
+      <view class="champion-info">
+        <text class="champion-title">{{champion.title}}</text>
+        <text class="champion-name">{{champion.name}}</text>
+      </view>
+    </view>
+
+    <view class="champion-streak">
+      <text class="streak-number">{{champion.streak}}</text>
+      <text class="streak-unit">天连续断食</text>
+    </view>
+
+    <view class="champion-stats">
+      <view class="champion-stat">
+        <text class="champion-stat-val">{{champion.fastingHours}}h</text>
+        <text class="champion-stat-lbl">本周断食</text>
+      </view>
+      <view class="champion-stat">
+        <text class="champion-stat-val down">{{champion.weightLoss}}</text>
+        <text class="champion-stat-lbl">本周减重</text>
+      </view>
+      <view class="champion-stat">
+        <text class="champion-stat-val">{{champion.completionRate}}%</text>
+        <text class="champion-stat-lbl">完成率</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- ========== 3. 排行榜列表 ========== -->
+  <view class="ranking-section">
+    <view class="ranking-header">
+      <text class="ranking-title">🏅 排行榜</text>
+      <view class="ranking-tabs">
+        <button 
+          wx:for="{{timeRanges}}" 
+          wx:key="type"
+          class="ranking-tab {{currentTimeRange === item.type ? 'active' : ''}}"
+          data-type="{{item.type}}"
+          bindtap="onSwitchTimeRange">
+          {{item.name}}
+        </button>
+      </view>
+    </view>
+
+    <view class="ranking-list">
+      <view 
+        wx:for="{{rankingList}}" 
+        wx:key="rank"
+        class="ranking-item"
+        bindtap="onViewUser"
+        data-userid="{{item.userId}}">
+        
+        <!-- 排名/奖牌 -->
+        <view wx:if="{{item.rank <= 3}}" class="rank-medal">
+          <text wx:if="{{item.rank === 1}}" class="medal-icon">🥇</text>
+          <text wx:elif="{{item.rank === 2}}" class="medal-icon">🥈</text>
+          <text wx:elif="{{item.rank === 3}}" class="medal-icon">🥉</text>
+        </view>
+        <view wx:else class="rank-num">{{item.rank}}</view>
+        
+        <!-- 头像 -->
+        <view class="rank-avatar">
+          <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" class="avatar-img" />
+          <text wx:else>{{item.avatarEmoji || '👤'}}</text>
+        </view>
+        
+        <!-- 用户信息 -->
+        <view class="rank-info">
+          <view class="rank-name">
+            <text>{{item.nickName}}</text>
+            <text wx:if="{{item.isVip}}" class="rank-tag tag-vip">VIP</text>
+            <text wx:if="{{item.isMe}}" class="rank-tag tag-me">我</text>
+          </view>
+          <text class="rank-meta">{{item.fastingHours}}h断食 · {{item.completionRate}}%完成率</text>
+        </view>
+        
+        <!-- 数值 -->
+        <view class="rank-value">
+          <text class="rank-score">{{item.streak}}天</text>
+          <text class="rank-score-label">连续</text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="ranking-empty" wx:if="{{rankingList.length === 0}}">
+        <text class="empty-icon">🏆</text>
+        <text class="empty-text">暂无排行数据</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- ========== 4. 我的排名卡片 ========== -->
+  <view class="my-rank-card" wx:if="{{myRank}}">
+    <view class="my-rank-left">
+      <text class="my-rank-num">{{myRank.rank}}</text>
+      <view class="my-rank-avatar">
+        <image wx:if="{{myRank.avatarUrl}}" src="{{myRank.avatarUrl}}" class="avatar-img" />
+        <text wx:else>我</text>
+      </view>
+      <view class="my-rank-info">
+        <view class="my-rank-name">
+          <text>{{myRank.nickName || '我'}}</text>
+          <text class="rank-tag tag-me">我</text>
+        </view>
+        <text class="my-rank-progress">{{myRank.progress}}</text>
+      </view>
+    </view>
+    <view class="my-rank-value">
+      <text class="my-rank-score">{{myRank.streak}}天</text>
+      <text class="my-rank-label">连续</text>
+    </view>
+  </view>
+
+
+  <!-- ========== 5. 成就徽章 ========== -->
+  <view class="badge-section" wx:if="{{badges.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🏆 已获成就</text>
+      <text class="section-more" bindtap="onViewAllBadges">全部 {{totalBadges}} 个 ›</text>
+    </view>
+
+    <scroll-view class="badge-scroll" scroll-x>
+      <view class="badge-grid">
+        <view 
+          wx:for="{{badges}}" 
+          wx:key="id"
+          class="badge-item"
+          bindtap="onViewBadge"
+          data-id="{{item.id}}">
+          <view class="badge-icon {{item.earned ? 'earned' : 'locked'}} {{item.isNew ? 'new' : ''}}">
+            <text>{{item.icon}}</text>
+          </view>
+          <text class="badge-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+
+  <!-- 底部间距 -->
+  <view class="bottom-tip">— 数据每日凌晨更新 —</view>
+
   </view>
 </view>

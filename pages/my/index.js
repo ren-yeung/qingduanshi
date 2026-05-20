@@ -17,8 +17,8 @@ Page({
       { name: '断食计划', icon: 'time', url: '/pages/fast-plan/index', type: 'fast' },
     ],
     menuList: [
-      { name: '我的计划', icon: '📋', type: 'plan' },
-      { name: '身体维度', icon: '📏', type: 'body' },
+      { name: '我的计划', icon: '📋', url: '/pages/my-plan/index', type: 'plan' },
+      { name: '身体维度', icon: '📏', url: '/pages/body-dimension/index', type: 'body' },
       { name: '排行榜', icon: '🏆', url: '/pages/leaderboard/index', type: 'rank' },
       { name: '我的订单', icon: '🛍️', type: 'order' },
       { name: '个性化', icon: '🎨', type: 'custom' },

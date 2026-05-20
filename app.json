@@ -54,6 +54,16 @@
       "pages": ["index"]
     },
     {
+      "root": "pages/my-plan",
+      "name": "my-plan",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/body-dimension",
+      "name": "body-dimension",
+      "pages": ["index"]
+    },
+    {
       "root": "pages/food-lib",
       "name": "food-lib",
       "pages": ["index"]

@@ -1,0 +1,188 @@
+<view class="container body-dimension-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">身体维度</view>
+  </view>
+
+  <view class="page-content">
+
+  <!-- ========== 1. 数据总览卡片 ========== -->
+  <view class="overview-card">
+    <view class="overview-inner">
+      <view class="overview-header">
+        <view class="overview-left">
+          <text class="overview-label">最新体重</text>
+          <view class="weight-row">
+            <text class="weight-big">{{overview.weight}}</text>
+            <text class="weight-unit">kg</text>
+          </view>
+          <view class="weight-change {{overview.changeType}}">
+            <text wx:if="{{overview.changeType === 'down'}}">↓ {{overview.change}} kg 较上周</text>
+            <text wx:else>↑ {{overview.change}} kg 较上周</text>
+          </view>
+        </view>
+
+        <view class="overview-metrics">
+          <view class="metric-item">
+            <text class="metric-val green">{{overview.bmi}}</text>
+            <text class="metric-label">BMI</text>
+          </view>
+          <view class="metric-item">
+            <text class="metric-val blue">{{overview.bodyFat}}%</text>
+            <text class="metric-label">体脂率</text>
+          </view>
+          <view class="metric-item">
+            <text class="metric-val orange">{{overview.waist}}<text class="metric-unit">cm</text></text>
+            <text class="metric-label">腰围</text>
+          </view>
+          <view class="metric-item">
+            <text class="metric-val">{{overview.hip}}<text class="metric-unit">cm</text></text>
+            <text class="metric-label">臀围</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- BMI指示条 -->
+      <view class="bmi-bar-wrap">
+        <view class="bmi-bar-header">
+          <text class="bmi-label">BMI 指数</text>
+          <text class="bmi-category {{bmiCategoryClass}}">{{bmiCategory}} {{bmiCategoryIcon}}</text>
+        </view>
+        <view class="bmi-track">
+          <view class="bmi-indicator" style="left: {{bmiPosition}}%;"></view>
+        </view>
+        <view class="bmi-range-labels">
+          <text>偏瘦</text><text>正常</text><text>偏胖</text><text>肥胖</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- ========== 2. 快捷录入按钮 ========== -->
+  <view class="record-btn-bar">
+    <button class="record-btn primary" bindtap="onRecordToday">
+      <text decode="{{true}}">➕ </text>记录今天的数据
+    </button>
+    <button class="record-btn outline" bindtap="onViewHistory">
+      <text decode="{{true}}">📋 </text>历史记录
+    </button>
+  </view>
+
+
+  <!-- ========== 3. 目标进度 ========== -->
+  <view class="section-card goal-card">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="emoji">🎯</text> 目标进度
+      </view>
+      <view class="section-action" style="color:#E65100;" bindtap="onEditGoal">修改 ›</view>
+    </view>
+    <view class="goal-progress-wrap">
+      <view class="goal-info-row">
+        <text class="goal-text">目标：{{goal.current}} kg → {{goal.target}} kg</text>
+        <text class="goal-numbers">已减 {{goal.lost}} / {{goal.total}} kg</text>
+      </view>
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{goal.progress}}%;"></view>
+      </view>
+      <text class="goal-hint">🎉 再减 {{goal.remain}} kg 即可达成目标！预计还需 ~{{goal.weeks}} 周</text>
+    </view>
+  </view>
+
+
+  <!-- ========== 4. 趋势图表 ========== -->
+  <view class="section-card">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="emoji">📈</text> 趋势变化
+      </view>
+      <view class="section-action" bindtap="onViewMore">近30天 ›</view>
+    </view>
+
+    <!-- 指标切换Tab -->
+    <view class="chart-tabs">
+      <button 
+        wx:for="{{chartTypes}}" 
+        wx:key="type"
+        class="chart-tab {{currentChartType === item.type ? 'active' : ''}}"
+        data-type="{{item.type}}"
+        bindtap="onSwitchChart">{{item.name}}</button>
+    </view>
+
+    <!-- 图表区域 -->
+    <view class="chart-area">
+      <canvas canvas-id="trendChart" id="trendChart" class="chart-canvas" bindtouchstart="onTouchChart"></canvas>
+    </view>
+
+    <!-- X轴标签 -->
+    <view class="x-axis-labels">
+      <text wx:for="{{chartXLabels}}" wx:key="index" class="x-label">{{item}}</text>
+    </view>
+
+    <!-- 图表摘要 -->
+    <view class="chart-summary">
+      <view class="chart-stat">
+        <text class="chart-stat-val">{{chartSummary.range}}</text>
+        <text class="chart-stat-lbl">区间</text>
+      </view>
+      <view class="chart-stat">
+        <text class="chart-stat-val down">{{chartSummary.change}}</text>
+        <text class="chart-stat-lbl">累计变化</text>
+      </view>
+      <view class="chart-stat">
+        <text class="chart-stat-val">{{chartSummary.count}} 次</text>
+        <text class="chart-stat-lbl">记录次数</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- ========== 5. 历史记录列表 ========== -->
+  <view class="section-card">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="emoji">📋</text> 记录历史
+      </view>
+      <view class="section-action" bindtap="onViewAll">全部 ›</view>
+    </view>
+
+    <view class="history-list" wx:if="{{historyList.length > 0}}">
+      <view class="history-date-group" wx:for="{{historyList}}" wx:key="date">
+        <view class="record-item" bindtap="onViewRecord" data-id="{{item._id}}">
+          <view class="record-date-col">
+            <text class="record-day">{{item.day}}</text>
+            <text class="record-dow">{{item.dow}}</text>
+          </view>
+          <view class="record-data-col">
+            <view class="record-main">
+              <text>{{item.weight}} kg</text>
+              <text class="record-main-sub"> BMI {{item.bmi}}</text>
+            </view>
+            <view class="record-sub">
+              <text>体脂 {{item.bodyFat}}%</text>
+              <text>腰围 {{item.waist || '—'}}cm</text>
+              <text>{{item.mood}}</text>
+            </view>
+          </view>
+          <text class="record-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📊</text>
+      <text class="empty-text">暂无记录，开始记录你的身体数据吧</text>
+      <button class="empty-btn" bindtap="onRecordToday">立即记录</button>
+    </view>
+  </view>
+
+
+  <view class="bottom-tip">— 向上滑动回到顶部 —</view>
+
+  </view>
+</view>
