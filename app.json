@@ -52,6 +52,11 @@
       "root": "pages/goal",
       "name": "goal",
       "pages": ["index"]
+    },
+    {
+      "root": "pages/food-lib",
+      "name": "food-lib",
+      "pages": ["index"]
     }
   ],
   "window": {

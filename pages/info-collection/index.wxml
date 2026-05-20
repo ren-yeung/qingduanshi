@@ -1,9 +1,14 @@
-<t-navbar left-arrow />
+<!-- 自定义导航栏 -->
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-arrow">‹</text>
+  </view>
+  <view class="navbar-title">完善个人信息</view>
+</view>
 
 <view class="page info-collection">
   <!-- 标题区 -->
   <view class="header">
-    <view class="header-title">完善个人信息</view>
     <view class="header-subtitle">帮助我们为你提供更精准的断食方案</view>
   </view>
 
@@ -52,10 +57,23 @@
         <text class="ruler-value">{{height}}</text>
         <text class="ruler-unit">cm</text>
       </view>
-      <slider min="120" max="220" step="1" value="{{height}}" block-size="24" bindchange="onHeightChange" />
+      <view class="ruler-wrapper">
+        <!-- 刻度尺容器（可滚动） -->
+        <view class="ruler-scroll-area" bindtouchstart="onHeightTouchStart" bindtouchmove="onHeightTouchMove" bindtouchend="onHeightTouchEnd">
+          <!-- 刻度尺（会平移） -->
+          <view class="ruler-scale ruler-scale-height" style="transform: translateX({{heightOffset}}px)">
+            <view wx:for="{{heightTicks}}" wx:key="index" class="tick-item {{item.major ? 'tick-major' : ''}}" style="width: {{heightTickWidth}}px">
+              <view class="tick-line"></view>
+              <text wx:if="{{item.major}}" class="tick-text">{{item.value}}</text>
+            </view>
+          </view>
+        </view>
+        <!-- 固定指示箭头 -->
+        <view class="fixed-indicator"></view>
+      </view>
       <view class="ruler-range">
-        <text>120cm</text>
-        <text>220cm</text>
+        <text>85cm</text>
+        <text>250cm</text>
       </view>
     </view>
 
@@ -63,10 +81,23 @@
     <view class="form-section">
       <view class="section-label">选择您当前体重</view>
       <view class="ruler-display">
-        <text class="ruler-value">{{weight}}</text>
+        <text class="ruler-value">{{weight % 1 === 0 ? weight + '.0' : weight}}</text>
         <text class="ruler-unit">kg</text>
       </view>
-      <slider min="30" max="150" step="0.5" value="{{weight}}" block-size="24" bindchange="onWeightChange" />
+      <view class="ruler-wrapper">
+        <!-- 刻度尺容器（可滚动） -->
+        <view class="ruler-scroll-area" bindtouchstart="onWeightTouchStart" bindtouchmove="onWeightTouchMove" bindtouchend="onWeightTouchEnd">
+          <!-- 刻度尺（会平移） -->
+          <view class="ruler-scale ruler-scale-weight" style="transform: translateX({{weightOffset}}px)">
+            <view wx:for="{{weightTicks}}" wx:key="index" class="tick-item {{item.major ? 'tick-major' : ''}}" style="width: {{weightTickWidth}}px">
+              <view class="tick-line"></view>
+              <text wx:if="{{item.major}}" class="tick-text">{{item.value}}</text>
+            </view>
+          </view>
+        </view>
+        <!-- 固定指示箭头 -->
+        <view class="fixed-indicator"></view>
+      </view>
       <view class="ruler-range">
         <text>30kg</text>
         <text>150kg</text>

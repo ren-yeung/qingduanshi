@@ -36,6 +36,7 @@ Page({
     foods: FOODS,
     selectedFood: null,
     amount: 100,
+    previewCalories: 0,
   },
 
   onLoad(options) {
@@ -58,13 +59,24 @@ Page({
     this.setData({ keyword, foods: searchFoods(keyword) });
   },
 
+  _updatePreviewCalories() {
+    const { selectedFood, amount } = this.data;
+    if (selectedFood && amount) {
+      this.setData({ previewCalories: Math.round(selectedFood.caloriesPer100g * amount / 100) });
+    } else {
+      this.setData({ previewCalories: 0 });
+    }
+  },
+
   onSelectFood(e) {
     const { index } = e.currentTarget.dataset;
     this.setData({ selectedFood: this.data.foods[index] });
+    this._updatePreviewCalories();
   },
 
   onAmountChange(e) {
-    this.setData({ amount: Number(e.detail.value) });
+    this.setData({ amount: Number(e.detail.value) || 0 });
+    this._updatePreviewCalories();
   },
 
   onCloseDetail() {

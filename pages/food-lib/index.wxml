@@ -1,10 +1,10 @@
-<view class="page add-food-page">
+<view class="page food-lib-page">
   <!-- 自定义导航栏 -->
   <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon">‹</text>
     </view>
-    <view class="navbar-title">记录饮食</view>
+    <view class="navbar-title">食物库</view>
   </view>
 
   <!-- 搜索栏 -->
@@ -32,7 +32,10 @@
     </view>
   </scroll-view>
 
-  <!-- 底部选择面板 -->
+  <!-- 底部白色底色 -->
+  <view class="bottom-spacer" wx:if="{{selectedFood}}"></view>
+
+  <!-- 底部详情面板 -->
   <view class="detail-panel" wx:if="{{selectedFood}}">
     <view class="detail-header">
       <text class="detail-name">{{selectedFood.name}}</text>
@@ -41,13 +44,9 @@
     <view class="detail-meta">
       <text>蛋白质 {{selectedFood.protein}}g · 碳水 {{selectedFood.carbs}}g · 脂肪 {{selectedFood.fat}}g（每100g）</text>
     </view>
-    <view class="amount-row">
-      <text class="amount-label">份量（克）</text>
-      <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountChange" />
+    <view class="detail-calories">
+      <text class="cal-label">热量</text>
+      <text class="cal-value">{{selectedFood.caloriesPer100g}} kcal/100g</text>
     </view>
-    <view class="preview-cal">
-      约 {{previewCalories}} kcal
-    </view>
-    <button class="confirm-btn" bindtap="onConfirm">确认添加</button>
   </view>
 </view>

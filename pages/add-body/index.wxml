@@ -41,7 +41,7 @@
   </view>
 
   <view class="save-bar">
-    <t-button theme="primary" size="large" block bindtap="onSave">保存</t-button>
+    <button class="save-btn" bindtap="onSave">保存</button>
   </view>
   </view>
 </view>
