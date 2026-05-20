@@ -1,0 +1,17 @@
+/* custom-tab-bar 自定义样式 */
+page {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.t-tab-bar.custom-tab-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  width: 100% !important;
+}
+
+.t-tab-bar.custom-tab-bar /deep/ .t-tab-bar-item {
+  flex: 1 !important;
+  width: 25% !important;
+}

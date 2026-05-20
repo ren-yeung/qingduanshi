@@ -1,0 +1,15 @@
+.t-slider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.t-slider__value {
+  margin-right: 16rpx;
+  font-size: 28rpx;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.t-slider__control {
+  flex: 1;
+}

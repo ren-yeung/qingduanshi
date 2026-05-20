@@ -1,0 +1,7 @@
+<view class="t-avatar__wrapper t-avatar--{{size}} t-avatar--{{shape}}">
+  <view class="t-avatar">
+    <image wx:if="{{image}}" class="t-avatar__image" src="{{image}}" mode="aspectFill" binderror="onLoadError" />
+    <text wx:elif="{{icon}}" class="t-avatar__icon t-avatar__icon--{{icon}}">{{icon}}</text>
+    <slot wx:else />
+  </view>
+</view>

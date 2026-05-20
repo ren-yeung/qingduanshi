@@ -1,0 +1,47 @@
+<view class="page add-body-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">记录身体数据</view>
+  </view>
+
+  <view class="page-content">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="form-label">体重 (kg) *</text>
+      <input class="form-input" type="digit" placeholder="例如 65.5" value="{{weight}}" data-field="weight" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">体脂率 (%)</text>
+      <input class="form-input" type="digit" placeholder="例如 22.5" value="{{bodyFat}}" data-field="bodyFat" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">腰围 (cm)</text>
+      <input class="form-input" type="digit" placeholder="例如 78" value="{{waist}}" data-field="waist" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">臀围 (cm)</text>
+      <input class="form-input" type="digit" placeholder="例如 95" value="{{hip}}" data-field="hip" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">今日步数</text>
+      <input class="form-input" type="number" placeholder="例如 8000" value="{{steps}}" data-field="steps" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">心情评分 (1-10)</text>
+      <t-slider value="{{mood}}" min="1" max="10" step="1" bind:change="onMoodChange" />
+      <text class="mood-val">{{mood}} 分</text>
+    </view>
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea class="form-textarea" placeholder="记录今天的感受..." value="{{note}}" data-field="note" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="save-bar">
+    <t-button theme="primary" size="large" block bindtap="onSave">保存</t-button>
+  </view>
+  </view>
+</view>

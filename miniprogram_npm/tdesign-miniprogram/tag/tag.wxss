@@ -1,0 +1,87 @@
+.t-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  border: 1px solid transparent;
+}
+
+.t-tag--small {
+  padding: 4rpx 12rpx;
+  font-size: 20rpx;
+}
+
+.t-tag--large {
+  padding: 12rpx 20rpx;
+  font-size: 28rpx;
+}
+
+.t-tag--round {
+  border-radius: 999px;
+}
+
+.t-tag--dark.t-tag--default {
+  color: #fff;
+  background-color: #e7e7e7;
+}
+
+.t-tag--dark.t-tag--primary {
+  color: #fff;
+  background-color: #0052d9;
+}
+
+.t-tag--dark.t-tag--success {
+  color: #fff;
+  background-color: #2ba471;
+}
+
+.t-tag--dark.t-tag--warning {
+  color: #fff;
+  background-color: #e37318;
+}
+
+.t-tag--dark.t-tag--danger {
+  color: #fff;
+  background-color: #d54941;
+}
+
+.t-tag--outline.t-tag--default {
+  color: #333;
+  border-color: #e7e7e7;
+  background-color: #fff;
+}
+
+.t-tag--outline.t-tag--primary {
+  color: #0052d9;
+  border-color: #0052d9;
+  background-color: #fff;
+}
+
+.t-tag--light.t-tag--default {
+  color: #333;
+  background-color: #f3f3f3;
+}
+
+.t-tag--light.t-tag--primary {
+  color: #0052d9;
+  background-color: #f2f3ff;
+}
+
+.t-tag--disabled {
+  opacity: 0.5;
+}
+
+.t-tag__icon {
+  margin-right: 8rpx;
+}
+
+.t-tag__text {
+  flex: 1;
+}
+
+.t-tag__close {
+  margin-left: 8rpx;
+  font-size: 20rpx;
+  cursor: pointer;
+}

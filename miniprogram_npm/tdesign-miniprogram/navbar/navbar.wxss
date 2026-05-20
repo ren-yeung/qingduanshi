@@ -1,0 +1,41 @@
+.t-navbar {
+  position: relative;
+}
+
+.t-navbar__content {
+  position: relative;
+  height: 88rpx;
+  padding-top: 40rpx;
+  color: rgba(0, 0, 0, 0.9);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+}
+
+.t-navbar__left {
+  display: flex;
+  align-items: center;
+  padding-left: 24rpx;
+}
+
+.t-navbar__btn {
+  padding: 10rpx;
+}
+
+.t-navbar__left-arrow {
+  font-size: 32rpx;
+}
+
+.t-navbar__center {
+  flex: 1;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.t-navbar__center-title {
+  font-size: 36rpx;
+  font-weight: 600;
+}

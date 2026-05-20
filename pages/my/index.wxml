@@ -1,0 +1,56 @@
+<view class="page my-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-title">我的</view>
+  </view>
+
+  <!-- 用户信息 -->
+  <view class="user-card">
+    <view class="user-info">
+      <t-avatar wx:if="{{isLogin}}" image="{{userInfo.avatarUrl || defaultAvatar}}" size="large" bindtap="onChooseAvatar" />
+      <t-avatar wx:else icon="user" size="large" bindtap="onLogin" />
+      <view class="user-meta">
+        <!-- 昵称输入模式 -->
+        <view wx:if="{{isLogin && isEditingNickname}}" class="nickname-edit-wrapper">
+          <input type="nickname" class="nickname-input" value="{{tempNickname}}" placeholder="请输入昵称" bindinput="onNicknameInput" bindconfirm="onConfirmNickname" focus="{{true}}" />
+          <text class="confirm-btn" bindtap="onConfirmNickname">完成</text>
+        </view>
+        <!-- 昵称显示模式 -->
+        <view wx:else class="nickname-display" bindtap="onEditNickname">
+          <text class="user-name">{{userInfo.nickName || '小小的新用户'}}</text>
+          <text class="edit-icon" wx:if="{{isLogin}}">✎</text>
+        </view>
+        <text class="user-streak">{{isLogin ? ('ID: ' + (userInfo.userId || '--')) : '点击头像登录'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="grid-card">
+    <view class="grid-item" wx:for="{{gridList}}" wx:key="type" data-url="{{item.url}}" data-type="{{item.type}}" bindtap="onNavigate">
+      <view class="grid-icon">
+        <text class="icon-text">{{item.icon === 'target' ? '🎯' : item.icon === 'chart' ? '📊' : item.icon === 'app' ? '🍎' : '⏱️'}}</text>
+      </view>
+      <text class="grid-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-card">
+    <t-cell-group theme="card" t-class="menu-cell-group">
+      <t-cell
+        wx:for="{{menuList}}"
+        wx:key="type"
+        title="{{item.name}}"
+        arrow
+        hover
+        data-url="{{item.url}}"
+        data-type="{{item.type}}"
+        bindtap="onNavigate"
+      >
+        <text slot="left-icon" class="menu-icon">{{item.icon}}</text>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+</view>

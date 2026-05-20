@@ -1,0 +1,13 @@
+<view class="t-navbar">
+  <view class="t-navbar__content">
+    <view class="t-navbar__left" bindtap="goBack">
+      <view wx:if="{{leftArrow}}" class="t-navbar__btn">
+        <text class="t-navbar__left-arrow">&lt;</text>
+      </view>
+      <slot name="left" />
+    </view>
+    <view class="t-navbar__center">
+      <text class="t-navbar__center-title">{{showTitle}}</text>
+    </view>
+  </view>
+</view>

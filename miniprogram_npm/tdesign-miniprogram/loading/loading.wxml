@@ -1,0 +1,10 @@
+<view class="{{show ? 't-loading t-loading--{{theme}}' : ''}}" style="{{theme === 'spinner' ? circularStyle : ''}}">
+  <view wx:if="{{theme === 'circular'}}" class="t-loading--circular" style="{{circularStyle}}">
+    <view class="t-loading__circle {{inheritColor ? '' : 't-loading__circle--custom'}}"></view>
+  </view>
+  <view wx:if="{{theme === 'spinner'}}" class="t-loading--spinner" style="{{circularStyle}}">
+    <block wx:for="{{[1,2,3,4,5,6,7,8]}}" wx:key="index">
+      <view class="t-loading__dot t-loading__dot--{{item}}"></view>
+    </block>
+  </view>
+</view>

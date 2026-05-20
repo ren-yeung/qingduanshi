@@ -1,0 +1,6 @@
+<t-tab-bar value="{{value}}" fixed border class="custom-tab-bar">
+  <t-tab-bar-item value="overview" icon="📊" bind:change="onTabChange">概览</t-tab-bar-item>
+  <t-tab-bar-item value="log" icon="📝" bind:change="onTabChange">日志</t-tab-bar-item>
+  <t-tab-bar-item value="dry-goods" icon="📚" bind:change="onTabChange">干货</t-tab-bar-item>
+  <t-tab-bar-item value="my" icon="👤" bind:change="onTabChange">我的</t-tab-bar-item>
+</t-tab-bar>

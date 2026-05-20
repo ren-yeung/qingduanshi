@@ -1,0 +1,50 @@
+<view class="page add-food-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">记录饮食</view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <t-input placeholder="搜索食物名称" prefixIcon="search" value="{{keyword}}" bind:change="onSearch" />
+  </view>
+
+  <!-- 食物列表 -->
+  <scroll-view class="food-list" scroll-y>
+    <view
+      class="food-item {{selectedFood && selectedFood.name === item.name ? 'food-item--active' : ''}}"
+      wx:for="{{foods}}"
+      wx:key="name"
+      data-index="{{index}}"
+      bindtap="onSelectFood"
+    >
+      <view class="food-info">
+        <text class="food-name">{{item.name}}</text>
+        <text class="food-category">{{item.category}}</text>
+      </view>
+      <text class="food-cal">{{item.caloriesPer100g}} kcal/100g</text>
+    </view>
+  </scroll-view>
+
+  <!-- 底部选择面板 -->
+  <view class="detail-panel" wx:if="{{selectedFood}}">
+    <view class="detail-header">
+      <text class="detail-name">{{selectedFood.name}}</text>
+      <text class="detail-close" bindtap="onCloseDetail">✕</text>
+    </view>
+    <view class="detail-meta">
+      <text>蛋白质 {{selectedFood.protein}}g · 碳水 {{selectedFood.carbs}}g · 脂肪 {{selectedFood.fat}}g（每100g）</text>
+    </view>
+    <view class="amount-row">
+      <text class="amount-label">份量（克）</text>
+      <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountChange" />
+    </view>
+    <view class="preview-cal">
+      约 {{Math.round(selectedFood.caloriesPer100g * amount / 100)}} kcal
+    </view>
+    <t-button theme="primary" size="medium" block bindtap="onConfirm">确认添加</t-button>
+  </view>
+</view>

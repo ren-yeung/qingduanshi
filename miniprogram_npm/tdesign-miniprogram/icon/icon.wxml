@@ -1,0 +1,4 @@
+<view class="{{classPrefix}} {{componentPrefix}}-class" style="{{iconStyle}}" bindtap="onTap">
+  <image wx:if="{{isImage}}" src="{{name}}" mode="aspectFit" class="{{classPrefix}}__image" />
+  <text wx:else class="{{classPrefix}}-{{name}} {{classPrefix}}-base">{{name}}</text>
+</view>

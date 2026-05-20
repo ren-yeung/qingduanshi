@@ -1,0 +1,81 @@
+<t-navbar left-arrow />
+
+<view class="page info-collection">
+  <!-- 标题区 -->
+  <view class="header">
+    <view class="header-title">完善个人信息</view>
+    <view class="header-subtitle">帮助我们为你提供更精准的断食方案</view>
+  </view>
+
+  <!-- 表单卡片 -->
+  <view class="form-card">
+    <!-- 性别 -->
+    <view class="form-section">
+      <view class="section-label">选择您的性别</view>
+      <view class="gender-row">
+        <view class="gender-option {{gender === 'female' ? 'active' : ''}}" bindtap="setGender" data-gender="female">
+          <view class="gender-icon-wrap female-icon">
+            <text class="gender-emoji">♀</text>
+          </view>
+          <view class="gender-label-row">
+            <text class="gender-text">女生</text>
+            <view class="check-circle {{gender === 'female' ? 'checked' : ''}}"></view>
+          </view>
+        </view>
+        <view class="gender-option {{gender === 'male' ? 'active' : ''}}" bindtap="setGender" data-gender="male">
+          <view class="gender-icon-wrap male-icon">
+            <text class="gender-emoji">♂</text>
+          </view>
+          <view class="gender-label-row">
+            <text class="gender-text">男生</text>
+            <view class="check-circle {{gender === 'male' ? 'checked' : ''}}"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 出生年月 -->
+    <view class="form-section">
+      <view class="section-label">选择您的出生年月</view>
+      <picker mode="multiSelector" bindchange="onBirthdayChange" value="{{birthdayIndex}}" range="{{birthdayRange}}">
+        <view class="birthday-display">
+          <text class="birthday-text">{{birthdayDisplay}}</text>
+          <text class="birthday-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 身高 -->
+    <view class="form-section">
+      <view class="section-label">选择您的身高</view>
+      <view class="ruler-display">
+        <text class="ruler-value">{{height}}</text>
+        <text class="ruler-unit">cm</text>
+      </view>
+      <slider min="120" max="220" step="1" value="{{height}}" block-size="24" bindchange="onHeightChange" />
+      <view class="ruler-range">
+        <text>120cm</text>
+        <text>220cm</text>
+      </view>
+    </view>
+
+    <!-- 体重 -->
+    <view class="form-section">
+      <view class="section-label">选择您当前体重</view>
+      <view class="ruler-display">
+        <text class="ruler-value">{{weight}}</text>
+        <text class="ruler-unit">kg</text>
+      </view>
+      <slider min="30" max="150" step="0.5" value="{{weight}}" block-size="24" bindchange="onWeightChange" />
+      <view class="ruler-range">
+        <text>30kg</text>
+        <text>150kg</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部按钮 -->
+<view class="bottom-btn">
+  <button class="submit-btn" bindtap="submitForm">开始体验</button>
+</view>

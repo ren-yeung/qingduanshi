@@ -1,0 +1,15 @@
+<view class="t-cell {{isLastChild ? '' : 't-cell--bordered'}}" hover-class="{{ hover ? 't-cell--hover' : ''}}" bindtap="onClick">
+  <view class="t-cell__left">
+    <text wx:if="{{leftIcon}}" class="t-cell__left-icon">{{leftIcon}}</text>
+    <slot name="left-icon" />
+  </view>
+  <view class="t-cell__title">
+    <view class="t-cell__title-text">{{title}}</view>
+    <view class="t-cell__description">{{note}}</view>
+  </view>
+  <view class="t-cell__right">
+    <text wx:if="{{arrow}}" class="t-cell__arrow">></text>
+    <text wx:if="{{rightIcon}}" class="t-cell__right-icon">{{rightIcon}}</text>
+    <slot name="right-icon" />
+  </view>
+</view>

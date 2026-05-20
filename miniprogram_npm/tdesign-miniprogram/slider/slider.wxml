@@ -1,0 +1,13 @@
+<view class="t-slider">
+  <text wx:if="{{showValue}}" class="t-slider__value">{{currentValue}}</text>
+  <slider
+    class="t-slider__control"
+    value="{{currentValue}}"
+    min="{{min}}"
+    max="{{max}}"
+    step="{{step}}"
+    disabled="{{disabled}}"
+    show-value="{{false}}"
+    bindchange="onChange"
+  />
+</view>

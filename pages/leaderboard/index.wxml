@@ -1,0 +1,15 @@
+<view class="page leaderboard-page">
+  <view class="leaderboard-header">
+    <text class="header-title">本周打卡排行</text>
+    <text class="header-sub">与好友一起坚持断食</text>
+  </view>
+  <view class="leaderboard-list">
+    <view class="leader-item {{item.name === '我' ? 'leader-item--me' : ''}}" wx:for="{{list}}" wx:key="rank">
+      <text class="rank-num">{{item.rank}}</text>
+      <view class="user-info">
+        <text class="user-name">{{item.name}}</text>
+      </view>
+      <text class="streak">{{item.streak}} 天</text>
+    </view>
+  </view>
+</view>

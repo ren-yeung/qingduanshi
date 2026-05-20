@@ -1,0 +1,16 @@
+<view class="page dry-goods-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-title">干货</view>
+  </view>
+
+  <view class="article-list">
+    <view class="article-card" wx:for="{{articles}}" wx:key="id" data-id="{{item.id}}" bindtap="onTapArticle">
+      <view class="article-header">
+        <t-tag variant="light" size="small">{{item.tag}}</t-tag>
+      </view>
+      <text class="article-title">{{item.title}}</text>
+      <text class="article-summary">{{item.summary}}</text>
+    </view>
+  </view>
+</view>

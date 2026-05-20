@@ -1,0 +1,26 @@
+.t-input {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 24rpx 32rpx;
+}
+
+.t-input__control {
+  flex: 1;
+  font-size: 32rpx;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.t-input__control::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.t-input__control:disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+.t-input__clear {
+  padding: 10rpx;
+  font-size: 32rpx;
+  color: rgba(0, 0, 0, 0.4);
+}

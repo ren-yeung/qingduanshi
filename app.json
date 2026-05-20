@@ -1,0 +1,98 @@
+{
+  "pages": ["pages/overview/index", "pages/log/index", "pages/dry-goods/index", "pages/my/index"],
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {},
+  "subpackages": [
+    {
+      "root": "pages/loginCode",
+      "name": "loginCode",
+      "pages": ["loginCode"]
+    },
+    {
+      "root": "pages/info-collection",
+      "name": "info-collection",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/dataCenter",
+      "name": "dataCenter",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/setting",
+      "name": "setting",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/fast-plan",
+      "name": "fast-plan",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/add-food",
+      "name": "add-food",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/add-body",
+      "name": "add-body",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/check-in",
+      "name": "check-in",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/leaderboard",
+      "name": "leaderboard",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/goal",
+      "name": "goal",
+      "pages": ["index"]
+    }
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "轻断食",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#888888",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/overview/index",
+        "text": "概览",
+        "iconPath": "static/icon_overview.png",
+        "selectedIconPath": "static/icon_overview_selected.png"
+      },
+      {
+        "pagePath": "pages/log/index",
+        "text": "日志",
+        "iconPath": "static/icon_log.png",
+        "selectedIconPath": "static/icon_log_selected.png"
+      },
+      {
+        "pagePath": "pages/dry-goods/index",
+        "text": "干货",
+        "iconPath": "static/icon_goods.png",
+        "selectedIconPath": "static/icon_goods_selected.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "static/icon_my.png",
+        "selectedIconPath": "static/icon_my_selected.png"
+      }
+    ]
+  },
+  "resolveAlias": {
+    "~/*": "/*"
+  },
+  "sitemapLocation": "sitemap.json"
+}

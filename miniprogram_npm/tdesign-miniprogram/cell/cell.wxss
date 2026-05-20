@@ -1,0 +1,61 @@
+.t-cell {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 32rpx;
+  background-color: #fff;
+}
+
+.t-cell--bordered::after {
+  position: absolute;
+  box-sizing: border-box;
+  content: ' ';
+  pointer-events: none;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.t-cell__left,
+.t-cell__right {
+  display: flex;
+  align-items: center;
+}
+
+.t-cell__left {
+  margin-right: 24rpx;
+}
+
+.t-cell__left-icon {
+  font-size: 48rpx;
+}
+
+.t-cell__title {
+  flex: 1;
+}
+
+.t-cell__title-text {
+  font-size: 32rpx;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.t-cell__description {
+  font-size: 28rpx;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8rpx;
+}
+
+.t-cell__right {
+  flex-shrink: 0;
+}
+
+.t-cell__arrow {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 32rpx;
+}
+
+.t-cell--hover {
+  background-color: #f3f3f3;
+}

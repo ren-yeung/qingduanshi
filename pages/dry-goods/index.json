@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "t-tag": "tdesign-miniprogram/tag/tag"
+  }
+}

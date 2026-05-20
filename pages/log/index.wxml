@@ -1,0 +1,101 @@
+<view class="page log-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-title">日志</view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="date-bar">
+    <picker mode="date" value="{{currentDate}}" bindchange="onChangeDate">
+      <view class="date-picker">{{currentDate}} ▼</view>
+    </picker>
+  </view>
+
+  <!-- 营养总览 -->
+  <view class="nutrition-card">
+    <view class="nutrition-header">
+      <text class="card-title">今日营养</text>
+      <text class="calories-remain">{{goal.calories - (dietRecord.totalCalories || 0)}} kcal 剩余</text>
+    </view>
+    <view class="macro-grid">
+      <view class="macro-item">
+        <view class="macro-bar">
+          <view class="macro-fill macro-fill--cal" style="width: {{computeProgress(dietRecord.totalCalories, goal.calories)}}%"></view>
+        </view>
+        <text class="macro-val">{{dietRecord.totalCalories}}/{{goal.calories}}</text>
+        <text class="macro-name">热量(kcal)</text>
+      </view>
+      <view class="macro-item">
+        <view class="macro-bar">
+          <view class="macro-fill macro-fill--protein" style="width: {{computeProgress(dietRecord.totalProtein, goal.protein)}}%"></view>
+        </view>
+        <text class="macro-val">{{dietRecord.totalProtein}}/{{goal.protein}}g</text>
+        <text class="macro-name">蛋白质</text>
+      </view>
+      <view class="macro-item">
+        <view class="macro-bar">
+          <view class="macro-fill macro-fill--carbs" style="width: {{computeProgress(dietRecord.totalCarbs, goal.carbs)}}%"></view>
+        </view>
+        <text class="macro-val">{{dietRecord.totalCarbs}}/{{goal.carbs}}g</text>
+        <text class="macro-name">碳水</text>
+      </view>
+      <view class="macro-item">
+        <view class="macro-bar">
+          <view class="macro-fill macro-fill--fat" style="width: {{computeProgress(dietRecord.totalFat, goal.fat)}}%"></view>
+        </view>
+        <text class="macro-val">{{dietRecord.totalFat}}/{{goal.fat}}g</text>
+        <text class="macro-name">脂肪</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 按餐记录 -->
+  <view class="meal-card" wx:for="{{meals}}" wx:key="key" wx:for-item="meal">
+    <view class="meal-header">
+      <view class="meal-title-row">
+        <text class="meal-name">{{meal.name}}</text>
+        <text class="meal-time">{{meal.time}}</text>
+      </view>
+      <view class="meal-right">
+        <text class="meal-calories" wx:if="{{dietRecord.meals[meal.key].foods.length}}">{{dietRecord.meals[meal.key].totalCalories || 0}} kcal</text>
+        <view class="add-btn" data-meal="{{meal.key}}" bindtap="onAddFood">+</view>
+      </view>
+    </view>
+    <view class="food-list" wx:if="{{dietRecord.meals[meal.key].foods.length}}">
+      <view class="food-item" wx:for="{{dietRecord.meals[meal.key].foods}}" wx:key="index">
+        <text class="food-name">{{item.name}}</text>
+        <text class="food-amount">{{item.amount}}g</text>
+        <text class="food-cal">{{item.calories}} kcal</text>
+        <view class="food-delete" data-meal="{{meal.key}}" data-index="{{index}}" bindtap="onDeleteFood">−</view>
+      </view>
+    </view>
+    <view class="empty-tip" wx:else>点击 + 添加食物</view>
+  </view>
+
+  <!-- 今日身体数据 -->
+  <view class="body-card">
+    <view class="card-title-row">
+      <text class="card-title">今日身体数据</text>
+      <text class="add-link" bindtap="onAddBodyData">{{weightRecord ? '编辑' : '记录'}}</text>
+    </view>
+    <view class="body-grid" wx:if="{{weightRecord || bodyRecord}}">
+      <view class="body-item">
+        <text class="body-val">{{weightRecord ? weightRecord.weight : '--'}}</text>
+        <text class="body-label">体重(kg)</text>
+      </view>
+      <view class="body-item">
+        <text class="body-val">{{bodyRecord ? (bodyRecord.bmi || '--') : '--'}}</text>
+        <text class="body-label">BMI</text>
+      </view>
+      <view class="body-item">
+        <text class="body-val">{{bodyRecord ? (bodyRecord.bodyFat || '--') : '--'}}</text>
+        <text class="body-label">体脂(%)</text>
+      </view>
+      <view class="body-item">
+        <text class="body-val">{{bodyRecord ? (bodyRecord.waist || '--') : '--'}}</text>
+        <text class="body-label">腰围(cm)</text>
+      </view>
+    </view>
+    <view class="empty-tip" wx:else>今日还未记录身体数据</view>
+  </view>
+</view>

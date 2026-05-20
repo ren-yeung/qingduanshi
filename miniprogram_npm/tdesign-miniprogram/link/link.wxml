@@ -1,0 +1,14 @@
+<view
+  class="t-link t-link--{{theme}} t-link--{{size}} {{disabled ? 't-link--disabled' : ''}} {{underline ? 't-link--underline' : ''}} {{hover ? 't-link--hover' : ''}}"
+  bindtap="onClick"
+>
+  <view wx:if="{{prefixIcon}}" class="t-link__prefix-icon">
+    <slot name="prefix-icon" />
+  </view>
+  <view class="t-link__content">
+    <slot>{{content}}</slot>
+  </view>
+  <view wx:if="{{suffixIcon}}" class="t-link__suffix-icon">
+    <slot name="suffix-icon" />
+  </view>
+</view>

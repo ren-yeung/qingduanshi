@@ -1,0 +1,9 @@
+<view class="t-tab-bar-item {{active ? 't-tab-bar-item--active' : ''}}" bindtap="onTabBarChange">
+  <view class="t-tab-bar-item__icon">
+    <t-badge wx:if="{{badgeProps.count || badgeProps.dot}}" count="{{badgeProps.count}}" dot="{{badgeProps.dot}}" />
+    <view wx:if="{{icon}}" class="t-tab-bar-item__image">
+      <text class="t-tab-bar-item__icon-text">{{icon}}</text>
+    </view>
+  </view>
+  <view class="t-tab-bar-item__text"><slot /></view>
+</view>

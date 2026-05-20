@@ -1,0 +1,7 @@
+<view class="{{className}} t-tag" style="{{tagStyle}}" bindtap="handleClick">
+  <text wx:if="{{icon}}" class="t-tag__icon">{{icon}}</text>
+  <view class="t-tag__text">
+    <slot />
+  </view>
+  <text wx:if="{{closable && !disabled}}" class="t-tag__close" catchtap="handleClose">x</text>
+</view>

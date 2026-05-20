@@ -1,0 +1,40 @@
+<!-- 自定义导航栏 -->
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-icon">‹</text>
+  </view>
+  <view class="navbar-title">设置</view>
+</view>
+
+<view class="setting">
+  <view class="menu-wrapper">
+    <t-cell-group wx:for="{{menuData}}" wx:for-item="item" wx:key="index" t-class="menu-cell-group" theme="card">
+      <t-cell
+        wx:for="{{item}}"
+        wx:for-item="carditem"
+        wx:key="cardkey"
+        title="{{carditem.title}}"
+        hover
+        arrow
+        url="{{carditem.url}}"
+        bordered="true"
+        data-data="{{carditem}}"
+        bindclick="onEleClick"
+      >
+        <text slot="left-icon" class="menu-icon">{{carditem.icon}}</text>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-wrapper" wx:if="{{isLogin}}">
+    <t-cell-group theme="card" t-class="menu-cell-group">
+      <t-cell title="退出登录" hover arrow bindtap="onLogout">
+        <text slot="left-icon" class="menu-icon">🚪</text>
+      </t-cell>
+      <t-cell title="注销账号" hover arrow bindtap="onDestroyAccount">
+        <text slot="left-icon" class="menu-icon">🗑️</text>
+      </t-cell>
+    </t-cell-group>
+  </view>
+</view>

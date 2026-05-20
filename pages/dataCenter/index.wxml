@@ -1,0 +1,54 @@
+<view class="page data-center-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">数据统计</view>
+  </view>
+
+  <!-- 范围切换 -->
+  <view class="range-bar">
+    <view class="range-item {{range === 7 ? 'range-item--active' : ''}}" data-range="7" bindtap="onChangeRange">近7天</view>
+    <view class="range-item {{range === 30 ? 'range-item--active' : ''}}" data-range="30" bindtap="onChangeRange">近30天</view>
+  </view>
+
+  <!-- 图表 -->
+  <view class="chart-card">
+    <view class="chart-title">体重趋势 (kg)</view>
+    <canvas type="2d" id="weightChart" class="chart-canvas" wx:if="{{weightRecords.length}}"></canvas>
+    <view class="empty-chart" wx:else>
+      <text>暂无数据，快去记录体重吧</text>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-grid">
+    <view class="stats-item">
+      <text class="stats-val">{{stats.current}}</text>
+      <text class="stats-name">当前体重</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-val">{{stats.lowest}}</text>
+      <text class="stats-name">最低体重</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-val">{{stats.average}}</text>
+      <text class="stats-name">平均体重</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-val">{{stats.bmi}}</text>
+      <text class="stats-name">BMI</text>
+    </view>
+  </view>
+
+  <!-- 数据列表 -->
+  <view class="list-card">
+    <view class="list-title">记录明细</view>
+    <view class="list-row" wx:for="{{weightRecords}}" wx:key="date">
+      <text class="list-date">{{item.date}}</text>
+      <text class="list-weight">{{item.weight}} kg</text>
+      <text class="list-bmi" wx:if="{{item.bmi}}">BMI {{item.bmi}}</text>
+    </view>
+  </view>
+</view>

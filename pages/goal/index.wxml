@@ -1,0 +1,97 @@
+<view class="page add-goal-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">饮食目标</view>
+  </view>
+
+  <view class="page-content">
+    <view class="section">
+      <view class="section-title">每日摄入目标</view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">🔥</text>
+          <text>热量</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="number"
+            value="{{goal.calories}}"
+            bindinput="onCaloriesChange"
+            placeholder="请输入"
+          />
+          <text class="unit">kcal</text>
+        </view>
+      </view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">🥩</text>
+          <text>蛋白质</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="number"
+            value="{{goal.protein}}"
+            bindinput="onProteinChange"
+            placeholder="请输入"
+          />
+          <text class="unit">g</text>
+        </view>
+      </view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">🍞</text>
+          <text>碳水</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="number"
+            value="{{goal.carbs}}"
+            bindinput="onCarbsChange"
+            placeholder="请输入"
+          />
+          <text class="unit">g</text>
+        </view>
+      </view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">🥑</text>
+          <text>脂肪</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="number"
+            value="{{goal.fat}}"
+            bindinput="onFatChange"
+            placeholder="请输入"
+          />
+          <text class="unit">g</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">说明</view>
+      <view class="tips">
+        <text>• 热量：每日摄入的总能量目标</text>
+        <text>• 蛋白质：帮助维持肌肉和代谢</text>
+        <text>• 碳水：提供日常活动能量</text>
+        <text>• 脂肪：维持激素和细胞健康</text>
+      </view>
+    </view>
+
+    <view class="reset-btn" bindtap="onReset">
+      <text>恢复默认目标</text>
+    </view>
+  </view>
+
+  <view class="save-bar">
+    <button class="save-btn" bindtap="onSave">保存</button>
+  </view>
+</view>

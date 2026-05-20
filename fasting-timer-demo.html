@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轻断食24小时循环倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .settings-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .greeting {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        /* 断食卡片 */
+        .fasting-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .ring-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .ring-visual {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .ring-svg {
+            width: 120px;
+            height: 120px;
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            stroke: #e0e0e0;
+        }
+
+        .ring-arc {
+            stroke: #4caf50;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .ring-arc.feeding {
+            stroke: #ff9800;
+        }
+
+        .ring-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ring-time {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .ring-status-text {
+            display: block;
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .ring-info {
+            flex: 1;
+        }
+
+        .ring-info-main {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .ring-info-sub {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .status-badge.fasting {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-badge.feeding {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-primary.feeding {
+            background: #ff9800;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 模式选择器 */
+        .mode-selector {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .mode-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-btn.active {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            color: #4caf50;
+            font-weight: 500;
+        }
+
+        .mode-btn:hover {
+            border-color: #4caf50;
+        }
+
+        /* 阶段说明 */
+        .phase-info {
+            margin-top: 16px;
+            padding: 12px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1976d2;
+            line-height: 1.6;
+        }
+
+        .phase-info.feeding {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">轻断食</div>
+            <div class="settings-btn">⚙️</div>
+        </div>
+
+        <div class="greeting" id="greeting">坚持住，断食进行中</div>
+        <div class="date" id="dateDisplay">5月19日 周二</div>
+
+        <!-- 断食卡片 -->
+        <div class="fasting-card">
+            <div class="card-header">
+                <div class="card-title">今日断食</div>
+                <div class="card-tag" id="planTag">16:8</div>
+            </div>
+
+            <div class="ring-wrapper">
+                <div class="ring-visual">
+                    <svg class="ring-svg" viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="42" fill="none" stroke-width="8"/>
+                        <circle class="ring-arc" id="ringArc" cx="50" cy="50" r="42" fill="none" stroke-width="8"
+                            stroke-dasharray="264"
+                            stroke-dashoffset="264"
+                            transform="rotate(-90 50 50)"/>
+                    </svg>
+                    <div class="ring-inner">
+                        <text class="ring-time" id="remainingTime">16:00:00</text>
+                        <text class="ring-status-text" id="statusText">剩余</text>
+                    </div>
+                </div>
+
+                <div class="ring-info">
+                    <div class="status-badge fasting" id="statusBadge">断食中</div>
+                    <text class="ring-info-main" id="planName">16:8 轻断食</text>
+                    <text class="ring-info-sub" id="elapsedText">已进行 00:00:00</text>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="toggleBtn" onclick="toggleState()">提前进食</button>
+                        <button class="btn btn-outline" onclick="stopFasting()">结束</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 阶段说明 -->
+        <div class="phase-info" id="phaseInfo">
+            💡 断食阶段：16小时 - 保持空腹，可以喝水、黑咖啡
+        </div>
+
+        <!-- 模式选择器 -->
+        <div class="mode-selector">
+            <div class="mode-title">选择轻断食模式（演示用）</div>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="changeMode('16:8')">16:8 轻断食</button>
+                <button class="mode-btn" onclick="changeMode('18:6')">18:6 轻断食</button>
+                <button class="mode-btn" onclick="changeMode('20:4')">20:4 轻断食</button>
+                <button class="mode-btn" onclick="changeMode('OMAD')">OMAD 一日一餐</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 轻断食模式配置
+        const MODES = {
+            '16:8': { fasting: 16, feeding: 8 },
+            '18:6': { fasting: 18, feeding: 6 },
+            '20:4': { fasting: 20, feeding: 4 },
+            'OMAD': { fasting: 23, feeding: 1 }
+        };
+
+        let currentMode = '16:8';
+        let currentPhase = 'fasting'; // 'fasting' 或 'feeding'
+        let startTime = null;
+        let timer = null;
+        let isRunning = false;
+
+        // 初始化
+        function init() {
+            updateDate();
+            startFasting();
+        }
+
+        // 更新日期显示
+        function updateDate() {
+            const now = new Date();
+            const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const weekday = weekdays[now.getDay()];
+            document.getElementById('dateDisplay').textContent = `${month}月${date}日 ${weekday}`;
+        }
+
+        // 开始断食
+        function startFasting() {
+            currentPhase = 'fasting';
+            startTime = Date.now();
+            isRunning = true;
+            
+            if (timer) clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+            
+            updateUI();
+        }
+
+        // 切换状态（断食↔进食）
+        function toggleState() {
+            if (currentPhase === 'fasting') {
+                // 提前结束断食，进入进食
+                currentPhase = 'feeding';
+                startTime = Date.now();
+            } else {
+                // 进食结束，开始下一轮断食
+                startFasting();
+            }
+            updateUI();
+        }
+
+        // 停止断食
+        function stopFasting() {
+            if (confirm('确定要结束断食吗？')) {
+                isRunning = false;
+                if (timer) clearInterval(timer);
+                document.getElementById('greeting').textContent = '准备开始今天的断食吗？';
+                document.getElementById('statusBadge').textContent = '未开始';
+                document.getElementById('statusBadge').className = 'status-badge';
+                document.getElementById('toggleBtn').textContent = '开始断食';
+                document.getElementById('remainingTime').textContent = '--:--:--';
+                document.getElementById('elapsedText').textContent = '暂未开始';
+            }
+        }
+
+        // 更新计时器
+        function updateTimer() {
+            if (!isRunning || !startTime) return;
+
+            const now = Date.now();
+            const elapsed = now - startTime;
+            
+            const mode = MODES[currentMode];
+            const totalDuration = currentPhase === 'fasting' 
+                ? mode.fasting * 3600 * 1000 
+                : mode.feeding * 3600 * 1000;
+            
+            const remaining = Math.max(0, totalDuration - elapsed);
+            const progress = Math.min(1, elapsed / totalDuration);
+
+            // 更新显示
+            document.getElementById('remainingTime').textContent = formatTime(remaining);
+            document.getElementById('elapsedText').textContent = `已进行 ${formatTime(elapsed)}`;
+            
+            // 更新进度条
+            const circumference = 264;
+            const offset = circumference - (circumference * progress);
+            document.getElementById('ringArc').style.strokeDashoffset = offset;
+
+            // 检查阶段是否结束
+            if (remaining <= 0) {
+                onPhaseComplete();
+            }
+        }
+
+        // 阶段完成
+        function onPhaseComplete() {
+            if (currentPhase === 'fasting') {
+                // 断食结束，进入进食阶段
+                currentPhase = 'feeding';
+                startTime = Date.now();
+                showNotification('🎉 断食完成！现在是进食窗口');
+            } else {
+                // 进食结束，进入下一轮断食
+                currentPhase = 'fasting';
+                startTime = Date.now();
+                showNotification('⏰ 进食窗口结束！开始新的断食');
+            }
+            updateUI();
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            const phaseInfo = document.getElementById('phaseInfo');
+            phaseInfo.textContent = message;
+            phaseInfo.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                phaseInfo.style.animation = '';
+                updatePhaseInfo();
+            }, 3000);
+        }
+
+        // 更新UI
+        function updateUI() {
+            const badge = document.getElementById('statusBadge');
+            const ringArc = document.getElementById('ringArc');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const greeting = document.getElementById('greeting');
+            const phaseInfo = document.getElementById('phaseInfo');
+
+            if (currentPhase === 'fasting') {
+                badge.textContent = '断食中';
+                badge.className = 'status-badge fasting';
+                ringArc.className = 'ring-arc';
+                toggleBtn.textContent = '提前进食';
+                toggleBtn.className = 'btn btn-primary';
+                greeting.textContent = '坚持住，断食进行中 💪';
+            } else {
+                badge.textContent = '觅食中';
+                badge.className = 'status-badge feeding';
+                ringArc.className = 'ring-arc feeding';
+                toggleBtn.textContent = '开始断食';
+                toggleBtn.className = 'btn btn-primary feeding';
+                greeting.textContent = '享受你的进食窗口 🍽️';
+            }
+
+            updatePhaseInfo();
+        }
+
+        // 更新阶段说明
+        function updatePhaseInfo() {
+            const phaseInfo = document.getElementById('phaseInfo');
+            const mode = MODES[currentMode];
+
+            if (currentPhase === 'fasting') {
+                phaseInfo.textContent = `💡 断食阶段：${mode.fasting}小时 - 保持空腹，可以喝水、黑咖啡`;
+                phaseInfo.className = 'phase-info';
+            } else {
+                phaseInfo.textContent = `💡 进食阶段：${mode.feeding}小时 - 合理摄入营养，不要暴饮暴食`;
+                phaseInfo.className = 'phase-info feeding';
+            }
+        }
+
+        // 切换模式
+        function changeMode(mode) {
+            currentMode = mode;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 更新显示
+            document.getElementById('planTag').textContent = mode;
+            document.getElementById('planName').textContent = mode === 'OMAD' ? 'OMAD 一日一餐' : `${mode} 轻断食`;
+
+            // 重启计时
+            if (isRunning) {
+                startFasting();
+            }
+        }
+
+        // 格式化时间
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // 页面加载时初始化
+        window.onload = init;
+    </script>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</body>
+</html>

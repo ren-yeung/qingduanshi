@@ -1,0 +1,20 @@
+<view class="t-input">
+  <input
+    class="t-input__control"
+    value="{{inputValue}}"
+    type="{{type}}"
+    password="{{password}}"
+    placeholder="{{placeholder}}"
+    placeholder-style="{{placeholderStyle}}"
+    placeholder-class="{{placeholderClass}}"
+    disabled="{{disabled}}"
+    maxlength="{{maxlength}}"
+    focus="{{focus}}"
+    confirm-type="{{confirmType}}"
+    bindinput="onInput"
+    bindfocus="onFocus"
+    bindblur="onBlur"
+    bindconfirm="onConfirm"
+  />
+  <text wx:if="{{clearable && showClear}}" class="t-input__clear" catchtap="onClear">x</text>
+</view>

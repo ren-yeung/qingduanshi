@@ -1,0 +1,14 @@
+<view class="t-image t-image--{{shape}}" style="{{height ? 'height:' + height : ''}}">
+  <image
+    wx:if="{{src}}"
+    class="t-image__img {{isLoaded ? 't-image__img--loaded' : ''}} {{isError ? 't-image__img--error' : ''}}"
+    src="{{isError ? error : src}}"
+    mode="{{mode}}"
+    show-menu-by-longpress="{{showMenuByLongpress}}"
+    bindload="onLoad"
+    binderror="onError"
+  />
+  <view wx:if="{{!isLoaded && !isError && loading}}" class="t-image__loading {{loadingClass}}">
+    <slot name="loading" />
+  </view>
+</view>

@@ -1,0 +1,10 @@
+{
+  "envId": "cloudbase-d6g8imz47feab8222",
+  "projects": [
+    {
+      "id": "轻断食",
+      "path": "./",
+      "type": "miniprogram"
+    }
+  ]
+}

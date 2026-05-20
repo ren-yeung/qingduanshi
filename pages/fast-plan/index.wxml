@@ -1,0 +1,43 @@
+<view class="page fast-plan-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">选择断食计划</view>
+  </view>
+
+  <view class="page-content">
+  <view class="plan-list">
+    <view
+      class="plan-item {{selectedPlanId === item.id ? 'plan-item--active' : ''}}"
+      wx:for="{{plans}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onSelectPlan"
+    >
+      <view class="plan-header">
+        <text class="plan-name">{{item.name}}</text>
+        <t-tag variant="light" size="small">难度{{item.difficulty || '?'}}</t-tag>
+      </view>
+      <text class="plan-desc">{{item.description}}</text>
+      <view class="plan-meta" wx:if="{{item.type !== 'custom'}}">
+        <text class="meta-text">断食 {{item.fastHours}}h · 进食 {{item.eatHours}}h</text>
+      </view>
+
+      <!-- 自定义设置面板 -->
+      <view class="custom-panel" wx:if="{{item.id === 'custom' && selectedPlanId === 'custom'}}">
+        <view class="slider-row">
+          <text class="slider-label">断食时长: {{customFast}} 小时</text>
+          <t-slider value="{{customFast}}" min="1" max="48" step="1" bind:change="onCustomFastChange" />
+        </view>
+        <view class="slider-row">
+          <text class="slider-label">进食时长: {{customEat}} 小时</text>
+          <t-slider value="{{customEat}}" min="1" max="12" step="1" bind:change="onCustomEatChange" />
+        </view>
+        <t-button theme="primary" size="medium" block bindtap="onStartCustom">开始自定义计划</t-button>
+      </view>
+    </view>
+  </view>
+  </view>
+</view>

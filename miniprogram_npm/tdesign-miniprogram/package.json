@@ -1,0 +1,9 @@
+{
+  "name": "tdesign-miniprogram",
+  "version": "1.0.0",
+  "main": "index.js",
+  "miniprogram": {
+    "main": "index.js",
+    "desc": "TDesign Miniprogram Component Library"
+  }
+}

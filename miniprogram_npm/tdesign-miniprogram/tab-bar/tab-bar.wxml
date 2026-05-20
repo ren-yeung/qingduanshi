@@ -1,0 +1,3 @@
+<view class="t-tab-bar {{fixed ? 't-tab-bar--fixed' : ''}} {{border ? 't-tab-bar--border' : ''}}" style="{{safeAreaInsetBottom ? 'padding-bottom: env(safe-area-inset-bottom);' : ''}}">
+  <slot />
+</view>

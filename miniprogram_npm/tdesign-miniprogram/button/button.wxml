@@ -1,0 +1,7 @@
+<button class="t-button {{className}}" bindtap="handleTap" disabled="{{disabled}}" loading="{{loading}}">
+  <text wx:if="{{icon}}" class="t-button__icon">{{icon}}</text>
+  <text wx:if="{{loading}}" class="t-button__loading">...</text>
+  <view class="t-button__content">
+    <slot />
+  </view>
+</button>

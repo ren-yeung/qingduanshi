@@ -1,0 +1,47 @@
+.t-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+.t-link--primary {
+  color: #0052d9;
+}
+.t-link--success {
+  color: #00a870;
+}
+.t-link--warning {
+  color: #ed7b2f;
+}
+.t-link--danger {
+  color: #e34d59;
+}
+.t-link--default {
+  color: #333;
+}
+.t-link--small {
+  font-size: 24rpx;
+}
+.t-link--medium {
+  font-size: 28rpx;
+}
+.t-link--large {
+  font-size: 32rpx;
+}
+.t-link--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.t-link--underline {
+  text-decoration: underline;
+}
+.t-link--hover {
+  opacity: 0.8;
+}
+.t-link__prefix-icon {
+  margin-right: 8rpx;
+}
+.t-link__suffix-icon {
+  margin-left: 8rpx;
+}
