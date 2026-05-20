@@ -70,6 +70,13 @@ Page({
   },
 
   checkLogin() {
+    // 检查是否是退出登录状态
+    const isLoggedOut = wx.getStorageSync('isLoggedOut');
+    if (isLoggedOut) {
+      this.setData({ isLogin: false });
+      return;
+    }
+
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
     const isLogin = !!(userInfo && (userInfo.openid || userInfo.gender));
     this.setData({ isLogin });
@@ -96,6 +103,8 @@ Page({
           // 保留本地 userInfo，方便静默登录恢复
           // 标记为退出登录状态（不清空 infoCollected 和 userInfo）
           storage.markAsLoggedOut();
+          // 清除注销账号标记（退出登录不是注销）
+          wx.removeStorageSync('accountDestroyed');
           app.eventBus.emit('user-logout');
           wx.switchTab({
             url: '/pages/my/index',

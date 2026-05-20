@@ -126,9 +126,13 @@ Page({
   },
 
   onLogin() {
+    console.log('[onLogin] 开始登录流程');
+
     // 检查是否注销过账号，注销过必须重新收集信息
     const accountDestroyed = wx.getStorageSync('accountDestroyed');
+    console.log('[onLogin] accountDestroyed:', accountDestroyed);
     if (accountDestroyed) {
+      console.log('[onLogin] 已注销账号，跳转信息收集页');
       wx.navigateTo({ url: '/pages/info-collection/index' });
       return;
     }
@@ -139,18 +143,23 @@ Page({
     // 检查是否是退出登录状态（有 isLoggedOut 标记说明之前登录过）
     const isLoggedOut = wx.getStorageSync('isLoggedOut');
 
+    console.log('[onLogin] infoCollected:', infoCollected, 'isLoggedOut:', isLoggedOut);
+
     // 如果未完善信息 且 不是退出登录状态，才跳转信息收集页
     if (!infoCollected && !isLoggedOut) {
+      console.log('[onLogin] 未完善信息且非退出登录，跳转信息收集页');
       wx.navigateTo({ url: '/pages/info-collection/index' });
       return;
     }
 
     // 已完善信息或退出登录状态，执行静默登录
+    console.log('[onLogin] 执行静默登录');
     this.doSilentLogin();
   },
 
   // 执行静默登录
   doSilentLogin() {
+    console.log('[doSilentLogin] 开始调用云函数获取openid');
     wx.showLoading({ title: '登录中...', mask: true });
 
     // 调用云函数获取 openid（静默获取）
@@ -158,15 +167,18 @@ Page({
       name: 'login',
       data: { action: 'login' }
     }).then(res => {
+      console.log('[doSilentLogin] 云函数返回:', JSON.stringify(res.result || res));
       const result = res.result || res;
       if (result.success && result.data && result.data.openid) {
-        // 已有 openid，静默登录
+        console.log('[doSilentLogin] 获取到openid:', result.data.openid, '，执行silentLogin');
         return this.silentLogin(result.data.openid);
       } else {
+        console.error('[doSilentLogin] 云函数返回格式异常:', result);
         wx.hideLoading();
         wx.showToast({ title: '登录失败，请重试', icon: 'none' });
       }
-    }).catch(() => {
+    }).catch((err) => {
+      console.error('[doSilentLogin] 云函数调用失败:', err);
       wx.hideLoading();
       wx.showToast({ title: '登录失败，请检查网络', icon: 'none' });
     });
@@ -226,12 +238,14 @@ Page({
         this.setData({ isLogin: true, userInfo: userData });
         wx.showToast({ title: '登录成功', icon: 'success' });
       } else {
+        console.error('[silentLogin] 云函数返回失败:', result);
         throw new Error(result.message || '登录失败');
       }
     } catch (err) {
+      console.error('[silentLogin] 静默登录异常:', err);
       wx.hideLoading();
-      console.error('静默登录失败:', err);
-      wx.navigateTo({ url: '/pages/login/login' });
+      // 不再跳转登录页，仅提示错误，用户可重试
+      wx.showToast({ title: '登录失败，请重试', icon: 'none' });
     }
   },
 

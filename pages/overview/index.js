@@ -244,14 +244,14 @@ Page({
       'todayStats.weight': todayWeight ? todayWeight.weight : '--',
       'todayStats.calories': calories,
       'todayStats.calorieTarget': goal.calories,
-      'todayStats.calorieRemaining': remaining,
+      'todayStats.calorieRemaining': Math.round(remaining * 10) / 10,
       'todayStats.calorieProgress': progress,
       'todayStats.carbs': carbs,
-      'todayStats.carbsRemaining': Math.max(0, goal.carbs - carbs),
+      'todayStats.carbsRemaining': Math.round(Math.max(0, goal.carbs - carbs) * 10) / 10,
       'todayStats.protein': protein,
-      'todayStats.proteinRemaining': Math.max(0, goal.protein - protein),
+      'todayStats.proteinRemaining': Math.round(Math.max(0, goal.protein - protein) * 10) / 10,
       'todayStats.fat': fat,
-      'todayStats.fatRemaining': Math.max(0, goal.fat - fat),
+      'todayStats.fatRemaining': Math.round(Math.max(0, goal.fat - fat) * 10) / 10,
     });
   },
 
