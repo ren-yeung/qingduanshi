@@ -11,6 +11,7 @@ Page({
   data: {
     statusBarHeight: 0,
     currentDate: '',
+    todayDate: '',
     meals: MEAL_TYPES,
     dietRecord: null,
     bodyRecord: null,
@@ -33,7 +34,7 @@ Page({
   setToday() {
     const d = new Date();
     const str = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    this.setData({ currentDate: str });
+    this.setData({ currentDate: str, todayDate: str });
   },
 
   loadDayData() {
