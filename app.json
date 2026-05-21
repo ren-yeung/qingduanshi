@@ -1,7 +1,7 @@
 {
   "pages": ["pages/overview/index", "pages/log/index", "pages/dry-goods/index", "pages/my/index"],
-  "lazyCodeLoading": "requiredComponents",
   "usingComponents": {},
+  "lazyCodeLoading": "requiredComponents",
   "subpackages": [
     {
       "root": "pages/loginCode",
@@ -66,6 +66,11 @@
     {
       "root": "pages/food-lib",
       "name": "food-lib",
+      "pages": ["index"]
+    },
+    {
+      "root": "subpackages/article-detail",
+      "name": "article-detail",
       "pages": ["index"]
     }
   ],

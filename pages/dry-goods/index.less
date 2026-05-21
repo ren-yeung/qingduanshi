@@ -1,7 +1,13 @@
+// ============================================================
+// 干货列表页样式 — 优化版
+// ============================================================
+
+page {
+  background: #f8f8f8;
+}
+
 .dry-goods-page {
-  padding: 24rpx;
-  padding-bottom: 24rpx;
-  padding-top: 200rpx;
+  min-height: 100vh;
 
   // 自定义导航栏
   .custom-navbar {
@@ -10,48 +16,72 @@
     left: 0;
     right: 0;
     z-index: 100;
-    background: #f3f3f3;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20rpx);
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1rpx solid #f0f0f0;
 
     .navbar-title {
-      font-size: 40rpx;
+      font-size: 36rpx;
       font-weight: 700;
       color: #1a1a1a;
-      padding: 20rpx 0;
+      padding: 24rpx 0;
+      letter-spacing: 1rpx;
     }
   }
 
+  // 文章列表
   .article-list {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 20rpx;
+    padding: 24rpx 28rpx 40rpx;
+    // padding-top 由 WXML 动态设置（statusBarHeight + navbar height + gap）
   }
 
   .article-card {
     background: #ffffff;
-    border-radius: 24rpx;
-    padding: 32rpx;
-    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+    border-radius: 20rpx;
+    padding: 28rpx 32rpx;
+    box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+    position: relative;
+    transition: transform 0.15s;
+
+    &:active {
+      transform: scale(0.985);
+      box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.08);
+    }
 
     .article-header {
-      margin-bottom: 16rpx;
+      margin-bottom: 18rpx;
+
+      .article-tag {
+        display: inline-block;
+        background: #07C160;
+        color: #fff;
+        font-size: 22rpx;
+        font-weight: 600;
+        padding: 4rpx 16rpx;
+        border-radius: 999rpx;
+      }
     }
 
     .article-title {
       display: block;
       font-size: 32rpx;
       font-weight: 600;
-      color: rgba(0, 0, 0, 0.9);
-      margin-bottom: 12rpx;
+      color: #1a1a1a;
+      margin-bottom: 16rpx;
+      line-height: 1.45;
     }
 
     .article-summary {
       display: block;
-      font-size: 26rpx;
-      color: rgba(0, 0, 0, 0.6);
-      line-height: 1.6;
+      font-size: 27rpx;
+      color: #888;
+      line-height: 1.7;
     }
   }
 }

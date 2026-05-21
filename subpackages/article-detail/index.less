@@ -1,0 +1,814 @@
+// ============================================================
+// 文章详情页样式 — 公众号阅读风格（全面优化版）
+// 间距体系：微8-12 / 小16-20 / 中24-32 / 大36-48 / 特大52-64
+// ============================================================
+
+.detail-page {
+  min-height: 100vh;
+  background: #ffffff;
+
+  // ==================== 导航栏 ====================
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20rpx);
+    border-bottom: 1rpx solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 88rpx;
+    padding-left: 32rpx;
+    padding-right: 32rpx;
+    box-sizing: content-box;
+  }
+
+  .navbar-back {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+  }
+
+  .back-icon {
+    font-size: 56rpx;
+    color: #1a1a1a;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .navbar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  // ==================== 文章头部 ====================
+  .article-header {
+    padding: 40rpx 32rpx 24rpx;
+    // margin-top 由 WXML 动态设置
+  }
+
+  .article-tag {
+    display: inline-block;
+    background: #07C160;
+    color: #fff;
+    font-size: 22rpx;
+    font-weight: 600;
+    padding: 4rpx 16rpx;
+    border-radius: 999rpx;
+  }
+
+  .article-title {
+    display: block;
+    font-size: 44rpx;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.45;
+    margin-top: 24rpx;
+    letter-spacing: 0.5rpx;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 8rpx;
+    margin-top: 20rpx;
+    color: #999;
+    font-size: 24rpx;
+  }
+
+  .meta-icon {
+    font-size: 28rpx;
+  }
+
+  .header-divider {
+    height: 1rpx;
+    margin: 0 32rpx;
+    background: linear-gradient(90deg, transparent, #e8e8e8 15%, #e8e8e8 85%, transparent);
+  }
+
+  // ==================== 封面图 ====================
+  .cover-image {
+    width: 100%;
+    display: block;
+    margin-top: 24rpx;
+  }
+
+  // ==================== 正文区域 ====================
+  .article-body {
+    padding: 32rpx 32rpx 100rpx;
+  }
+
+  // 章节标题
+  .section-heading {
+    font-size: 36rpx;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 56rpx;
+    margin-bottom: 28rpx;
+    line-height: 1.45;
+    position: relative;
+    padding-left: 28rpx;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8rpx;
+      bottom: 8rpx;
+      width: 6rpx;
+      background: linear-gradient(180deg, #07C160, #06AE56);
+      border-radius: 3rpx;
+    }
+  }
+
+  // 普通段落
+  .section-para {
+    font-size: 30rpx;
+    color: #3a3a3a;
+    line-height: 2;
+    margin-bottom: 26rpx;
+    text-align: justify;
+  }
+
+  // 引用文字（居中斜体）
+  .quote-text {
+    text-align: center;
+    font-size: 32rpx;
+    color: #999;
+    font-style: italic;
+    margin: 40rpx 0;
+    line-height: 1.8;
+    padding: 20rpx 32rpx;
+  }
+
+  // 高亮引用块
+  .highlight-box {
+    background: linear-gradient(135deg, #f8fdf9, #f0faf5);
+    border-left: 6rpx solid #07C160;
+    border-radius: 0 16rpx 16rpx 0;
+    padding: 32rpx 28rpx;
+    margin: 36rpx 0;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '"';
+      position: absolute;
+      top: -8rpx;
+      left: 20rpx;
+      font-size: 96rpx;
+      color: #07C160;
+      opacity: 0.1;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+  }
+
+  .highlight-text {
+    font-size: 28rpx;
+    color: #444;
+    line-height: 1.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  // 要点列表
+  .bullet-list {
+    margin: 28rpx 0 36rpx;
+    padding: 24rpx 28rpx;
+    background: #fafbfa;
+    border-radius: 16rpx;
+    border: 1rpx solid #f0f3f0;
+  }
+
+  .bullet-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14rpx;
+    margin-bottom: 20rpx;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .bullet-dot {
+    width: 10rpx;
+    height: 10rpx;
+    min-width: 10rpx;
+    background: #07C160;
+    border-radius: 50%;
+    margin-top: 18rpx;
+  }
+
+  .bullet-text {
+    flex: 1;
+    font-size: 29rpx;
+    color: #444;
+    line-height: 1.9;
+  }
+
+  // ==================== 内嵌图片 ====================
+  .inline-image-wrap {
+    margin: 40rpx 0;
+  }
+
+  .inline-image {
+    width: 100%;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+    display: block;
+  }
+
+  .image-caption {
+    text-align: center;
+    font-size: 24rpx;
+    color: #b0b0b0;
+    margin-top: 16rpx;
+    line-height: 1.6;
+  }
+
+  // SVG/CSS 插图占位容器
+  .svg-timeline,
+  .svg-concept,
+  .svg-curve,
+  .svg-schedules,
+  .svg-zones {
+    width: 100%;
+    border-radius: 16rpx;
+    overflow: hidden;
+    box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 24rpx;
+    position: relative;
+  }
+
+  .svg-timeline { height: 280rpx; background: linear-gradient(135deg, #f0faf4, #d4f1e3); }
+  .svg-concept  { height: 240rpx; background: linear-gradient(135deg, #eef6fb, #dbeefe); }
+  .svg-curve    { height: 300rpx; background: linear-gradient(135deg, #fef9ed, #fef0cd); }
+  .svg-schedules { height: 360rpx; background: linear-gradient(135deg, #f5f0ff, #ede5fd); }
+  .svg-zones    { height: 400rpx; background: linear-gradient(135deg, #f0f7f5, #e0f0ea); }
+
+  // ==================== 对比表格 ====================
+  .compare-table {
+    margin: 36rpx 0;
+    border-radius: 16rpx;
+    overflow: hidden;
+    box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, 0.06);
+  }
+
+  .table-head {
+    display: flex;
+    background: linear-gradient(135deg, #07C160, #05A550);
+    padding: 24rpx 20rpx;
+  }
+
+  .th {
+    color: #fff;
+    font-size: 26rpx;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+  }
+
+  .table-row {
+    display: flex;
+    background: #fff;
+
+    &:nth-child(even) {
+      background: #fafcfa;
+    }
+  }
+
+  .td {
+    padding: 24rpx 20rpx;
+    font-size: 26rpx;
+    color: #555;
+    text-align: center;
+    flex: 1;
+    border-bottom: 1rpx solid #f2f4f2;
+  }
+
+  .td-first {
+    color: #333;
+    font-weight: 600;
+    background: #f7faf7;
+  }
+
+  // ==================== 标签组（适合/不适合）====================
+  .tag-section {
+    margin: 36rpx 0;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14rpx;
+  }
+
+  .tag-yes-item,
+  .tag-no-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8rpx;
+    padding: 16rpx 26rpx;
+    border-radius: 34rpx;
+    font-size: 26rpx;
+    font-weight: 500;
+  }
+
+  .tag-yes-item {
+    background: #eef9f1;
+    color: #07a855;
+    border: 1rpx solid #d0efe0;
+  }
+
+  .tag-no-item {
+    background: #fef4f4;
+    color: #d63031;
+    border: 1rpx solid #fce0e0;
+  }
+
+  .tag-check { font-size: 24rpx; color: #07a855; }
+  .tag-warn { font-size: 24rpx; color: #d63031; }
+
+  .tag-footer {
+    display: block;
+    font-size: 24rpx;
+    margin-top: 16rpx;
+    line-height: 1.6;
+  }
+  .yes-hint { color: #07a855; }
+  .no-hint { color: #c0392b; }
+
+  // ==================== 步骤卡片 ====================
+  .step-card {
+    background: linear-gradient(145deg, #fafcff, #f5f8fc);
+    border-radius: 20rpx;
+    padding: 32rpx 28rpx;
+    margin: 32rpx 0;
+    border: 1rpx solid #eef2f7;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    margin-bottom: 24rpx;
+  }
+
+  .step-num {
+    width: 52rpx;
+    height: 52rpx;
+    background: linear-gradient(135deg, #07C160, #05A550);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 28rpx;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.25);
+  }
+
+  .step-title {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .step-items {
+    padding-left: 12rpx;
+  }
+
+  .step-item {
+    font-size: 28rpx;
+    color: #444;
+    line-height: 1.9;
+    margin-bottom: 12rpx;
+    padding-left: 32rpx;
+    position: relative;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 10rpx;
+      top: 14rpx;
+      width: 8rpx;
+      height: 8rpx;
+      background: #07C160;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+  }
+
+  // ==================== 饮品卡片 ====================
+  .drink-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+    margin: 28rpx 0 36rpx;
+  }
+
+  .drink-card {
+    background: #fcfcfc;
+    border-radius: 16rpx;
+    padding: 26rpx 28rpx;
+    border-left: 6rpx solid #d0d0d0;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .drink-name-row {
+    display: flex;
+    align-items: center;
+    gap: 12rpx;
+    margin-bottom: 14rpx;
+  }
+
+  .drink-emoji { font-size: 36rpx; line-height: 1; }
+  .drink-name { font-size: 30rpx; font-weight: 700; color: #1a1a1a; }
+
+  .drink-reason {
+    font-size: 27rpx;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 16rpx;
+  }
+
+  .drink-tip {
+    background: #fff;
+    border-radius: 12rpx;
+    padding: 16rpx 20rpx;
+    border: 1rpx solid #f0f0f0;
+  }
+
+  .tip-label {
+    font-size: 23rpx;
+    color: #07C160;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6rpx;
+  }
+
+  .tip-text {
+    font-size: 25rpx;
+    color: #777;
+    line-height: 1.7;
+  }
+
+  // ==================== 方案卡片 ====================
+  .scheme-card {
+    background: linear-gradient(155deg, #ffffff, #fcfdfd);
+    border-radius: 20rpx;
+    padding: 32rpx 28rpx;
+    margin: 28rpx 0;
+    box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.05);
+    border: 1rpx solid #f0f0f0;
+  }
+
+  .scheme-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #07C160, #05A550);
+    color: #fff;
+    font-size: 22rpx;
+    font-weight: 600;
+    padding: 6rpx 20rpx;
+    border-radius: 22rpx;
+    margin-bottom: 18rpx;
+    letter-spacing: 1rpx;
+  }
+
+  .scheme-scheme {
+    font-size: 34rpx;
+    font-weight: 700;
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 8rpx;
+  }
+
+  .scheme-time {
+    font-size: 30rpx;
+    color: #07a855;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 16rpx;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    letter-spacing: 0.5rpx;
+  }
+
+  .scheme-desc {
+    font-size: 27rpx;
+    color: #555;
+    line-height: 1.8;
+    display: block;
+    margin-bottom: 24rpx;
+  }
+
+  .scheme-pros,
+  .scheme-cons {
+    margin-bottom: 16rpx;
+  }
+
+  .scheme-label {
+    font-size: 26rpx;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10rpx;
+  }
+  .good { color: #07a855; }
+  .bad  { color: #e74c3c; }
+
+  .scheme-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10rpx;
+  }
+
+  .scheme-tag {
+    font-size: 24rpx;
+    color: #555;
+    background: #f5f5f5;
+    padding: 8rpx 18rpx;
+    border-radius: 20rpx;
+    line-height: 1.5;
+  }
+  .dark { color: #888; background: #f0f0f0; }
+
+  // ==================== Q&A ====================
+  .qa-block {
+    margin: 28rpx 0;
+    background: #fbfcfd;
+    border-radius: 16rpx;
+    overflow: hidden;
+    border: 1rpx solid #f0f2f5;
+  }
+
+  .qa-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 16rpx;
+    padding: 26rpx 24rpx 18rpx;
+    background: #f2f5f8;
+  }
+
+  .qa-icon-q {
+    width: 44rpx;
+    height: 44rpx;
+    min-width: 44rpx;
+    background: #07C160;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 24rpx;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .qa-question {
+    font-size: 29rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.65;
+    padding-top: 6rpx;
+  }
+
+  .qa-a {
+    display: flex;
+    align-items: flex-start;
+    gap: 16rpx;
+    padding: 18rpx 24rpx 26rpx;
+  }
+
+  .qa-icon-a {
+    width: 44rpx;
+    height: 44rpx;
+    min-width: 44rpx;
+    background: #333;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 24rpx;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .qa-answer {
+    font-size: 28rpx;
+    color: #444;
+    line-height: 1.9;
+    padding-top: 6rpx;
+  }
+
+  // ==================== 运动强度分区 ====================
+  .zones-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+    margin: 32rpx 0;
+  }
+
+  .zone-card {
+    border-radius: 20rpx;
+    padding: 28rpx;
+    overflow: hidden;
+  }
+
+  .zone-green  { background: linear-gradient(135deg, #ecfaf2, #d9f3e5); border: 1rpx solid #bde8d2; }
+  .zone-yellow { background: linear-gradient(135deg, #fef9e9, #fcf3d4); border: 1rpx solid #f7dc6f; }
+  .zone-red    { background: linear-gradient(135deg, #fdedec, #fadbd8); border: 1rpx solid #f5b7b1; }
+
+  .zone-label {
+    font-size: 30rpx;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12rpx;
+  }
+  .zone-green .zone-label  { color: #1e8449; }
+  .zone-yellow .zone-label { color: #b7950b; }
+  .zone-red .zone-label    { color: #c0392b; }
+
+  .zone-desc {
+    font-size: 25rpx;
+    color: #666;
+    display: block;
+    margin-bottom: 18rpx;
+    line-height: 1.6;
+  }
+
+  .zone-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10rpx;
+    margin-bottom: 20rpx;
+  }
+
+  .zone-item {
+    font-size: 25rpx;
+    color: #444;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 9rpx 22rpx;
+    border-radius: 22rpx;
+  }
+
+  .why-label {
+    font-size: 24rpx;
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 6rpx;
+  }
+
+  .why-text {
+    font-size: 26rpx;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  // ==================== 时间槽位卡片 ====================
+  .time-slot {
+    background: #fff;
+    border-radius: 20rpx;
+    margin: 28rpx 0;
+    overflow: hidden;
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+    border: 1rpx solid #eee;
+  }
+
+  .slot-header {
+    background: linear-gradient(135deg, #07C160, #05A520);
+    padding: 22rpx 28rpx;
+  }
+
+  .slot-when {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .slot-body {
+    padding: 26rpx 28rpx;
+  }
+
+  .slot-best { margin-bottom: 20rpx; }
+  .slot-label {
+    font-size: 24rpx;
+    font-weight: 600;
+    color: #07C160;
+    display: block;
+    margin-bottom: 10rpx;
+  }
+
+  .slot-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10rpx;
+  }
+
+  .slot-tag {
+    font-size: 24rpx;
+    color: #07a855;
+    background: #eafaf1;
+    padding: 8rpx 20rpx;
+    border-radius: 22rpx;
+  }
+
+  .slot-detail {
+    margin-top: 20rpx;
+    padding-top: 20rpx;
+    border-top: 1rpx dashed #e0e0e0;
+  }
+
+  .slot-pros,
+  .slot-cons {
+    margin-bottom: 16rpx;
+  }
+
+  .slot-mini-label {
+    font-size: 24rpx;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8rpx;
+  }
+
+  .slot-mini-item {
+    font-size: 25rpx;
+    color: #555;
+    line-height: 1.8;
+    display: block;
+    padding-left: 18rpx;
+    margin-bottom: 6rpx;
+    position: relative;
+
+    &:last-child { margin-bottom: 0; }
+
+    &::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #aaa;
+    }
+  }
+
+  .slot-tip {
+    margin-top: 18rpx;
+    padding: 16rpx 20rpx;
+    background: #f8fdf9;
+    border-radius: 12rpx;
+    display: flex;
+    align-items: flex-start;
+    gap: 10rpx;
+  }
+
+  .tip-symbol { font-size: 26rpx; flex-shrink: 0; margin-top: 2rpx; }
+  .tip-content { font-size: 25rpx; color: #555; line-height: 1.75; }
+
+  // ==================== 结束标识 ====================
+  .end-mark {
+    text-align: center;
+    padding: 64rpx 0 16rpx;
+    color: #d0d0d0;
+    font-size: 26rpx;
+    letter-spacing: 8rpx;
+    font-weight: 300;
+
+    &::before,
+    &::after {
+      content: '——';
+      margin: 0 8rpx;
+      letter-spacing: 0;
+    }
+  }
+
+  // ==================== 下一篇引导 ====================
+  .next-hint {
+    text-align: center;
+    padding: 24rpx 32rpx 40rpx;
+  }
+
+  .next-text {
+    font-size: 28rpx;
+    color: #07C160;
+    font-weight: 600;
+    line-height: 1.8;
+  }
+}

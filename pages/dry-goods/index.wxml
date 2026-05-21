@@ -4,10 +4,10 @@
     <view class="navbar-title">干货</view>
   </view>
 
-  <view class="article-list">
+  <view class="article-list" style="padding-top: {{listPaddingTop}}px;">
     <view class="article-card" wx:for="{{articles}}" wx:key="id" data-id="{{item.id}}" bindtap="onTapArticle">
       <view class="article-header">
-        <t-tag variant="light" size="small">{{item.tag}}</t-tag>
+        <text class="article-tag">{{item.tag}}</text>
       </view>
       <text class="article-title">{{item.title}}</text>
       <text class="article-summary">{{item.summary}}</text>
