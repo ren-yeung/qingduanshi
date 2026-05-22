@@ -19,6 +19,7 @@
           <input
             class="goal-input"
             type="number"
+            key="calories-{{inputKey}}"
             value="{{goal.calories}}"
             bindinput="onCaloriesChange"
             placeholder="请输入"
@@ -35,6 +36,7 @@
           <input
             class="goal-input"
             type="number"
+            key="protein-{{inputKey}}"
             value="{{goal.protein}}"
             bindinput="onProteinChange"
             placeholder="请输入"
@@ -51,6 +53,7 @@
           <input
             class="goal-input"
             type="number"
+            key="carbs-{{inputKey}}"
             value="{{goal.carbs}}"
             bindinput="onCarbsChange"
             placeholder="请输入"
@@ -67,11 +70,50 @@
           <input
             class="goal-input"
             type="number"
+            key="fat-{{inputKey}}"
             value="{{goal.fat}}"
             bindinput="onFatChange"
             placeholder="请输入"
           />
           <text class="unit">g</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">体重目标</view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">⚖️</text>
+          <text>我的身高</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="digit"
+            key="height-{{inputKey}}"
+            value="{{weightGoal.height}}"
+            bindinput="onHeightChange"
+            placeholder="请输入"
+          />
+          <text class="unit">cm</text>
+        </view>
+      </view>
+      <view class="goal-item">
+        <view class="goal-label">
+          <text class="label-icon">🎯</text>
+          <text>目标体重</text>
+        </view>
+        <view class="goal-input-wrap">
+          <input
+            class="goal-input"
+            type="digit"
+            key="target-{{inputKey}}"
+            value="{{weightGoal.target}}"
+            bindinput="onWeightTargetChange"
+            placeholder="请输入"
+          />
+          <text class="unit">kg</text>
         </view>
       </view>
     </view>

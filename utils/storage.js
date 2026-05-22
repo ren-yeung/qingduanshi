@@ -17,6 +17,7 @@ async function syncAllToCloud() {
     checkInHistory: get(KEYS.CHECK_IN_HISTORY, []),
     streakData: get(KEYS.STREAK_DATA, null),
     goal: getGoal(),
+    weightGoal: getWeightGoal(),
   };
 
   try {
@@ -50,6 +51,7 @@ async function syncAllFromCloud() {
       if (d.checkInHistory) set(KEYS.CHECK_IN_HISTORY, d.checkInHistory);
       if (d.streakData) set(KEYS.STREAK_DATA, d.streakData);
       if (d.goal) setGoal(d.goal);
+      if (d.weightGoal) setWeightGoal(d.weightGoal);
       console.log('[syncAllFromCloud] 已从 user_data 集合恢复全部数据');
       return true;
     }
@@ -72,6 +74,7 @@ const KEYS = {
   STREAK_DATA: 'streakData',
   CHECK_IN_HISTORY: 'checkInHistory',
   GOAL: 'goal',
+  WEIGHT_GOAL: 'weightGoal',
 };
 
 // 饮食目标默认值
@@ -91,6 +94,16 @@ function getGoal() {
 // 保存饮食目标
 function setGoal(goal) {
   return set(KEYS.GOAL, goal);
+}
+
+// 获取体重目标
+function getWeightGoal() {
+  return get(KEYS.WEIGHT_GOAL);
+}
+
+// 保存体重目标
+function setWeightGoal(weightGoal) {
+  return set(KEYS.WEIGHT_GOAL, weightGoal);
 }
 
 function getKey(key) {
@@ -172,6 +185,8 @@ module.exports = {
   DEFAULT_GOAL,
   getGoal,
   setGoal,
+  getWeightGoal,
+  setWeightGoal,
   get,
   set,
   remove,
