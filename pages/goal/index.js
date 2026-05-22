@@ -1,6 +1,8 @@
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     goal: {

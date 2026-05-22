@@ -72,6 +72,16 @@
       "root": "subpackages/article-detail",
       "name": "article-detail",
       "pages": ["index"]
+    },
+    {
+      "root": "pages/customize",
+      "name": "customize",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/contact",
+      "name": "contact",
+      "pages": ["index"]
     }
   ],
   "window": {
@@ -81,8 +91,9 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "custom": true,
     "color": "#888888",
-    "selectedColor": "#07c160",
+    "selectedColor": "#2EAF7D",
     "backgroundColor": "#ffffff",
     "list": [
       {

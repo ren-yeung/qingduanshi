@@ -1,10 +1,10 @@
-<view class="page food-lib-page">
+<view class="page food-lib-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <!-- 自定义导航栏 -->
-  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
     <view class="navbar-back" bindtap="onBack">
-      <text class="back-icon">‹</text>
+      <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title">食物库</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">食物库</view>
   </view>
 
   <!-- 搜索栏 -->

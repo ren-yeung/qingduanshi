@@ -1,5 +1,5 @@
-@primary: #2EAF7D;
-@primary-light: #E8F5EE;
+@primary: var(--brand-primary);
+@primary-light: var(--brand-light);
 @text-primary: #333;
 @text-secondary: #999;
 @text-muted: #bbb;
@@ -352,31 +352,30 @@
   }
 }
 
-/* 底部按钮 */
+/* 底部按钮 - 与 goal 页面 save-bar 保持一致 */
 .bottom-btn {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   padding: 24rpx;
-  background: #fff;
-  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.06);
+  background: #ffffff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
   z-index: 20;
 }
 
 .submit-btn {
   width: 100%;
   height: 88rpx;
-  border: none;
-  border-radius: 44rpx;
+  background: var(--brand-primary, #2EAF7D);
+  color: #fff;
   font-size: 32rpx;
   font-weight: 500;
-  color: #fff;
-  background: #2EAF7D;
+  border-radius: 44rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: none;
+  border: none;
 
   &::after {
     border: none;

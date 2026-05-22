@@ -1,7 +1,7 @@
-<view class="page dry-goods-page">
+<view class="page dry-goods-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <!-- 自定义导航栏 -->
-  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="navbar-title">干货</view>
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">干货</view>
   </view>
 
   <view class="article-list" style="padding-top: {{listPaddingTop}}px;">

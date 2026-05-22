@@ -1,0 +1,137 @@
+<!-- 自定义导航栏 -->
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
+  </view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">个性化</view>
+</view>
+
+<view class="customize" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
+
+  <!-- ========== 第一组：外观模式 ========== -->
+  <view class="section-title">外观模式</view>
+  <view class="menu-wrapper" style="background: {{theme.cardBg}};">
+    <view class="mode-grid">
+      <view
+        wx:for="{{modeList}}"
+        wx:key="id"
+        class="mode-card {{activeMode === item.id ? 'mode-card--active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onModeSelect"
+        style="border-color: {{activeMode === item.id ? theme.brandPrimary : 'transparent'}};"
+      >
+        <!-- 色块预览 -->
+        <view class="mode-preview">
+          <view wx:for="{{item.preview}}" wx:key="*this" wx:for-item="dot" class="mode-dot" style="background: {{dot}};"></view>
+        </view>
+        <!-- 名称 + 标签 -->
+        <view class="mode-info">
+          <text class="mode-name">{{item.name}}</text>
+          <text wx:if="{{item.isDefault}}" class="mode-tag">默认</text>
+        </view>
+        <!-- 选中标记 -->
+        <view wx:if="{{activeMode === item.id}}" class="mode-check" style="background: {{theme.brandPrimary}};">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 第二组：自定义配色（仅自定义模式显示） ========== -->
+  <block wx:if="{{activeMode === 'custom'}}">
+    <view class="section-title">自定义配色</view>
+
+    <!-- 品牌色 -->
+    <view class="menu-wrapper" style="background: {{theme.cardBg}};">
+      <view class="palette-cell" hover-class="palette-cell--hover">
+        <text class="menu-icon">🎨</text>
+        <text class="palette-label">品牌色</text>
+        <view class="palette-row">
+          <view
+            wx:for="{{colorPalette.brandPrimary}}"
+            wx:key="value"
+            class="palette-dot {{customColors.brandPrimary === item.value ? 'palette-dot--active' : ''}}"
+            style="background: {{item.value}}; {{customColors.brandPrimary === item.value ? 'box-shadow: 0 0 0 3rpx #fff, 0 0 0 5rpx ' + item.value : ''}}"
+            data-type="brandPrimary"
+            data-value="{{item.value}}"
+            bindtap="onCustomColorChange"
+          >
+            <text wx:if="{{customColors.brandPrimary === item.value}}" class="palette-check">✓</text>
+          </view>
+        </view>
+      </view>
+      <view class="palette-divider"></view>
+
+      <!-- 页面背景 -->
+      <view class="palette-cell" hover-class="palette-cell--hover">
+        <text class="menu-icon">📄</text>
+        <text class="palette-label">页面背景</text>
+        <view class="palette-row">
+          <view
+            wx:for="{{colorPalette.bgColor}}"
+            wx:key="value"
+            class="palette-dot {{customColors.bgColor === item.value ? 'palette-dot--active' : ''}}"
+            style="background: {{item.value}}; border: 1px solid #e0e0e0; {{customColors.bgColor === item.value ? 'box-shadow: 0 0 0 3rpx #fff, 0 0 0 5rpx ' + item.value : ''}}"
+            data-type="bgColor"
+            data-value="{{item.value}}"
+            bindtap="onCustomColorChange"
+          >
+            <text wx:if="{{customColors.bgColor === item.value}}" class="palette-check" style="color:#333">✓</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 卡片色 -->
+      <view class="palette-cell" hover-class="palette-cell--hover">
+        <text class="menu-icon">🃏</text>
+        <text class="palette-label">卡片色</text>
+        <view class="palette-row">
+          <view
+            wx:for="{{colorPalette.cardBg}}"
+            wx:key="value"
+            class="palette-dot {{customColors.cardBg === item.value ? 'palette-dot--active' : ''}}"
+            style="background: {{item.value}}; border: 1px solid #e0e0e0; {{customColors.cardBg === item.value ? 'box-shadow: 0 0 0 3rpx #ccc, 0 0 0 5rpx ' + item.value : ''}}"
+            data-type="cardBg"
+            data-value="{{item.value}}"
+            bindtap="onCustomColorChange"
+          >
+            <text wx:if="{{customColors.cardBg === item.value}}" class="palette-check" style="color:#333">✓</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== 第三组：显示设置 ========== -->
+  <view class="section-title">显示设置</view>
+  <view class="menu-wrapper" style="background: {{theme.cardBg}};">
+    <t-cell-group theme="card" t-class="menu-cell-group">
+      <t-cell title="字体大小" hover bordered="{{true}}">
+        <text slot="left-icon" class="menu-icon">🔤</text>
+        <view slot="note" class="radio-group">
+          <view
+            wx:for="{{fontSizes}}"
+            wx:key="value"
+            class="radio-item {{fontSize === item.value ? 'radio-item--active' : ''}}"
+            style="{{fontSize === item.value ? 'background: ' + theme.brandLight + '; color: ' + theme.brandPrimary : ''}}"
+            data-size="{{item.value}}"
+            bindtap="onFontSizeChange"
+          >{{item.label}}</view>
+        </view>
+      </t-cell>
+      <t-cell title="首页快捷入口" hover arrow bordered="{{false}}" bindtap="onShortcutManage">
+        <text slot="left-icon" class="menu-icon">⚡</text>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+  <!-- ========== 第四组：其他 ========== -->
+  <view class="section-title">其他</view>
+  <view class="menu-wrapper" style="background: {{theme.cardBg}};">
+    <t-cell-group theme="card" t-class="menu-cell-group">
+      <t-cell title="恢复默认设置" hover arrow bordered="{{false}}" bindtap="onResetDefault">
+        <text slot="left-icon" class="menu-icon">🔄</text>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</view>

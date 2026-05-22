@@ -1,6 +1,7 @@
 const app = getApp();
 const fasting = require('~/utils/fasting');
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 function getTodayStr() {
   const d = new Date();
@@ -40,6 +41,7 @@ function getMealByTime() {
 }
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     todayDate: '',

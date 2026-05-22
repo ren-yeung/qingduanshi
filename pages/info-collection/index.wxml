@@ -1,12 +1,12 @@
 <!-- 自定义导航栏 -->
-<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
   <view class="navbar-back" bindtap="onBack">
-    <text class="back-arrow">‹</text>
+    <text class="back-arrow" style="color: {{theme.textPrimary}};">‹</text>
   </view>
-  <view class="navbar-title">完善个人信息</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">完善个人信息</view>
 </view>
 
-<view class="page info-collection">
+<view class="page info-collection" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <!-- 标题区 -->
   <view class="header">
     <view class="header-subtitle">帮助我们为你提供更精准的断食方案</view>
@@ -104,9 +104,9 @@
       </view>
     </view>
   </view>
-</view>
 
-<!-- 底部按钮 -->
-<view class="bottom-btn">
-  <button class="submit-btn" bindtap="submitForm">开始体验</button>
+  <!-- 底部按钮（放在 .page 内部以继承 --brand-primary CSS 变量） -->
+  <view class="bottom-btn">
+    <button class="submit-btn" bindtap="submitForm">开始体验</button>
+  </view>
 </view>

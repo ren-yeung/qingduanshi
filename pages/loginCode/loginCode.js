@@ -1,6 +1,8 @@
 import { login as cloudLogin } from './cloudfunc';
+const themeBehavior = require('~/behaviors/theme');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     phoneNumber: '',
     sendCodeCount: 60,

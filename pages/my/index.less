@@ -2,7 +2,7 @@
 
 .my-page {
   padding: 24rpx 32rpx;
-  padding-bottom: 24rpx;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
   padding-top: 200rpx;
 
   // 自定义导航栏
@@ -129,7 +129,7 @@
       .grid-icon {
         width: 96rpx;
         height: 96rpx;
-        background: #E8F5EE;
+        background: var(--brand-light);
         border-radius: 24rpx;
         display: flex;
         align-items: center;

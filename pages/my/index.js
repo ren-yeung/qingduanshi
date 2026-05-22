@@ -6,6 +6,7 @@ Page({
     statusBarHeight: 0,
     isLogin: false,
     userInfo: {},
+    theme: {},
     defaultAvatar: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
     isEditingNickname: false,
     tempNickname: '',
@@ -21,9 +22,9 @@ Page({
       { name: '身体维度', icon: '📏', url: '/pages/body-dimension/index', type: 'body' },
       { name: '排行榜', icon: '🏆', url: '/pages/leaderboard/index', type: 'rank' },
       { name: '我的订单', icon: '🛍️', type: 'order' },
-      { name: '个性化', icon: '🎨', type: 'custom' },
-      { name: '联系我们', icon: '💬', type: 'contact' },
-      { name: '使用教程', icon: '▶️', type: 'tutorial' },
+      { name: '个性化', icon: '🎨', url: '/pages/customize/index', type: 'custom' },
+      { name: '联系我们', icon: '💬', url: '/pages/contact/index', type: 'contact' },
+      { name: '使用教程', icon: '▶️', url: '/subpackages/article-detail/index?id=1', type: 'tutorial' },
       { name: '消息通知', icon: '🔔', type: 'notify' },
       { name: '设置', icon: '⚙️', url: '/pages/setting/index', type: 'setting' },
     ],
@@ -32,11 +33,27 @@ Page({
   onLoad() {
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
+    this.loadTheme();
+    // 监听主题变更
+    this._themeHandler = (theme) => { this.setData({ theme }); };
+    app.eventBus.on('theme-changed', this._themeHandler);
+  },
+
+  onUnload() {
+    if (this._themeHandler) {
+      app.eventBus.off('theme-changed', this._themeHandler);
+    }
   },
 
   onShow() {
     this.checkLogin();
     this.loadStreak();
+    this.loadTheme();
+  },
+
+  loadTheme() {
+    const theme = app.getTheme();
+    if (theme) this.setData({ theme });
   },
 
   async checkLogin() {

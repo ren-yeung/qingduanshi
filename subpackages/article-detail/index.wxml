@@ -1,10 +1,10 @@
-<view class="detail-page">
+<view class="detail-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <!-- 自定义导航栏 -->
-  <view class="navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
     <view class="navbar-back" bindtap="onBack">
-      <text class="back-icon">‹</text>
+      <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title">文章详情</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">文章详情</view>
   </view>
 
   <block wx:if="{{article}}">

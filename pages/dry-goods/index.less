@@ -37,7 +37,7 @@ page {
     display: flex;
     flex-direction: column;
     gap: 20rpx;
-    padding: 24rpx 28rpx 40rpx;
+    padding: 24rpx 28rpx calc(120rpx + env(safe-area-inset-bottom));
     // padding-top 由 WXML 动态设置（statusBarHeight + navbar height + gap）
   }
 
@@ -59,7 +59,7 @@ page {
 
       .article-tag {
         display: inline-block;
-        background: #07C160;
+        background: var(--brand-primary);
         color: #fff;
         font-size: 22rpx;
         font-weight: 600;

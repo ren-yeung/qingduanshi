@@ -1,6 +1,17 @@
-<t-tab-bar value="{{value}}" fixed border class="custom-tab-bar">
-  <t-tab-bar-item value="overview" icon="📊" bind:change="onTabChange">概览</t-tab-bar-item>
-  <t-tab-bar-item value="log" icon="📝" bind:change="onTabChange">日志</t-tab-bar-item>
-  <t-tab-bar-item value="dry-goods" icon="📚" bind:change="onTabChange">干货</t-tab-bar-item>
-  <t-tab-bar-item value="my" icon="👤" bind:change="onTabChange">我的</t-tab-bar-item>
-</t-tab-bar>
+<view class="custom-tab-bar">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="value"
+    class="tab-item {{value === item.value ? 'tab-item--active' : ''}}"
+    data-value="{{item.value}}"
+    bindtap="onTabTap"
+  >
+    <image
+      class="tab-icon"
+      src="{{item.selectedIcon}}"
+      mode="aspectFit"
+      style="filter: {{value === item.value ? iconFilter : 'grayscale(100%)'}}; opacity: {{value === item.value ? 1 : 1}};"
+    />
+    <text class="tab-label" style="color: {{value === item.value ? activeColor : '#999'}};">{{item.label}}</text>
+  </view>
+</view>

@@ -1,6 +1,6 @@
 // 主题色
-@primary-color: #2EAF7D;
-@primary-light: #E8F5EE;
+@primary-color: var(--brand-primary);
+@primary-light: var(--brand-light);
 @bg-color: #f5f6f8;
 @card-bg: #ffffff;
 @text-primary: #1a1a1a;
@@ -9,7 +9,7 @@
 
 .overview-page {
   background: @bg-color;
-  padding: 170rpx 32rpx 24rpx;
+  padding: 170rpx 32rpx calc(120rpx + env(safe-area-inset-bottom));
 
   // 自定义导航栏
   .custom-navbar {

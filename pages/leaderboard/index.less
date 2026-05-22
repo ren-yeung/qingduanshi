@@ -1,7 +1,6 @@
 // 排行榜页面样式
 
 .leaderboard-page {
-  background: linear-gradient(180deg, #FFF8E1 0%, #FFF3E0 30%);
   min-height: 100vh;
 
   // 自定义导航栏
@@ -16,7 +15,6 @@
     justify-content: center;
     height: 70rpx;
     padding-bottom: 30rpx;
-    background: linear-gradient(180deg, #FFF8E1 0%, #FFF8E1 100%);
 
     .navbar-back {
       position: absolute;
@@ -82,18 +80,18 @@
   }
 
   &.active {
-    background: linear-gradient(135deg, #FF9800, #F57C00);
+    background: var(--brand-primary);
     color: white;
-    box-shadow: 0 8rpx 24rpx rgba(255,152,0,0.3);
+    box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.15);
   }
 }
 
 // ========== 2. 本周冠军卡片 ==========
 .champion-card {
   margin: 0 20rpx 32rpx;
-  background: linear-gradient(135deg, #FFFDE7 0%, #FFF8E1 100%);
+  background: var(--brand-light);
   border-radius: 40rpx;
-  box-shadow: 0 8rpx 40rpx rgba(255,179,0,0.15);
+  box-shadow: 0 8rpx 40rpx rgba(0,0,0,0.06);
   padding: 48rpx 40rpx;
   position: relative;
   overflow: hidden;
@@ -105,7 +103,8 @@
     right: -40rpx;
     width: 240rpx;
     height: 240rpx;
-    background: radial-gradient(circle, rgba(255,179,0,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--brand-primary) 0%, transparent 70%);
+    opacity: 0.08;
     border-radius: 50%;
   }
 }
@@ -120,13 +119,13 @@
 .champion-badge {
   width: 96rpx;
   height: 96rpx;
-  background: linear-gradient(135deg, #FFD54F, #FFB300);
+  background: var(--brand-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 48rpx;
-  box-shadow: 0 8rpx 32rpx rgba(255,179,0,0.4);
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.12);
 }
 
 .champion-info {
@@ -156,10 +155,7 @@
 .streak-number {
   font-size: 112rpx;
   font-weight: 500;
-  background: linear-gradient(135deg, #FF6F00, #FF9800);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand-primary);
   line-height: 1;
   display: block;
 }
@@ -176,7 +172,7 @@
   justify-content: space-around;
   margin-top: 32rpx;
   padding-top: 32rpx;
-  border-top: 2rpx dashed rgba(255,179,0,0.3);
+  border-top: 2rpx solid rgba(0,0,0,0.08);
 }
 
 .champion-stat {
@@ -270,9 +266,9 @@
   color: rgba(0,0,0,0.4);
   text-align: center;
 
-  &.top1 { color: #FFB300; font-size: 36rpx; }
-  &.top2 { color: #9E9E9E; font-size: 36rpx; }
-  &.top3 { color: #CD7F32; font-size: 36rpx; }
+  &.top1 { color: var(--brand-primary); font-size: 36rpx; }
+  &.top2 { color: var(--brand-dark); font-size: 36rpx; }
+  &.top3 { color: var(--brand-primary); opacity: 0.6; font-size: 36rpx; }
 }
 
 .rank-medal {
@@ -290,7 +286,7 @@
   height: 88rpx;
   border-radius: 50%;
   margin: 0 24rpx;
-  background: linear-gradient(135deg, #E8F5EE, #C8E6C9);
+  background: linear-gradient(135deg, var(--brand-light), var(--card-bg));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,8 +333,8 @@
   }
 
   &.tag-vip {
-    background: linear-gradient(135deg, #FFD54F, #FFB300);
-    color: #5D4037;
+    background: var(--brand-light);
+    color: var(--brand-dark);
   }
 }
 
@@ -356,7 +352,7 @@
 .rank-score {
   font-size: 34rpx;
   font-weight: 700;
-  color: #2EAF7D;
+  color: var(--brand-primary);
   display: block;
 }
 
@@ -386,9 +382,9 @@
 // ========== 4. 我的排名卡片 ==========
 .my-rank-card {
   margin: 0 20rpx 32rpx;
-  background: linear-gradient(135deg, #E8F5EE, #F0F9F4);
+  background: var(--brand-light);
   border-radius: 40rpx;
-  box-shadow: 0 8rpx 32rpx rgba(46,175,125,0.12);
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.06);
   padding: 36rpx 40rpx;
   display: flex;
   align-items: center;
@@ -403,7 +399,7 @@
 .my-rank-num {
   font-size: 40rpx;
   font-weight: 800;
-  color: #1E8A5E;
+  color: var(--brand-dark);
   width: 64rpx;
   text-align: center;
 }
@@ -412,14 +408,14 @@
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2EAF7D, #1E8A5E);
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-dark));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32rpx;
   margin: 0 24rpx;
   border: 4rpx solid white;
-  box-shadow: 0 4rpx 16rpx rgba(46,175,125,0.3);
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.1);
   overflow: hidden;
 
   .avatar-img {
@@ -454,7 +450,7 @@
 .my-rank-score {
   font-size: 44rpx;
   font-weight: 800;
-  color: #1E8A5E;
+  color: var(--brand-dark);
   display: block;
 }
 
@@ -488,7 +484,7 @@
 
 .section-more {
   font-size: 24rpx;
-  color: #2EAF7D;
+  color: var(--brand-primary);
   font-weight: 500;
 }
 
@@ -519,8 +515,8 @@
   position: relative;
 
   &.earned {
-    background: linear-gradient(135deg, #FFE082, #FFD54F);
-    box-shadow: 0 8rpx 24rpx rgba(255,179,0,0.3);
+    background: var(--brand-light);
+    box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.08);
   }
 
   &.locked {

@@ -1,7 +1,9 @@
 const app = getApp();
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     isLogin: false,
     menuData: [

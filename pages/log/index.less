@@ -1,6 +1,6 @@
 .log-page {
   padding: 24rpx;
-  padding-bottom: 24rpx;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
   padding-top: 200rpx;
 
   // 自定义导航栏
@@ -58,7 +58,7 @@
 
       .calories-remain {
         font-size: 26rpx;
-        color: #2EAF7D;
+        color: var(--brand-primary);
         font-weight: 500;
       }
     }
@@ -83,7 +83,7 @@
             border-radius: 5rpx;
             transition: width 0.3s;
 
-            &--cal { background: #2EAF7D; }
+            &--cal { background: var(--brand-primary); }
             &--protein { background: #5B8FF9; }
             &--carbs { background: #F6BD16; }
             &--fat { background: #E8684A; }
@@ -139,15 +139,15 @@
 
         .meal-calories {
           font-size: 26rpx;
-          color: #2EAF7D;
+          color: var(--brand-primary);
           font-weight: 500;
         }
 
         .add-btn {
           width: 48rpx;
           height: 48rpx;
-          background: #E8F5EE;
-          color: #2EAF7D;
+          background: var(--brand-light);
+          color: var(--brand-primary);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -184,7 +184,7 @@
 
         .food-cal {
           font-size: 26rpx;
-          color: #2EAF7D;
+          color: var(--brand-primary);
           font-weight: 500;
           margin-right: 16rpx;
         }
@@ -237,7 +237,7 @@
 
       .add-link {
         font-size: 26rpx;
-        color: #2EAF7D;
+        color: var(--brand-primary);
       }
     }
 

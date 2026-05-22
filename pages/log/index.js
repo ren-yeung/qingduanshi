@@ -1,4 +1,5 @@
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 const MEAL_TYPES = [
   { key: 'breakfast', name: '早餐', time: '07:00-09:00' },
@@ -8,6 +9,7 @@ const MEAL_TYPES = [
 ];
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     currentDate: '',

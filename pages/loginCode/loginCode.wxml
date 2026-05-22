@@ -1,5 +1,5 @@
 <t-navbar left-arrow />
-<view class="page login-code">
+<view class="page login-code" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <view class="login-code__title"> 请输入验证码 </view>
   <view class="login-code__tips"> 验证码已通过短信发送至 {{ phoneNumber }} </view>
   <view class="login-code__input">
@@ -19,6 +19,6 @@
   </view>
 
   <view class="login-code__button">
-    <t-button theme="primary" size="large" block disabled="{{!verifyCode}}" bindtap="login">登录</t-button>
+    <button style="background:var(--brand-primary); color:#fff; width:100%; height:88rpx; border-radius:44rpx; border:none; font-size:32rpx; font-weight:500; display:flex; align-items:center; justify-content:center;" disabled="{{!verifyCode}}" bindtap="login">登录</button>
   </view>
 </view>

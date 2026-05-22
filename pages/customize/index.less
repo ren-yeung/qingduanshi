@@ -1,0 +1,266 @@
+.customize {
+  padding-top: 200rpx;
+  min-height: 100vh;
+}
+
+// 自定义导航栏
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .navbar-back {
+    position: absolute;
+    left: 32rpx;
+    top: 50%;
+    padding: 20rpx 0;
+
+    .back-icon {
+      font-size: 56rpx;
+      font-weight: 500;
+      line-height: 1;
+    }
+  }
+
+  .navbar-title {
+    font-size: 40rpx;
+    font-weight: 700;
+    padding: 20rpx 0;
+  }
+}
+
+// 分组标题
+.section-title {
+  font-size: 26rpx;
+  color: #999999;
+  padding: 0 32rpx 12rpx;
+  margin-top: 8rpx;
+}
+
+// ===== 外观模式卡片 =====
+.menu-wrapper {
+  margin: 0 32rpx 24rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.mode-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 24rpx 20rpx;
+  gap: 20rpx;
+}
+
+.mode-card {
+  width: calc(50% - 14rpx);
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  border: 3rpx solid transparent;
+  padding: 20rpx 18rpx;
+  position: relative;
+  background: #f8f8f8;
+  transition: all 0.25s ease;
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+  }
+}
+
+// 色块预览行
+.mode-preview {
+  display: flex;
+  gap: 10rpx;
+  margin-bottom: 16rpx;
+}
+
+.mode-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.1);
+}
+
+.mode-card:nth-child(5) .mode-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  background: #f0f0f0;
+  box-shadow: none;
+}
+
+// 名称 + 标签
+.mode-info {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.mode-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.mode-tag {
+  font-size: 20rpx;
+  color: #ffffff;
+  background: var(--brand-primary);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+// 选中勾号
+.mode-check {
+  position: absolute;
+  top: -6rpx;
+  right: -6rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+}
+
+// ===== 自定义配色行（纯 View 实现，不依赖 t-cell note slot） =====
+.palette-cell {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  min-height: 56rpx;
+
+  &--hover {
+    background: #f8f8f8;
+  }
+}
+
+.palette-label {
+  font-size: 30rpx;
+  color: #333333;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+.palette-divider {
+  height: 1rpx;
+  background: #f0f0f0;
+  margin-left: 96rpx;
+}
+
+// ===== 自定义调色盘 =====
+.palette-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.palette-dot {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+
+  &:active {
+    transform: scale(0.85);
+  }
+}
+
+.palette-dot--active {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.palette-check {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+// ===== 菜单统一样式 =====
+.menu-cell-group {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 0 !important;
+
+  ::v-deep .t-cell {
+    padding-left: 32rpx !important;
+    padding-right: 32rpx !important;
+    align-items: center;
+  }
+
+  ::v-deep .t-cell__left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  ::v-deep .t-cell__title {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  ::v-deep .t-cell__title-text {
+    display: flex;
+    align-items: center;
+  }
+
+  ::v-deep .t-cell__note {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.menu-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+// ===== 字体大小 =====
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.radio-item {
+  padding: 8rpx 28rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: #666666;
+  background: #f5f5f5;
+  transition: all 0.2s ease;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+// 底部间距
+.bottom-spacer {
+  height: 48rpx;
+}

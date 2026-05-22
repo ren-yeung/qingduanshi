@@ -1,7 +1,7 @@
 // 身体维度页面样式
 
 .body-dimension-page {
-  background: linear-gradient(180deg, #E8F5EE 0%, #f5f6f7 30%);
+  background: linear-gradient(180deg, var(--brand-light) 0%, #f5f6f7 30%);
   min-height: 100vh;
 
   // 自定义导航栏
@@ -16,7 +16,7 @@
     justify-content: center;
     height: 70rpx;
     padding-bottom: 30rpx;
-    background: linear-gradient(180deg, #E8F5EE 0%, #E8F5EE 100%);
+    background: linear-gradient(180deg, var(--brand-light) 0%, var(--brand-light) 100%);
 
     .navbar-back {
       position: absolute;
@@ -194,8 +194,8 @@
   font-weight: 500;
   padding: 4rpx 20rpx;
   border-radius: 16rpx;
-  background: #E8F5EE;
-  color: #1E8A5E;
+  background: var(--brand-light);
+  color: var(--brand-dark);
 
   &.warning {
     background: #FFF3E0;
@@ -227,7 +227,7 @@
   width: 8rpx;
   height: 36rpx;
   background: white;
-  border: 2rpx solid #1E8A5E;
+  border: 2rpx solid var(--brand-dark);
   border-radius: 4rpx;
   transform: translateX(-50%);
   transition: left 0.5s ease;
@@ -263,7 +263,7 @@
   padding: 0;
 
   &.primary {
-    background: linear-gradient(135deg, #2EAF7D, #1E8A5E);
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-dark));
     color: white;
     box-shadow: 0 8rpx 28rpx rgba(46,175,125,0.28);
   }
@@ -448,7 +448,7 @@
 
 .section-action {
   font-size: 13px;
-  color: #2EAF7D;
+  color: var(--brand-primary);
   font-weight: 500;
 }
 
@@ -476,7 +476,7 @@
   }
 
   &.active {
-    background: linear-gradient(135deg, #2EAF7D, #1E8A5E);
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-dark));
     color: white;
     box-shadow: 0 4px 12px rgba(46, 175, 125, 0.25);
   }
@@ -549,7 +549,7 @@
 .empty-btn {
   display: inline-block;
   padding: 8px 28px;
-  background: linear-gradient(135deg, #2EAF7D, #1E8A5E);
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-dark));
   color: white;
   border-radius: 20px;
   font-size: 13px;

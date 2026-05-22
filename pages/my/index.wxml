@@ -1,11 +1,11 @@
-<view class="page my-page">
+<view class="page my-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
   <!-- 自定义导航栏 -->
-  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="navbar-title">我的</view>
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">我的</view>
   </view>
 
   <!-- 用户信息 -->
-  <view class="user-card">
+  <view class="user-card" style="background: {{theme.cardBg}};">
     <view class="user-info">
       <!-- 已登录：显示用户头像 -->
       <t-avatar wx:if="{{isLogin}}" image="{{userInfo.avatarUrl || defaultAvatar}}" size="large" bindtap="onChooseAvatar" />
@@ -15,11 +15,11 @@
         <!-- 昵称输入模式 -->
         <view wx:if="{{isLogin && isEditingNickname}}" class="nickname-edit-wrapper">
           <input type="nickname" class="nickname-input" value="{{tempNickname}}" placeholder="请输入昵称" bindinput="onNicknameInput" bindconfirm="onConfirmNickname" focus="{{true}}" />
-          <text class="confirm-btn" bindtap="onConfirmNickname">完成</text>
+          <text class="confirm-btn" style="background: {{theme.brandPrimary}};" bindtap="onConfirmNickname">完成</text>
         </view>
         <!-- 昵称显示模式 -->
         <view wx:else class="nickname-display" bindtap="onEditNickname">
-          <text class="user-name">{{userInfo.nickName || '小小的新用户'}}</text>
+          <text class="user-name" style="color: {{theme.textPrimary}};">{{userInfo.nickName || '小小的新用户'}}</text>
           <text class="edit-icon" wx:if="{{isLogin}}">✎</text>
         </view>
         <text class="user-streak">{{isLogin ? ('ID: ' + (userInfo.userId || '--')) : '点击头像登录'}}</text>
@@ -28,17 +28,17 @@
   </view>
 
   <!-- 功能入口 -->
-  <view class="grid-card">
+  <view class="grid-card" style="background: {{theme.cardBg}};">
     <view class="grid-item" wx:for="{{gridList}}" wx:key="type" data-url="{{item.url}}" data-type="{{item.type}}" bindtap="onNavigate">
-      <view class="grid-icon">
+      <view class="grid-icon" style="background: {{theme.brandLight}};">
         <text class="icon-text">{{item.icon === 'target' ? '🎯' : item.icon === 'chart' ? '📊' : item.icon === 'app' ? '🍎' : '⏱️'}}</text>
       </view>
-      <text class="grid-name">{{item.name}}</text>
+      <text class="grid-name" style="color: {{theme.textPrimary}};">{{item.name}}</text>
     </view>
   </view>
 
   <!-- 菜单列表 -->
-  <view class="menu-card">
+  <view class="menu-card" style="background: {{theme.cardBg}};">
     <t-cell-group theme="card" t-class="menu-cell-group">
       <t-cell
         wx:for="{{menuList}}"

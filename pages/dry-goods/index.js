@@ -1,4 +1,5 @@
 const { ARTICLES_FULL } = require('./articles');
+const themeBehavior = require('~/behaviors/theme');
 
 const ARTICLES = Object.values(ARTICLES_FULL).map((a) => ({
   id: a.id,
@@ -8,6 +9,7 @@ const ARTICLES = Object.values(ARTICLES_FULL).map((a) => ({
 }));
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     articles: ARTICLES,

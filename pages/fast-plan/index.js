@@ -1,7 +1,9 @@
 const { getAllPlans } = require('~/config/fastingPlans');
 const fasting = require('~/utils/fasting');
+const themeBehavior = require('~/behaviors/theme');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     plans: [],

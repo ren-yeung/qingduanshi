@@ -1,5 +1,6 @@
 const { searchFoods, FOODS } = require('./foodDatabase');
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 // 根据当前时间判断餐段
 function getMealByTime() {
@@ -28,6 +29,7 @@ function getMealByTime() {
 }
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     date: '',

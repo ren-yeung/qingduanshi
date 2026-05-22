@@ -1,4 +1,6 @@
 // app.js
+const themeConfig = require('./config/theme');
+
 App({
   onLaunch() {
     // 初始化云开发
@@ -17,11 +19,32 @@ App({
       this.globalData.userInfo = savedUserInfo;
     }
 
+    // 加载主题设置
+    this.loadTheme();
+
     // 不再强制跳转登录页，允许游客浏览概览页
     // this.checkAndRedirectToLogin();
 
     // 版本更新检查
     this.checkForUpdate();
+  },
+
+  // 加载主题配置
+  loadTheme() {
+    const settings = wx.getStorageSync('customizeSettings') || {};
+    const activeMode = settings.activeMode || 'fresh-green';
+    const customColors = settings.customColors || themeConfig.CUSTOM_DEFAULTS;
+    const theme = themeConfig.getThemeColors(activeMode, customColors);
+    this.globalData.customizeSettings = settings;
+    this.globalData.theme = theme;
+  },
+
+  // 获取当前主题（供各页面调用）
+  getTheme() {
+    if (!this.globalData.theme) {
+      this.loadTheme();
+    }
+    return this.globalData.theme;
   },
 
   // 检查并跳转登录页

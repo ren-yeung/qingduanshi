@@ -1,6 +1,8 @@
 const storage = require('~/utils/storage');
+const themeBehavior = require('~/behaviors/theme');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     range: 7, // 7 or 30
@@ -112,7 +114,7 @@ Page({
         }
 
         // 画折线
-        ctx.strokeStyle = '#2EAF7D';
+        ctx.strokeStyle = this.data.theme.brandPrimary || '#2EAF7D';
         ctx.lineWidth = 2;
         ctx.beginPath();
         records.forEach((r, i) => {
@@ -128,7 +130,7 @@ Page({
           const x = padding.left + (chartW / (records.length - 1 || 1)) * i;
           const y = padding.top + chartH - ((r.weight - minW) / rangeW) * chartH;
 
-          ctx.fillStyle = '#2EAF7D';
+          ctx.fillStyle = this.data.theme.brandPrimary || '#2EAF7D';
           ctx.beginPath();
           ctx.arc(x, y, 4, 0, 2 * Math.PI);
           ctx.fill();
