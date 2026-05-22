@@ -6,6 +6,7 @@ Page({
   behaviors: [themeBehavior],
   data: {
     isLogin: false,
+    cacheSize: '计算中...',
     menuData: [
       [
         {
@@ -47,6 +48,11 @@ Page({
           url: '',
           icon: '🔐',
         },
+        {
+          title: '清除缓存',
+          action: 'clearCache',
+          icon: '🧹',
+        },
       ],
     ],
   },
@@ -57,6 +63,7 @@ Page({
       statusBarHeight: info.statusBarHeight,
     });
     this.checkLogin();
+    this.getCacheSize();
     // 监听登录/注销事件
     app.eventBus.on('user-login-success', this.checkLogin.bind(this));
     app.eventBus.on('user-logout-success', this.checkLogin.bind(this));
@@ -92,6 +99,49 @@ Page({
 
   onBack() {
     wx.navigateBack();
+  },
+
+  // 获取缓存大小
+  getCacheSize() {
+    wx.getStorageInfo({
+      success: (res) => {
+        const sizeKB = res.currentSize;
+        let cacheSize;
+        if (sizeKB < 1024) {
+          cacheSize = sizeKB + 'KB';
+        } else {
+          cacheSize = (sizeKB / 1024).toFixed(1) + 'MB';
+        }
+        this.setData({ cacheSize });
+      },
+      fail: () => {
+        this.setData({ cacheSize: '0KB' });
+      },
+    });
+  },
+
+  // 清除缓存
+  onClearCache() {
+    wx.showModal({
+      title: '清除缓存',
+      content: '确定要清除所有本地缓存吗？这不会影响您的账号数据。',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '清理中...' });
+          wx.clearStorage({
+            success: () => {
+              wx.hideLoading();
+              this.setData({ cacheSize: '0KB' });
+              wx.showToast({ title: '缓存已清除', icon: 'none' });
+            },
+            fail: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '清除失败', icon: 'none' });
+            },
+          });
+        }
+      },
+    });
   },
 
   async onLogout() {

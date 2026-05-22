@@ -1,5 +1,5 @@
 <!-- 自定义导航栏 -->
-<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; font-family: {{theme.fontFamily}};">
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; font-family: {{theme.fontFamily}}; background: {{theme.bgColor}};">
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
@@ -10,59 +10,52 @@
   <!-- ========== 第一组：反馈与支持 ========== -->
   <view class="section-title">反馈与支持</view>
   <view class="menu-wrapper">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="意见反馈" hover arrow bordered="{{true}}" bindtap="onFeedback">
-        <text slot="left-icon" class="menu-icon">💬</text>
-      </t-cell>
-      <t-cell title="常见问题" hover arrow bordered="{{false}}" bindtap="onFAQ">
-        <text slot="left-icon" class="menu-icon">📖</text>
-      </t-cell>
-    </t-cell-group>
+    <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onFeedback">
+      <text class="menu-icon">📝</text>
+      <text class="palette-label">意见反馈</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </view>
+    <button class="palette-cell" hover-class="palette-cell--hover" open-type="contact" bindcontact="onContactService" session-from="联系我们页面">
+      <text class="menu-icon">🎧</text>
+      <text class="palette-label">联系客服</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </button>
   </view>
 
   <!-- ========== 第二组：关于 ========== -->
   <view class="section-title">关于</view>
   <view class="menu-wrapper">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="关于轻断食" hover arrow bordered="{{true}}" bindtap="onAbout">
-        <text slot="left-icon" class="menu-icon">ℹ️</text>
-        <text slot="note" class="cell-note">v{{version}}</text>
-      </t-cell>
-      <t-cell title="检查更新" hover arrow bordered="{{false}}" bindtap="onCheckUpdate">
-        <text slot="left-icon" class="menu-icon">🔍</text>
-        <text slot="note" class="cell-note cell-note--brand">{{updateText}}</text>
-      </t-cell>
-    </t-cell-group>
+    <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="palette-label">关于轻断食</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </view>
+    <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onCheckUpdate">
+      <text class="menu-icon">🔍</text>
+      <text class="palette-label">检查更新</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </view>
   </view>
 
   <!-- ========== 第三组：法律信息 ========== -->
   <view class="section-title">法律信息</view>
   <view class="menu-wrapper">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="用户协议" hover arrow bordered="{{true}}" bindtap="onUserAgreement">
-        <text slot="left-icon" class="menu-icon">📄</text>
-      </t-cell>
-      <t-cell title="隐私政策" hover arrow bordered="{{false}}" bindtap="onPrivacyPolicy">
-        <text slot="left-icon" class="menu-icon">🔒</text>
-      </t-cell>
-    </t-cell-group>
-  </view>
-
-  <!-- ========== 第四组：存储 ========== -->
-  <view class="section-title">存储</view>
-  <view class="menu-wrapper">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="清除缓存" hover arrow bordered="{{false}}" bindtap="onClearCache">
-        <text slot="left-icon" class="menu-icon">🧹</text>
-        <text slot="note" class="cell-note">{{cacheSize}}</text>
-      </t-cell>
-    </t-cell-group>
+    <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onUserAgreement">
+      <text class="menu-icon">📄</text>
+      <text class="palette-label">用户协议</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </view>
+    <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onPrivacyPolicy">
+      <text class="menu-icon">🔒</text>
+      <text class="palette-label">隐私政策</text>
+      <view class="cell-right-area"><text class="cell-arrow">›</text></view>
+    </view>
   </view>
 
   <!-- ========== 底部信息 ========== -->
   <view class="footer">
-    <view class="footer-brand">轻断食</view>
+    <view class="footer-brand">小小轻断食</view>
     <view class="footer-version">v{{version}}</view>
-    <view class="footer-copyright">© {{currentYear}} 轻断食 · 健康生活每一天</view>
+    <view class="footer-copyright">© {{currentYear}} 小小轻断食 · 健康生活每一天</view>
   </view>
 </view>

@@ -2,7 +2,6 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "t-tag": "tdesign-miniprogram/tag/tag",
-    "t-slider": "tdesign-miniprogram/slider/slider",
-    "t-button": "tdesign-miniprogram/button/button"
+    "t-slider": "tdesign-miniprogram/slider/slider"
   }
 }

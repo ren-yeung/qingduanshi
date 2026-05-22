@@ -1,0 +1,143 @@
+<!-- 自定义导航栏 -->
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; font-family: {{theme.fontFamily}}; background: {{theme.bgColor}};">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-icon">‹</text>
+  </view>
+  <view class="navbar-title">用户协议</view>
+</view>
+
+<view class="page-content" style="background: {{theme.bgColor}}; color: {{theme.textColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
+  <view class="doc-title">《小小轻断食》用户协议</view>
+  <view class="doc-update-time">更新日期：2026年5月22日</view>
+
+  <view class="doc-section">
+    <view class="section-title">一、总则</view>
+    <view class="section-body">
+      <text class="paragraph">
+        1.1 感谢您使用「小小轻断食」小程序（以下简称"本产品"）。本协议是您与「轻断食」运营方之间关于使用本产品所订立的协议。
+      </text>
+      <text class="paragraph">
+        1.2 本产品是一款健康生活方式管理工具，旨在帮助用户记录断食时间、追踪饮食计划、养成健康的生活习惯。本产品不构成任何医疗诊断或治疗建议。
+      </text>
+      <text class="paragraph">
+        1.3 您在使用本产品前，应当认真阅读本协议全部内容，特别是免除或者限制责任的条款。如果您对本协议有任何疑问，可通过"联系我们"页面的客服渠道咨询。
+      </text>
+      <text class="paragraph">
+        1.4 当您点击同意或开始使用本产品，即表示您已阅读、理解并接受本协议的全部条款。如您不同意本协议，请立即停止使用本产品。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">二、账号与注册</view>
+    <view class="section-body">
+      <text class="paragraph">
+        2.1 您可以通过微信授权方式登录使用本产品。使用微信登录即表示您授权我们获取您的微信头像、昵称等基本信息用于展示。
+      </text>
+      <text class="paragraph">
+        2.2 您应妥善保管账号信息，对通过您的账号进行的所有活动负责。如发现账号被他人非法使用，请及时联系我们处理。
+      </text>
+      <text class="paragraph">
+        2.3 我们保留在发现异常使用行为时暂停或终止向您提供服务的权利。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">三、服务内容</view>
+    <view class="section-body">
+      <text class="paragraph">
+        3.1 本产品主要功能包括但不限于：\n
+        （1）断食计时器：帮助用户记录和管理断食时间段；\n
+        （2）饮食日志：记录每日饮食摄入情况；\n
+        （3）身体数据追踪：记录体重、体脂等身体指标变化；\n
+        （4）打卡签到：支持用户进行习惯打卡；\n
+        （5）数据统计：展示用户的健康数据统计与分析；\n
+        （6）个性化设置：自定义主题、字体大小等外观偏好。
+      </text>
+      <text class="paragraph">
+        3.2 我们有权根据业务需要随时调整、暂停或终止部分或全部服务功能，调整后会尽可能提前通知用户。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">四、用户行为规范</view>
+    <view class="section-body">
+      <text class="paragraph">
+        4.1 用户承诺在使用本产品时遵守中华人民共和国相关法律法规，不得利用本产品从事违法违规活动。
+      </text>
+      <text class="paragraph">
+        4.2 禁止以下行为：\n
+        （1）发布违法、违规、不良信息；\n
+        （2）攻击、干扰服务器正常运行；\n
+        （3）利用技术手段获取非公开数据；\n
+        （4）传播病毒、木马等恶意程序；\n
+        （5）其他损害本产品或其他用户权益的行为。
+      </text>
+      <text class="paragraph">
+        4.3 如您违反本协议，我们有权采取包括但不限于限制账号功能、暂停服务、注销账号等措施。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">五、知识产权</view>
+    <view class="section-body">
+      <text class="paragraph">
+        5.1 本产品中的所有内容（包括但不限于文字、图片、图标、界面设计、软件程序等）均受知识产权法保护，归运营方所有。
+      </text>
+      <text class="paragraph">
+        5.2 未经书面授权，任何人不得复制、修改、发布、销售本产品的任何部分内容。
+      </text>
+      <text class="paragraph">
+        5.3 用户在本产品中产生的个人数据（如饮食记录、体重数据等）归用户本人所有，我们仅负责存储和展示，未经用户同意不会向第三方披露。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">六、免责声明</view>
+    <view class="section-body">
+      <text class="paragraph">
+        6.1 本产品为健康管理辅助工具，所提供的所有信息均仅供参考，不构成医疗诊断、治疗建议或专业营养指导。
+      </text>
+      <text class="paragraph">
+        6.2 断食行为可能对身体产生影响（尤其是孕妇、未成年人、糖尿病患者等特殊人群），在进行断食计划前请务必咨询专业医生意见。
+      </text>
+      <text class="paragraph">
+        6.3 因用户自身健康状况、不当操作等原因导致的任何身体不适或健康问题，本产品及其运营方不承担任何责任。
+      </text>
+      <text class="paragraph">
+        6.4 因不可抗力（如自然灾害、网络故障、系统维护等）导致的服务中断，我们将尽力恢复，但不承担相应责任。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">七、协议变更</view>
+    <view class="section-body">
+      <text class="paragraph">
+        7.1 我们可能适时修订本协议内容。修订后的协议将在本页面公布，不再另行通知个别用户。
+      </text>
+      <text class="paragraph">
+        7.2 如果您不同意修订后的协议，可以停止使用本产品。继续使用即表示您接受修订后的协议。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-section">
+    <view class="section-title">八、联系我们</view>
+    <view class="section-body">
+      <text class="paragraph">
+        如您对本协议有任何疑问或建议，请通过以下方式联系我们：\n
+        （1）在本产品"联系我们"页面点击"联系客服"；\n
+        （2）发送邮件至 y465023714@163.com。
+      </text>
+    </view>
+  </view>
+
+  <view class="doc-footer">
+    <text>— 感谢您选择「小小轻断食」 —</text>
+  </view>
+</view>

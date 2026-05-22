@@ -18,11 +18,12 @@
         hover-class="palette-cell--hover"
         url="{{carditem.url}}"
         data-data="{{carditem}}"
-        bindtap="onEleClick"
+        bindtap="{{carditem.action === 'clearCache' ? 'onClearCache' : 'onEleClick'}}"
       >
         <text class="menu-icon">{{carditem.icon}}</text>
         <text class="palette-label">{{carditem.title}}</text>
-        <text class="cell-arrow">›</text>
+        <text class="cell-note" wx:if="{{carditem.action === 'clearCache'}}">{{cacheSize}}</text>
+        <text class="cell-arrow" wx:else>›</text>
       </view>
     </view>
   </block>

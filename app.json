@@ -82,6 +82,16 @@
       "root": "pages/contact",
       "name": "contact",
       "pages": ["index"]
+    },
+    {
+      "root": "pages/agreement",
+      "name": "agreement",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/privacy",
+      "name": "privacy",
+      "pages": ["index"]
     }
   ],
   "window": {

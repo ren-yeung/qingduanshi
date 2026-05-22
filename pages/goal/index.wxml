@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">饮食目标</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">我的目标</view>
   </view>
 
   <view class="page-content">
