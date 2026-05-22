@@ -1,12 +1,12 @@
 <!-- 自定义导航栏 -->
-<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; font-family: {{theme.fontFamily}};">
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
   <view class="navbar-title">联系我们</view>
 </view>
 
-<view class="contact" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
+<view class="contact" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
   <!-- ========== 第一组：反馈与支持 ========== -->
   <view class="section-title">反馈与支持</view>
   <view class="menu-wrapper">

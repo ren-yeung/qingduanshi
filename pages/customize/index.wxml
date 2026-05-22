@@ -1,12 +1,12 @@
 <!-- 自定义导航栏 -->
-<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
   </view>
   <view class="navbar-title" style="color: {{theme.textPrimary}};">个性化</view>
 </view>
 
-<view class="customize" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
+<view class="customize" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
 
   <!-- ========== 第一组：外观模式 ========== -->
   <view class="section-title">外观模式</view>
@@ -103,34 +103,55 @@
   <!-- ========== 第三组：显示设置 ========== -->
   <view class="section-title">显示设置</view>
   <view class="menu-wrapper" style="background: {{theme.cardBg}};">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="字体大小" hover bordered="{{true}}">
-        <text slot="left-icon" class="menu-icon">🔤</text>
-        <view slot="note" class="radio-group">
-          <view
-            wx:for="{{fontSizes}}"
-            wx:key="value"
-            class="radio-item {{fontSize === item.value ? 'radio-item--active' : ''}}"
-            style="{{fontSize === item.value ? 'background: ' + theme.brandLight + '; color: ' + theme.brandPrimary : ''}}"
-            data-size="{{item.value}}"
-            bindtap="onFontSizeChange"
-          >{{item.label}}</view>
+    <!-- 字体选择（展开/收起模式） -->
+    <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onToggleFontList">
+      <text class="menu-icon">🔤</text>
+      <text class="palette-label">字体</text>
+      <view class="cell-right-area">
+        <text class="cell-value-text">{{fontCurrentLabel}}</text>
+        <text class="cell-arrow {{showFontList ? 'cell-arrow--up' : ''}}">›</text>
+      </view>
+    </view>
+
+    <!-- 字体选项（点击展开） -->
+    <block wx:if="{{showFontList}}">
+      <view class="palette-divider"></view>
+      <view class="font-expand-list">
+        <view
+          wx:for="{{fontOptions}}"
+          wx:key="value"
+          class="font-card-expand {{fontFamily === item.value ? 'font-card-expand--active' : ''}}"
+          style="{{fontFamily === item.value ? 'border-color: ' + theme.brandPrimary + '; background: ' + theme.brandLight : ''}}; font-family: {{item.family}};"
+          data-family="{{item.value}}"
+          bindtap="onFontFamilyChange"
+        >
+          <text class="font-preview">{{item.preview}}</text>
+          <text class="font-name">{{item.label}}</text>
+          <text wx:if="{{fontFamily === item.value}}" class="font-check" style="background: {{theme.brandPrimary}};">✓</text>
         </view>
-      </t-cell>
-      <t-cell title="首页快捷入口" hover arrow bordered="{{false}}" bindtap="onShortcutManage">
-        <text slot="left-icon" class="menu-icon">⚡</text>
-      </t-cell>
-    </t-cell-group>
+      </view>
+    </block>
+
+    <!-- 首页快捷入口 -->
+    <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onShortcutManage">
+      <text class="menu-icon">⚡</text>
+      <text class="palette-label">首页快捷入口</text>
+      <view class="cell-right-area">
+        <text class="cell-arrow">›</text>
+      </view>
+    </view>
   </view>
 
   <!-- ========== 第四组：其他 ========== -->
   <view class="section-title">其他</view>
   <view class="menu-wrapper" style="background: {{theme.cardBg}};">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="恢复默认设置" hover arrow bordered="{{false}}" bindtap="onResetDefault">
-        <text slot="left-icon" class="menu-icon">🔄</text>
-      </t-cell>
-    </t-cell-group>
+    <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onResetDefault">
+      <text class="menu-icon">🔄</text>
+      <text class="palette-label">恢复默认设置</text>
+      <view class="cell-right-area">
+        <text class="cell-arrow">›</text>
+      </view>
+    </view>
   </view>
 
   <view class="bottom-spacer"></view>

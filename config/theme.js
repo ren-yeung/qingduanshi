@@ -119,6 +119,15 @@ const CUSTOM_PALETTE = {
   ],
 };
 
+// 可选字体列表（选用有明显视觉差异的字体）
+// sizeScale: 视觉补偿系数，传统字体比默认字体视觉偏小，需要放大
+const FONT_OPTIONS = [
+  { value: 'system-default', label: '系统默认', family: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif", preview: 'Aa 默认', sizeScale: 1 },
+  { value: 'kaiti', label: '楷体', family: "'KaiTi', 'STKaiti', 'Kaiti SC', serif", preview: 'Aa 楷体', sizeScale: 1.30 },
+  { value: 'songti', label: '宋体', family: "SimSun, 'Songti SC', 'STSong', serif", preview: 'Aa 宋体', sizeScale: 1.35 },
+  { value: 'fangsong', label: '仿宋', family: "'FangSong', 'STFangsong', FangSong, serif", preview: 'Aa 仿宋', sizeScale: 1.40 },
+];
+
 /**
  * 获取指定模式的颜色配置
  */
@@ -135,5 +144,6 @@ module.exports = {
   PRESET_MODES,
   CUSTOM_DEFAULTS,
   CUSTOM_PALETTE,
+  FONT_OPTIONS,
   getThemeColors,
 };

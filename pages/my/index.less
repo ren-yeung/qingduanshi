@@ -155,11 +155,24 @@
     overflow: hidden;
   }
 
-  // 覆盖 t-cell-group--card 默认的 margin，让 cell 铺满容器
-  .menu-cell-group {
-    margin: 0 !important;
-    border-radius: 0 !important;
+  // ===== 自定义菜单列表（替代 t-cell，解决垂直对齐问题）=====
+  .palette-list {
     overflow: hidden;
+  }
+
+  .palette-cell {
+    display: flex;
+    align-items: center;
+    padding: 28rpx 32rpx;
+    min-height: 56rpx;
+
+    &--hover {
+      background: #f8f8f8;
+    }
+
+    &--bordered {
+      border-bottom: 1rpx solid #f0f0f0;
+    }
   }
 
   .menu-icon {
@@ -168,29 +181,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    flex-shrink: 0;
   }
 
-  // t-cell 内部垂直居中
-  .menu-cell-group .t-cell {
-    align-items: center;
+  .palette-label {
+    font-size: 30rpx;
+    color: #333333;
+    flex-shrink: 0;
   }
 
-  .menu-cell-group .t-cell__left {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  .menu-cell-group .t-cell__title {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  .menu-cell-group .t-cell__title-text {
-    display: flex;
-    align-items: center;
+  .cell-arrow {
+    font-size: 36rpx;
+    color: #cccccc;
+    line-height: 1;
+    margin-left: auto;
+    flex-shrink: 0;
   }
 
   .ad-placeholder {

@@ -34,7 +34,19 @@ App({
     const settings = wx.getStorageSync('customizeSettings') || {};
     const activeMode = settings.activeMode || 'fresh-green';
     const customColors = settings.customColors || themeConfig.CUSTOM_DEFAULTS;
+    const fontFamily = settings.fontFamily || 'system-default';
     const theme = themeConfig.getThemeColors(activeMode, customColors);
+
+    // 注入字体信息
+    const fontOption = (themeConfig.FONT_OPTIONS || []).find(f => f.value === fontFamily);
+    if (fontOption) {
+      theme.fontFamily = fontOption.family;
+      theme.fontSizeScale = fontOption.sizeScale || 1;
+    } else {
+      theme.fontFamily = "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      theme.fontSizeScale = 1;
+    }
+
     this.globalData.customizeSettings = settings;
     this.globalData.theme = theme;
   },

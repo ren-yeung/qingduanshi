@@ -10,12 +10,11 @@ Page({
     customColors: {},
     colorPalette: {},
 
-    fontSize: 'medium',
-    fontSizes: [
-      { value: 'small', label: '小' },
-      { value: 'medium', label: '中' },
-      { value: 'large', label: '大' },
-    ],
+    // 字体选择
+    fontFamily: 'system-default',
+    fontOptions: [],
+    showFontList: false,
+    fontCurrentLabel: '系统默认',
   },
 
   onLoad() {
@@ -29,6 +28,7 @@ Page({
         preview: ['🎨', '📄', '🃏'],
       }]),
       colorPalette: themeConfig.CUSTOM_PALETTE,
+      fontOptions: themeConfig.FONT_OPTIONS || [],
     });
     this.loadSettings();
   },
@@ -42,27 +42,56 @@ Page({
     const settings = wx.getStorageSync('customizeSettings') || {};
     const activeMode = settings.activeMode || 'fresh-green';
     const customColors = settings.customColors || themeConfig.CUSTOM_DEFAULTS;
-    const fontSize = settings.fontSize || 'medium';
+    const fontFamily = settings.fontFamily || 'system-default';
 
-    this.setData({ activeMode, customColors, fontSize });
+    // 查找当前字体的显示标签
+    const fontCurrentLabel = this._findFontLabel(fontFamily);
+
+    this.setData({ activeMode, customColors, fontFamily, fontCurrentLabel });
     this.applyTheme();
+  },
+
+  _findFontLabel(fontValue) {
+    const opts = this.data.fontOptions || [];
+    const found = opts.find(f => f.value === fontValue);
+    return found ? found.label : '系统默认';
   },
 
   // 应用当前模式的主题色到页面
   applyTheme() {
     const theme = themeConfig.getThemeColors(this.data.activeMode, this.data.customColors);
+
+    // 注入字体信息
+    const fontOption = (this.data.fontOptions || []).find(f => f.value === this.data.fontFamily);
+    if (fontOption) {
+      theme.fontFamily = fontOption.family;
+      theme.fontSizeScale = fontOption.sizeScale || 1;
+    } else {
+      theme.fontFamily = "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      theme.fontSizeScale = 1;
+    }
+
     this.setData({ theme });
   },
 
   // 保存设置并广播
   saveSettings() {
-    const { activeMode, customColors, fontSize } = this.data;
-    const settings = { activeMode, customColors, fontSize };
+    const { activeMode, customColors, fontFamily } = this.data;
+    const settings = { activeMode, customColors, fontFamily };
     wx.setStorageSync('customizeSettings', settings);
 
     // 同步到全局
     app.globalData.customizeSettings = settings;
     const theme = themeConfig.getThemeColors(activeMode, customColors);
+    // 注入字体信息到全局 theme
+    const fontOption = (this.data.fontOptions || []).find(f => f.value === fontFamily);
+    if (fontOption) {
+      theme.fontFamily = fontOption.family;
+      theme.fontSizeScale = fontOption.sizeScale || 1;
+    } else {
+      theme.fontFamily = "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      theme.fontSizeScale = 1;
+    }
     app.globalData.theme = theme;
 
     // 广播主题变更，各页面 onShow 刷新
@@ -89,17 +118,30 @@ Page({
     this.saveSettings();
   },
 
-  // 切换字体大小
-  onFontSizeChange(e) {
-    const { size } = e.currentTarget.dataset;
-    this.setData({ fontSize: size });
-    this.saveSettings();
-    wx.showToast({ title: '字体大小已更新', icon: 'none', duration: 1000 });
+  // 切换字体 - 展开/收起
+  onToggleFontList() {
+    this.setData({ showFontList: !this.data.showFontList });
   },
 
-  // 首页快捷入口
+  // 选择字体
+  onFontFamilyChange(e) {
+    const family = e.currentTarget.dataset.family;
+    if (family === this.data.fontFamily) return;
+
+    const fontOption = (this.data.fontOptions || []).find(f => f.value === family);
+    this.setData({
+      fontFamily: family,
+      fontCurrentLabel: fontOption ? fontOption.label : '系统默认',
+      showFontList: false,
+    });
+    this.applyTheme();
+    this.saveSettings();
+    wx.showToast({ title: '字体已切换', icon: 'none', duration: 1000 });
+  },
+
+  // 首页快捷入口 - 跳转概览页面
   onShortcutManage() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.switchTab({ url: '/pages/overview/index' });
   },
 
   // 恢复默认
@@ -115,7 +157,8 @@ Page({
           this.setData({
             activeMode: 'fresh-green',
             customColors: themeConfig.CUSTOM_DEFAULTS,
-            fontSize: 'medium',
+            fontFamily: 'system-default',
+            fontCurrentLabel: '系统默认',
           });
           this.applyTheme();
           app.eventBus.emit('theme-changed', app.globalData.theme);

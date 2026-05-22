@@ -1,40 +1,43 @@
 <!-- 自定义导航栏 -->
-<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
   </view>
   <view class="navbar-title" style="color: {{theme.textPrimary}};">设置</view>
 </view>
 
-<view class="setting" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}};">
-  <view class="menu-wrapper">
-    <t-cell-group wx:for="{{menuData}}" wx:for-item="item" wx:key="index" t-class="menu-cell-group" theme="card">
-      <t-cell
-        wx:for="{{item}}"
+<view class="setting" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
+  <block wx:for="{{menuData}}" wx:for-item="group" wx:key="index">
+    <view class="section-title" wx:if="{{group[0].groupTitle}}">{{group[0].groupTitle}}</view>
+    <view class="menu-wrapper">
+      <view
+        wx:for="{{group}}"
         wx:for-item="carditem"
         wx:key="cardkey"
-        title="{{carditem.title}}"
-        hover
-        arrow
+        class="palette-cell {{index < group.length - 1 ? 'palette-cell--bordered' : ''}}"
+        hover-class="palette-cell--hover"
         url="{{carditem.url}}"
-        bordered="true"
         data-data="{{carditem}}"
-        bindclick="onEleClick"
+        bindtap="onEleClick"
       >
-        <text slot="left-icon" class="menu-icon">{{carditem.icon}}</text>
-      </t-cell>
-    </t-cell-group>
-  </view>
+        <text class="menu-icon">{{carditem.icon}}</text>
+        <text class="palette-label">{{carditem.title}}</text>
+        <text class="cell-arrow">›</text>
+      </view>
+    </view>
+  </block>
 
   <!-- 退出登录 -->
   <view class="logout-wrapper" wx:if="{{isLogin}}">
-    <t-cell-group theme="card" t-class="menu-cell-group">
-      <t-cell title="退出登录" hover arrow bindtap="onLogout">
-        <text slot="left-icon" class="menu-icon">🚪</text>
-      </t-cell>
-      <t-cell title="注销账号" hover arrow bindtap="onDestroyAccount">
-        <text slot="left-icon" class="menu-icon">🗑️</text>
-      </t-cell>
-    </t-cell-group>
+    <view class="palette-cell palette-cell--danger palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onLogout">
+      <text class="menu-icon">🚪</text>
+      <text class="palette-label palette-label--danger">退出登录</text>
+      <text class="cell-arrow cell-arrow--danger">›</text>
+    </view>
+    <view class="palette-cell palette-cell--danger" hover-class="palette-cell--hover" bindtap="onDestroyAccount">
+      <text class="menu-icon">🗑️</text>
+      <text class="palette-label palette-label--danger">注销账号</text>
+      <text class="cell-arrow cell-arrow--danger">›</text>
+    </view>
   </view>
 </view>

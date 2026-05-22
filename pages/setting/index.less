@@ -43,59 +43,72 @@
   overflow: hidden;
 }
 
+// 分组标题
+.section-title {
+  font-size: 26rpx;
+  color: #999999;
+  padding: 32rpx 32rpx 12rpx;
+}
+
+// ===== 自定义菜单项（替代 t-cell，解决垂直对齐问题）=====
+.palette-cell {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  min-height: 56rpx;
+
+  &--hover {
+    background: #f8f8f8;
+  }
+
+  &--bordered {
+    border-bottom: 1rpx solid #f0f0f0;
+  }
+
+  &--danger .palette-label,
+  &--danger .cell-arrow {
+    color: #e54d42;
+  }
+
+  &--danger .menu-icon {
+    color: inherit;
+  }
+}
+
 .logout-wrapper {
   margin: 24rpx 32rpx 0;
   background: #ffffff;
   border-radius: 24rpx;
   overflow: hidden;
-
-  ::v-deep .t-cell__title-text {
-    color: #e54d42 !important;
-  }
-
-  ::v-deep .menu-icon {
-    color: #e54d42 !important;
-  }
 }
 
-// 菜单 cell-group 统一样式
-.menu-cell-group,
-.logout-cell-group {
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  border-radius: 0 !important;
-
-  ::v-deep .t-cell {
-    padding-left: 32rpx !important;
-    padding-right: 32rpx !important;
-    align-items: center;
-  }
-
-  ::v-deep .t-cell__left {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  ::v-deep .t-cell__title {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  ::v-deep .t-cell__title-text {
-    display: flex;
-    align-items: center;
-  }
-}
-
-// emoji 图标样式
+// emoji 图标样式 + 标签 + 箭头
 .menu-icon {
   font-size: 40rpx;
   margin-right: 16rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
+  flex-shrink: 0;
+}
+
+.palette-label {
+  font-size: 30rpx;
+  color: #333333;
+  flex-shrink: 0;
+
+  &--danger {
+    color: #e54d42 !important;
+  }
+}
+
+.cell-arrow {
+  font-size: 36rpx;
+  color: #cccccc;
+  line-height: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+
+  &--danger {
+    color: #e54d42 !important;
+  }
 }
