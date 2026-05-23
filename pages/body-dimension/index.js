@@ -24,15 +24,15 @@ Page({
     bmiCategoryIcon: '',
     bmiPosition: 50,
     
-    // 目标进度（虚拟数据）
+    // 目标进度（真实数据，加载后更新）
     goal: {
-      current: '66.0',
-      target: '60.0',
-      lost: '4.8',
-      total: '6.0',
-      remain: '1.2',
-      progress: 80,
-      weeks: 6,
+      current: '--',
+      target: '--',
+      lost: '--',
+      total: '--',
+      remain: '--',
+      progress: 0,
+      weeks: '--',
     },
     
     // 图表类型
@@ -64,7 +64,6 @@ Page({
     });
 
     this.loadOverviewData();
-    this.loadGoalData();
     this.loadHistoryData();
   },
 
@@ -77,7 +76,6 @@ Page({
   onPullDownRefresh() {
     Promise.all([
       this.loadOverviewData(),
-      this.loadGoalData(),
       this.loadHistoryData(),
     ]).finally(() => {
       wx.stopPullDownRefresh();
@@ -86,20 +84,24 @@ Page({
 
   // 加载总览数据
   async loadOverviewData() {
-    // 获取最新一条身体记录
-    const records = storage.get(storage.KEYS.BODY_RECORDS, []);
-    
-    if (records.length > 0) {
-      const latest = records[0];
-      const previous = records[1] || null;
-      
-      // 计算BMI (需要身高)
+    const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+    const bodyData = storage.get(storage.KEYS.BODY_DATA, []);
+
+    // 按日期排序（最新在前）
+    const sortedWeight = [...weightRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedBody = [...bodyData].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (sortedWeight.length > 0) {
+      const latest = sortedWeight[0];
+      const previous = sortedWeight[1] || null;
+
+      // 获取身高计算BMI
       const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
       const height = userInfo.height || 170; // cm
       const heightM = height / 100;
       const bmi = (latest.weight / (heightM * heightM)).toFixed(1);
-      
-      // 计算体重变化
+
+      // 计算体重变化（与上一次记录对比）
       let change = 0;
       let changeType = 'down';
       if (previous) {
@@ -107,11 +109,11 @@ Page({
         changeType = change > 0 ? 'up' : 'down';
         change = Math.abs(change);
       }
-      
-      // 计算BMI位置 (BMI范围 15-35)
+
+      // BMI指示条位置（BMI范围 15-35）
       const bmiPos = Math.min(Math.max((bmi - 15) / 20 * 100, 0), 100);
-      
-      // 计算BMI分类
+
+      // BMI分类
       let category = '正常范围', categoryClass = '', icon = '✅';
       if (bmi < 18.5) {
         category = '偏瘦'; categoryClass = 'warning'; icon = '📉';
@@ -122,87 +124,134 @@ Page({
       } else {
         category = '肥胖'; categoryClass = 'danger'; icon = '🚨';
       }
-      
+
+      // 获取最新的身体维度数据
+      const latestBody = sortedBody.length > 0 ? sortedBody[0] : null;
+
       this.setData({
         overview: {
           weight: latest.weight,
           change: change,
           changeType: changeType,
           bmi: bmi,
-          bodyFat: latest.bodyFat || '--',
-          waist: latest.waist || '--',
-          hip: latest.hip || '--',
+          bodyFat: latestBody ? (latestBody.bodyFat || '--') : '--',
+          waist: latestBody ? (latestBody.waist || '--') : '--',
+          hip: latestBody ? (latestBody.hip || '--') : '--',
         },
         bmiCategory: category,
         bmiCategoryClass: categoryClass,
         bmiCategoryIcon: icon,
         bmiPosition: bmiPos,
       });
+
+      // 加载完overview后再计算目标进度
+      this.loadGoalData(sortedWeight);
+    } else {
+      // 无体重记录时，也尝试加载目标
+      this.loadGoalData([]);
     }
   },
 
-  // 加载目标数据
-  loadGoalData() {
-    const goal = storage.get(storage.KEYS.BODY_GOAL, null);
-    
-    if (goal) {
-      const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
-      const currentWeight = this.data.overview.weight !== '--' ? this.data.overview.weight : (userInfo.firstWeight || '--');
-      
-      if (currentWeight !== '--' && goal.targetWeight) {
-        const total = (currentWeight - goal.targetWeight).toFixed(1);
-        const lost = (currentWeight - goal.targetWeight + parseFloat(total)).toFixed(1);
-        const remain = Math.max(0, goal.targetWeight - currentWeight).toFixed(1);
-        const progress = total > 0 ? Math.min(Math.round((parseFloat(lost) / parseFloat(total)) * 100), 100) : 0;
-        // 预计每周减0.5kg
-        const weeks = Math.ceil(remain / 0.5);
-        
-        this.setData({
-          goal: {
-            current: currentWeight,
-            target: goal.targetWeight,
-            lost: lost,
-            total: total,
-            remain: remain,
-            progress: progress,
-            weeks: weeks,
-          }
-        });
-      } else {
-        this.setData({
-          goal: {
-            current: currentWeight,
-            target: goal.targetWeight || '--',
-            lost: '--',
-            total: '--',
-            remain: '--',
-            progress: 0,
-            weeks: '--',
-          }
-        });
+  // 加载目标数据（基于真实体重记录）
+  loadGoalData(sortedWeight) {
+    const weightGoal = storage.getWeightGoal();
+
+    if (!sortedWeight) {
+      const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+      sortedWeight = [...weightRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    // 获取信息收集时录入的初始体重（users 数据集 firstWeight 字段）
+    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
+    const firstWeight = parseFloat(userInfo.firstWeight) || 0;
+
+    if (!weightGoal || !firstWeight) {
+      // 无目标或未设置初始体重
+      this.setData({
+        goal: {
+          current: firstWeight ? firstWeight.toFixed(1) : '--',
+          target: weightGoal ? weightGoal.target : '--',
+          lost: '--',
+          total: '--',
+          remain: '--',
+          progress: 0,
+          weeks: '--',
+        }
+      });
+      return;
+    }
+
+    const targetWeight = parseFloat(weightGoal.target);
+
+    // 最新体重
+    const latestWeight = sortedWeight.length > 0 ? parseFloat(sortedWeight[0].weight) : firstWeight;
+
+    // 已减体重 = 初始体重 - 最新体重
+    const lostWeight = (firstWeight - latestWeight).toFixed(1);
+    // 目标减重 = 初始体重 - 目标体重
+    const targetLoss = (firstWeight - targetWeight).toFixed(1);
+    // 剩余需减 = 最新体重 - 目标体重
+    const remain = Math.max(0, (latestWeight - targetWeight)).toFixed(1);
+    // 进度 = 已减 / 目标减重 * 100
+    const progress = parseFloat(targetLoss) > 0
+      ? Math.min(100, Math.round(parseFloat(lostWeight) / parseFloat(targetLoss) * 100))
+      : 0;
+    // 预计每周减0.5kg
+    const weeks = Math.ceil(parseFloat(remain) / 0.5);
+
+    this.setData({
+      goal: {
+        current: firstWeight.toFixed(1),
+        target: targetWeight.toFixed(1),
+        lost: lostWeight,
+        total: targetLoss,
+        remain: remain,
+        progress: progress,
+        weeks: weeks,
       }
-    }
+    });
   },
 
-  // 加载历史记录
+  // 加载历史记录（合并体重记录和身体维度数据）
   loadHistoryData() {
-    const records = storage.get(storage.KEYS.BODY_RECORDS, []);
-    
-    // 格式化日期显示
-    const formatRecords = records.slice(0, 10).map(record => {
+    const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+    const bodyData = storage.get(storage.KEYS.BODY_DATA, []);
+
+    // 将 bodyData 按日期建立索引
+    const bodyMap = {};
+    bodyData.forEach(b => { bodyMap[b.date] = b; });
+
+    // 合并：以体重记录为主，用 bodyData 补充体脂/腰围/臀围
+    const mergedRecords = weightRecords.map(record => {
+      const body = bodyMap[record.date] || {};
+      return {
+        date: record.date,
+        weight: record.weight,
+        bodyFat: body.bodyFat || null,
+        waist: body.waist || null,
+        hip: body.hip || null,
+        mood: body.mood || 4,
+      };
+    });
+
+    // 按日期倒序排列
+    mergedRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // 格式化显示
+    const formatRecords = mergedRecords.slice(0, 10).map(record => {
       const date = new Date(record.date);
       const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-      
+
       // 计算BMI
       const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
       const height = userInfo.height || 170;
       const heightM = height / 100;
       const bmi = (record.weight / (heightM * heightM)).toFixed(1);
-      
+
       // 心情emoji
       const moods = ['😢', '😔', '😐', '🙂', '😊', '😃', '🤩'];
       const mood = moods[record.mood - 1] || '🙂';
-      
+
       return {
         ...record,
         day: date.getDate(),
@@ -211,9 +260,9 @@ Page({
         mood: `心情 ${mood}`,
       };
     });
-    
+
     this.setData({ historyList: formatRecords });
-    this.loadChartData(records);
+    this.loadChartData(mergedRecords);
   },
 
   // 加载图表数据
@@ -265,20 +314,39 @@ Page({
     
     this.setData({ currentChartType: type });
     
-    const records = storage.get(storage.KEYS.BODY_RECORDS, []);
-    this.loadChartData(records);
+    // 重新合并最新数据
+    const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
+    const bodyData = storage.get(storage.KEYS.BODY_DATA, []);
+    const bodyMap = {};
+    bodyData.forEach(b => { bodyMap[b.date] = b; });
+    const mergedRecords = weightRecords.map(record => {
+      const body = bodyMap[record.date] || {};
+      return {
+        date: record.date,
+        weight: record.weight,
+        bodyFat: body.bodyFat || null,
+        waist: body.waist || null,
+        hip: body.hip || null,
+      };
+    });
+    mergedRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+    this.loadChartData(mergedRecords);
   },
 
-  // 记录今天的数据
+  // 记录今天的数据（与概览页记录体重跳转一致）
   onRecordToday() {
+    const now = new Date();
+    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     wx.navigateTo({
-      url: '/pages/body-record/index', // 假设有录入页面
+      url: `/pages/add-body/index?date=${date}&mode=new`,
     });
   },
 
-  // 查看历史
+  // 查看历史记录（带日期选择器）
   onViewHistory() {
-    // 滚动到历史记录区域
+    wx.navigateTo({
+      url: '/pages/body-history/index',
+    });
   },
 
   // 编辑目标
@@ -302,11 +370,11 @@ Page({
     });
   },
 
-  // 查看单条记录
+  // 查看单条记录（跳转 add-body 编辑模式）
   onViewRecord(e) {
     const { id } = e.currentTarget.dataset;
     wx.navigateTo({
-      url: `/pages/body-record/index?id=${id}`,
+      url: `/pages/add-body/index?id=${id}&mode=edit`,
     });
   },
 

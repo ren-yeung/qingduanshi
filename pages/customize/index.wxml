@@ -132,6 +132,8 @@
       </view>
     </block>
 
+    <view class="palette-divider palette-divider--full"></view>
+
     <!-- 首页快捷入口 -->
     <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onShortcutManage">
       <text class="menu-icon">⚡</text>

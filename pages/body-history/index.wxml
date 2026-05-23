@@ -1,0 +1,77 @@
+<view class="page body-history-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
+    </view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">全部记录</view>
+  </view>
+
+  <view class="page-content">
+
+    <!-- 日期选择（与日志页一致） -->
+    <view class="date-bar">
+      <picker mode="date" value="{{currentDate}}" end="{{todayDate}}" bindchange="onChangeDate">
+        <view class="date-picker">{{currentDate}} ▼</view>
+      </picker>
+    </view>
+
+    <!-- 身体数据卡片 -->
+    <view class="body-card">
+      <view class="card-title-row">
+        <text class="card-title">身体数据</text>
+        <text class="edit-link" bindtap="onEditBody">{{weightRecord || bodyRecord ? '编辑' : '记录'}}</text>
+      </view>
+
+      <view class="body-grid" wx:if="{{weightRecord || bodyRecord}}">
+        <view class="body-item">
+          <text class="body-val">{{weightRecord ? weightRecord.weight : '--'}}</text>
+          <text class="body-label">体重(kg)</text>
+        </view>
+        <view class="body-item">
+          <text class="body-val">{{bodyRecord ? (bodyRecord.bmi || '--') : '--'}}</text>
+          <text class="body-label">BMI</text>
+        </view>
+        <view class="body-item">
+          <text class="body-val">{{bodyRecord ? (bodyRecord.bodyFat || '--') : '--'}}<text class="body-unit">%</text></text>
+          <text class="body-label">体脂率</text>
+        </view>
+        <view class="body-item">
+          <text class="body-val">{{bodyRecord ? (bodyRecord.waist || '--') : '--'}}<text class="body-unit">cm</text></text>
+          <text class="body-label">腰围</text>
+        </view>
+        <view class="body-item">
+          <text class="body-val">{{bodyRecord ? (bodyRecord.hip || '--') : '--'}}<text class="body-unit">cm</text></text>
+          <text class="body-label">臀围</text>
+        </view>
+        <view class="body-item">
+          <text class="body-val">{{bodyRecord && bodyRecord.steps ? bodyRecord.steps : '--'}}<text class="body-unit">步</text></text>
+          <text class="body-label">步数</text>
+        </view>
+      </view>
+
+      <view class="empty-tip" wx:else>当天暂无记录</view>
+    </view>
+
+    <!-- 心情记录 -->
+    <view class="mood-card" wx:if="{{bodyRecord && bodyRecord.mood}}">
+      <text class="mood-label">当天心情</text>
+      <text class="mood-emoji">
+        <block wx:if="{{bodyRecord.mood === 1}}">😢</block>
+        <block wx:elif="{{bodyRecord.mood === 2}}">😔</block>
+        <block wx:elif="{{bodyRecord.mood === 3}}">😐</block>
+        <block wx:elif="{{bodyRecord.mood === 4}}">🙂</block>
+        <block wx:elif="{{bodyRecord.mood === 5}}">😊</block>
+        <block wx:elif="{{bodyRecord.mood === 6}}">😃</block>
+        <block wx:else>🤩</block>
+      </text>
+    </view>
+
+    <!-- 备注 -->
+    <view class="note-card" wx:if="{{bodyRecord && bodyRecord.note}}">
+      <text class="note-label">备注</text>
+      <text class="note-text">{{bodyRecord.note}}</text>
+    </view>
+
+  </view>
+</view>
