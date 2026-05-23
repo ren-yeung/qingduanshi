@@ -10,7 +10,7 @@
       <!-- 已登录：显示用户头像 -->
       <t-avatar wx:if="{{isLogin}}" image="{{userInfo.avatarUrl || defaultAvatar}}" size="large" bindtap="onChooseAvatar" />
       <!-- 未登录：显示默认猫咪头像 -->
-      <image wx:else class="login-avatar" src="/static/avatar-login.jpg" mode="aspectFill" bindtap="onLogin" />
+      <image wx:else class="login-avatar" src="{{defaultAvatar}}" mode="aspectFill" bindtap="onLogin" />
       <view class="user-meta">
         <!-- 昵称输入模式 -->
         <view wx:if="{{isLogin && isEditingNickname}}" class="nickname-edit-wrapper">
