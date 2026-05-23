@@ -44,8 +44,7 @@ Page({
     // 历史计划
     historyPlans: [],
 
-    // 身体维度
-    bodyStats: null,
+
   },
 
   onLoad() {
@@ -296,43 +295,6 @@ Page({
       })
       .sort((a, b) => b.days - a.days);
 
-    // ===== 身体维度数据 =====
-    const userInfo = wx.getStorageSync('userInfo') || {};
-    const firstWeight = parseFloat(userInfo.firstWeight) || 0;
-    const weightRecords = storage.get(storage.KEYS.WEIGHT_RECORDS, []);
-    const weightGoal = storage.getWeightGoal();
-    const bodyData = storage.get(storage.KEYS.BODY_DATA, []);
-
-    let bodyStats = null;
-    if (firstWeight && (weightRecords.length > 0 || weightGoal)) {
-      const sorted = [...weightRecords].sort((a, b) => new Date(a.date) - new Date(b.date));
-      const latestWeight = sorted.length > 0
-        ? sorted[sorted.length - 1].weight
-        : firstWeight;
-      const targetWeight = weightGoal ? parseFloat(weightGoal.target) : null;
-
-      const lostWeight = firstWeight - latestWeight;
-      const targetLoss = targetWeight ? firstWeight - targetWeight : null;
-      const progress = targetLoss && targetLoss > 0
-        ? Math.min(100, Math.round(lostWeight / targetLoss * 100))
-        : 0;
-
-      const latestBody = bodyData.length > 0 ? bodyData[bodyData.length - 1] : null;
-
-      bodyStats = {
-        firstWeight: firstWeight.toFixed(1),
-        latestWeight: latestWeight.toFixed(1),
-        targetWeight: targetWeight ? targetWeight.toFixed(1) : null,
-        lostWeight: lostWeight.toFixed(1),
-        targetLoss: targetLoss ? targetLoss.toFixed(1) : null,
-        progress,
-        bmi: latestBody ? latestBody.bmi : (sorted.length > 0 ? sorted[sorted.length - 1].bmi : null),
-        bodyFat: latestBody ? latestBody.bodyFat : null,
-        waist: latestBody ? latestBody.waist : null,
-        hip: latestBody ? latestBody.hip : null,
-      };
-    }
-
     return {
       streak,
       maxStreak,
@@ -349,7 +311,6 @@ Page({
       weeksToBadge,
       weekGrowth,
       historyPlans,
-      bodyStats,
       _dateSet: dateSet,
     };
   },
@@ -436,39 +397,19 @@ Page({
     });
   },
 
-  // 暂停/恢复计划（通过切换状态实现）
-  onPausePlan() {
-    const isPaused = this.data.planStatus === 'idle';
-    const action = isPaused ? '恢复' : '暂停';
-
+  // 结束计划
+  onEndPlan() {
     wx.showModal({
-      title: `${action}计划`,
-      content: `确定要${action}当前断食计划吗？`,
+      title: '结束计划',
+      content: '确定要结束当前断食计划吗？结束后可以从历史记录中查看。',
       success: (res) => {
         if (res.confirm) {
-          if (isPaused) {
-            // 恢复：重新开始断食
-            const state = fasting.getCurrentState();
-            if (state.planId) {
-              fasting.startPlan(state.planId, {
-                fastHours: state.customFastHours,
-                eatHours: state.customEatHours,
-              });
-              this.setData({ planStatus: fasting.STATUS.FASTING });
-              wx.showToast({
-                title: '计划已恢复',
-                icon: 'success',
-              });
-            }
-          } else {
-            // 暂停：结束当前计划
-            fasting.stopPlan();
-            this.setData({ planStatus: fasting.STATUS.IDLE });
-            wx.showToast({
-              title: '计划已暂停',
-              icon: 'success',
-            });
-          }
+          fasting.stopPlan();
+          this.setData({ planStatus: fasting.STATUS.IDLE });
+          wx.showToast({
+            title: '计划已结束',
+            icon: 'success',
+          });
         }
       },
     });
@@ -517,13 +458,6 @@ Page({
       icon: 'none',
     });
     // 可扩展：跳转到历史计划详情
-  },
-
-  // 查看身体维度详情
-  onViewBodyDetail() {
-    wx.navigateTo({
-      url: '/pages/body-dimension/index',
-    });
   },
 
   // 创建新计划

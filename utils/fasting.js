@@ -189,8 +189,8 @@ function stopPlan() {
 
   storage.set(storage.KEYS.FASTING_STATE, { status: STATUS.IDLE });
   
-  // 同步 idle 状态到云端
-  syncToCloud({ status: STATUS.IDLE });
+  // 同步 idle 状态 + 最新历史记录到云端
+  syncToCloud({ status: STATUS.IDLE }, { fastingHistory: history.slice(0, 100) });
   
   return true;
 }
@@ -241,7 +241,7 @@ function sendPhaseNotification(title, content, endTime) {
 // ========== 云端同步 ==========
 
 /** 将当前本地断食状态推送到云端（仅已登录时生效，fire-and-forget） */
-function syncToCloud(state) {
+function syncToCloud(state, extraData) {
   const app = getApp();
   if (!app.globalData.userInfo || !app.globalData.userInfo.openid) return;
 
@@ -255,9 +255,16 @@ function syncToCloud(state) {
     currentCycleStart: state.currentCycleStart || null,
   };
 
+  const syncPayload = { fastingState: cloudData };
+  
+  // 如果提供了额外数据（如 fastingHistory），一并同步
+  if (extraData) {
+    Object.assign(syncPayload, extraData);
+  }
+
   wx.cloud.callFunction({
     name: 'syncData',
-    data: { action: 'upload', syncData: { fastingState: cloudData } }
+    data: { action: 'upload', syncData: syncPayload }
   }).catch(err => console.error('[syncToCloud] 失败:', err));
 }
 

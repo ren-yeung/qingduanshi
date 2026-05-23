@@ -14,7 +14,7 @@ Page({
       { type: 'monthly', name: '本月断食', icon: '📅' },
     ],
     currentFilter: 'total',
-    
+
     // 时间范围
     timeRanges: [
       { type: 'week', name: '本周' },
@@ -22,16 +22,16 @@ Page({
       { type: 'all', name: '历史' },
     ],
     currentTimeRange: 'week',
-    
+
     // 冠军数据
     champion: null,
-    
+
     // 排行榜列表
     rankingList: [],
-    
+
     // 我的排名
     myRank: null,
-    
+
     // 成就徽章
     badges: [],
     totalBadges: 0,
@@ -48,7 +48,6 @@ Page({
   },
 
   onShow() {
-    // 每次显示刷新排行
     this.loadRankingData();
   },
 
@@ -65,7 +64,7 @@ Page({
   onSwitchFilter(e) {
     const { type } = e.currentTarget.dataset;
     if (type === this.data.currentFilter) return;
-    
+
     this.setData({ currentFilter: type });
     this.loadRankingData();
   },
@@ -74,7 +73,7 @@ Page({
   onSwitchTimeRange(e) {
     const { type } = e.currentTarget.dataset;
     if (type === this.data.currentTimeRange) return;
-    
+
     this.setData({ currentTimeRange: type });
     this.loadRankingData();
   },
@@ -82,132 +81,46 @@ Page({
   // 加载排行榜数据
   async loadRankingData() {
     wx.showLoading({ title: '加载中...', mask: true });
-    
+
     try {
-      // 从本地存储获取数据
-      const fastingPlans = storage.get(storage.KEYS.FASTING_PLANS, []);
-      const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
-      const openid = userInfo.openid;
-      
-      // 模拟排行榜数据 (实际应从云端获取)
-      const mockRankingList = this.generateMockRanking(openid);
-      
-      // 找到冠军(连续天数最多的)
-      const champion = this.findChampion(mockRankingList);
-      
-      // 找到我的排名
-      const myRank = this.findMyRank(mockRankingList, openid, userInfo);
-      
-      this.setData({
-        rankingList: mockRankingList,
-        champion: champion,
-        myRank: myRank,
+      const { currentFilter, currentTimeRange } = this.data;
+
+      const res = await wx.cloud.callFunction({
+        name: 'getLeaderboard',
+        data: {
+          filterType: currentFilter,
+          timeRange: currentTimeRange,
+          limit: 30,
+        },
       });
-      
+
+      const result = res.result || res;
+
+      if (result.success && result.data) {
+        const { champion, rankingList, myRank } = result.data;
+
+        this.setData({
+          champion,
+          rankingList: rankingList || [],
+          myRank,
+        });
+      } else {
+        console.error('排行榜数据获取失败:', result.message);
+        this.setData({ rankingList: [], champion: null, myRank: null });
+      }
     } catch (err) {
       console.error('加载排行榜失败:', err);
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      this.setData({ rankingList: [], champion: null, myRank: null });
     } finally {
       wx.hideLoading();
     }
-  },
-
-  // 生成模拟排行榜数据
-  generateMockRanking(myOpenid) {
-    const avatars = ['🦋', '🌸', '🏃', '☀️', '🌙', '🍵', '🌿', '💫', '🎯', '⭐', '🌈', '🎨'];
-    const names = ['清风徐来', '健康达人小美', '运动健身王', '阳光小分队', '早睡早起党', '养生小专家', '轻生活倡导者', '元气少女', '活力满满', '自律达人', '星辰大海', '养生专家'];
-    
-    // 生成排行数据
-    const list = [];
-    for (let i = 0; i < 12; i++) {
-      const streak = 21 - i * 1.5;
-      const fastingHours = (streak * 16).toFixed(0);
-      
-      list.push({
-        rank: i + 1,
-        userId: `user_${i}`,
-        openid: i === 7 ? myOpenid : `mock_${i}`,
-        nickName: names[i],
-        avatarEmoji: avatars[i],
-        avatarUrl: '',
-        streak: Math.round(streak),
-        fastingHours: fastingHours,
-        completionRate: Math.round(100 - i * 3),
-        isVip: i === 0,
-        isMe: i === 7,
-        weightLoss: i < 3 ? `-${(3 - i * 0.5).toFixed(1)}kg` : '-0.5kg',
-      });
-    }
-    
-    return list;
-  },
-
-  // 找到冠军
-  findChampion(list) {
-    if (list.length === 0) return null;
-    
-    const topUser = list[0];
-    return {
-      title: this.getChampionTitle(),
-      name: topUser.nickName,
-      streak: topUser.streak,
-      fastingHours: topUser.fastingHours,
-      weightLoss: topUser.weightLoss,
-      completionRate: topUser.completionRate,
-    };
-  },
-
-  // 获取冠军称号
-  getChampionTitle() {
-    const titles = ['本周连续断食冠军', '本月断食达人', '减重先锋', '自律标兵'];
-    const filterType = this.data.currentFilter;
-    
-    const titleMap = {
-      total: titles[0],
-      streak: '连续断食王者',
-      monthly: '月度断食冠军',
-      weight: '减重达人',
-    };
-    
-    return titleMap[filterType] || titles[0];
-  },
-
-  // 找到我的排名
-  findMyRank(list, openid, userInfo) {
-    const myIndex = list.findIndex(item => item.openid === openid || item.isMe);
-    
-    if (myIndex === -1) return null;
-    
-    const myData = list[myIndex];
-    const prevRank = myIndex > 0 ? list[myIndex - 1] : null;
-    
-    let progress = '';
-    if (prevRank) {
-      const diff = prevRank.streak - myData.streak;
-      if (diff > 0) {
-        progress = `还差 ${diff} 天追上第 ${prevRank.rank} 名`;
-      } else {
-        progress = '继续保持！';
-      }
-    } else {
-      progress = '当前第一名！';
-    }
-    
-    return {
-      rank: myData.rank,
-      nickName: userInfo.nickName || '我',
-      avatarUrl: userInfo.avatarUrl || '',
-      streak: myData.streak,
-      progress: progress,
-    };
   },
 
   // 加载徽章数据
   loadMyBadgeData() {
     const earnedBadges = storage.get(storage.KEYS.EARNED_BADGES, []);
     const allBadges = this.getAllBadgesConfig();
-    
-    // 标记已获得和新增
+
     const badges = allBadges.slice(0, 6).map(badge => {
       const earned = earnedBadges.find(b => b.id === badge.id);
       return {
@@ -216,14 +129,13 @@ Page({
         isNew: earned && this.isNewBadge(earned),
       };
     });
-    
+
     this.setData({
-      badges: badges,
+      badges,
       totalBadges: allBadges.length,
     });
   },
 
-  // 获取所有徽章配置
   getAllBadgesConfig() {
     return [
       { id: 'streak_7', name: '7天连续', icon: '🔥' },
@@ -239,7 +151,6 @@ Page({
     ];
   },
 
-  // 判断是否是新获得的徽章 (7天内获得)
   isNewBadge(badge) {
     if (!badge.earnedAt) return false;
     const now = Date.now();
@@ -249,20 +160,14 @@ Page({
 
   // 查看用户详情
   onViewUser(e) {
-    const { userid } = e.currentTarget.dataset;
-    // 暂不实现，可跳转用户主页
     wx.showToast({ title: '功能开发中', icon: 'none' });
   },
 
-  // 查看所有徽章
   onViewAllBadges() {
     wx.showToast({ title: '功能开发中', icon: 'none' });
   },
 
-  // 查看单个徽章详情
   onViewBadge(e) {
-    const { id } = e.currentTarget.dataset;
-    // 暂不实现，可跳转徽章详情页
     wx.showToast({ title: '功能开发中', icon: 'none' });
   },
 

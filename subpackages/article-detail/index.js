@@ -18,7 +18,7 @@ Page({
     }
 
     const info = wx.getSystemInfoSync();
-    const navContentHeight = 44; // navbar content height (88rpx ≈ 44px on standard device)
+    const navContentHeight = 35; // navbar content height (70rpx ≈ 35px on standard device)
     this.setData({
       statusBarHeight: info.statusBarHeight,
       headerMarginTop: info.statusBarHeight + navContentHeight,

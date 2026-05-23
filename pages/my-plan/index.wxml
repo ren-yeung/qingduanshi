@@ -18,7 +18,7 @@
           <view class="hero-left">
             <view class="status-tag {{planStatus !== 'idle' ? 'active' : 'paused'}}">
               <view class="status-dot" wx:if="{{planStatus !== 'idle'}}"></view>
-              {{planStatus !== 'idle' ? '进行中' : '已暂停'}}
+              {{planStatus !== 'idle' ? '进行中' : '已结束'}}
             </view>
             <view class="plan-name">{{currentPlan.name}}</view>
             <view class="plan-desc">每日断食{{currentPlan.fastHours}}小时 · 进食窗口{{currentPlan.eatHours}}小时</view>
@@ -62,8 +62,8 @@
         <view class="action-btn primary" bindtap="onSwitchPlan">
           ⚡ 切换方案
         </view>
-        <view class="action-btn outline" bindtap="onPausePlan">
-          ⏸ {{planStatus !== 'idle' ? '暂停' : '恢复'}}
+        <view class="action-btn outline" bindtap="onEndPlan" wx:if="{{planStatus !== 'idle'}}">
+          ⏹ 结束计划
         </view>
       </view>
     </view>
@@ -158,71 +158,8 @@
     </view>
 
 
-    <!-- ========== 4. 身体维度 ========== -->
-    <view class="section-card" wx:if="{{bodyStats}}">
-      <view class="section-header">
-        <view class="section-title">📏 身体维度</view>
-        <view class="section-action" bindtap="onViewBodyDetail">详情 ›</view>
-      </view>
 
-      <!-- 目标进度 -->
-      <view class="body-goal-section">
-        <view class="body-goal-title">体重目标进度</view>
-
-        <!-- 四个体重数字 -->
-        <view class="body-weight-row">
-          <view class="body-weight-item left">
-            <view class="body-weight-val">{{bodyStats.firstWeight}}</view>
-            <view class="body-weight-label">初始体重 (kg)</view>
-          </view>
-          <view class="body-weight-arrow">→</view>
-          <view class="body-weight-item left target">
-            <view class="body-weight-val">{{bodyStats.targetWeight || '--'}}</view>
-            <view class="body-weight-label">目标体重 (kg)</view>
-          </view>
-          <view class="body-weight-divider"></view>
-          <view class="body-weight-item right">
-            <view class="body-weight-val green">{{bodyStats.lostWeight}}</view>
-            <view class="body-weight-label">已减 (kg)</view>
-          </view>
-          <view class="body-weight-slash">/</view>
-          <view class="body-weight-item right">
-            <view class="body-weight-val">{{bodyStats.targetLoss || '--'}}</view>
-            <view class="body-weight-label">目标减重 (kg)</view>
-          </view>
-        </view>
-
-        <!-- 进度条 -->
-        <view class="body-progress-wrap">
-          <view class="body-progress-bar">
-            <view class="body-progress-fill" style="width: {{bodyStats.progress}}%; background: {{theme.brandPrimary}};"></view>
-          </view>
-          <view class="body-progress-text">{{bodyStats.progress}}%</view>
-        </view>
-      </view>
-
-      <!-- 最近身体数据 -->
-      <view class="body-metrics" wx:if="{{bodyStats.bmi || bodyStats.bodyFat || bodyStats.waist || bodyStats.hip}}">
-        <view class="body-metric-item" wx:if="{{bodyStats.bmi}}">
-          <view class="metric-val">{{bodyStats.bmi}}</view>
-          <view class="metric-lbl">BMI</view>
-        </view>
-        <view class="body-metric-item" wx:if="{{bodyStats.bodyFat}}">
-          <view class="metric-val">{{bodyStats.bodyFat}}<text class="metric-unit">%</text></view>
-          <view class="metric-lbl">体脂率</view>
-        </view>
-        <view class="body-metric-item" wx:if="{{bodyStats.waist}}">
-          <view class="metric-val">{{bodyStats.waist}}<text class="metric-unit">cm</text></view>
-          <view class="metric-lbl">腰围</view>
-        </view>
-        <view class="body-metric-item" wx:if="{{bodyStats.hip}}">
-          <view class="metric-val">{{bodyStats.hip}}<text class="metric-unit">cm</text></view>
-          <view class="metric-lbl">臀围</view>
-        </view>
-      </view>
-    </view>
-
-
+    
     <!-- ========== 5. 历史计划归档 ========== -->
     <view class="section-card history-section">
       <view class="section-header">
