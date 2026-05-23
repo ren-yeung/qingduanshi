@@ -25,7 +25,7 @@ Page({
       { name: '个性化', icon: '🎨', url: '/pages/customize/index', type: 'custom' },
       { name: '联系我们', icon: '💬', url: '/pages/contact/index', type: 'contact' },
       { name: '使用教程', icon: '▶️', url: '/subpackages/article-detail/index?id=1', type: 'tutorial' },
-      { name: '消息通知', icon: '🔔', type: 'notify' },
+      { name: '消息通知', icon: '🔔', url: '/pages/notifications/index', type: 'notify' },
       { name: '设置', icon: '⚙️', url: '/pages/setting/index', type: 'setting' },
     ],
   },

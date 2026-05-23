@@ -1,0 +1,38 @@
+<view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
+    <view class="navbar-back" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="navbar-title">消息通知</view>
+  </view>
+
+  <!-- 通知列表 -->
+  <view class="list">
+    <block wx:for="{{notifications}}" wx:key="id">
+      <view class="notify-item {{expandedIds[item.id] ? 'expanded' : ''}}">
+        <view class="notify-header" data-id="{{item.id}}" bindtap="onToggleExpand">
+          <view class="notify-tag-row">
+            <view class="tag tag-{{item.type}}">
+              {{item.type === 'notice' ? '公告' : item.type === 'version' ? '版本' : item.type === 'guide' ? '指南' : '活动'}}
+            </view>
+            <text class="notify-time">{{item.time}}</text>
+          </view>
+          <text class="notify-title">{{item.title}}</text>
+          <text class="notify-summary">{{item.summary}}</text>
+          <view class="expand-hint">
+            <text class="hint-text">{{expandedIds[item.id] ? '收起详情' : '展开详情'}}</text>
+            <text class="hint-arrow {{expandedIds[item.id] ? 'up' : ''}}">›</text>
+          </view>
+        </view>
+
+        <view class="notify-detail" wx:if="{{expandedIds[item.id]}}">
+          <block wx:for="{{item.content}}" wx:key="*this" wx:for-item="line">
+            <text class="detail-line" wx:if="{{line === ''}}"></text>
+            <text class="detail-line" wx:else>{{line}}</text>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

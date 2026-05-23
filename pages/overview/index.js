@@ -344,11 +344,15 @@ Page({
   },
 
   onNotification() {
-    wx.showToast({ title: '通知设置', icon: 'none' });
+    wx.navigateTo({
+      url: '/pages/notifications/index',
+    });
   },
 
   onSettings() {
-    wx.showToast({ title: '设置页面', icon: 'none' });
+    wx.navigateTo({
+      url: '/pages/setting/index',
+    });
   },
 
   goToDataCenter() {

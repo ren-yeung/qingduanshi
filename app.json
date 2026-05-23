@@ -97,6 +97,11 @@
       "root": "pages/privacy",
       "name": "privacy",
       "pages": ["index"]
+    },
+    {
+      "root": "pages/notifications",
+      "name": "notifications",
+      "pages": ["index"]
     }
   ],
   "window": {
