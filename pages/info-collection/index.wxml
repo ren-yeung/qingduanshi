@@ -1,7 +1,7 @@
 <!-- 自定义导航栏 -->
 <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
   <view class="navbar-back" bindtap="onBack">
-    <text class="back-arrow" style="color: {{theme.textPrimary}};">‹</text>
+    <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
   </view>
   <view class="navbar-title" style="color: {{theme.textPrimary}};">完善个人信息</view>
 </view>

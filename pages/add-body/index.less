@@ -11,14 +11,25 @@
     z-index: 100;
     background: #f5f6f8;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+    height: 70rpx;
+    padding-bottom: 30rpx;
 
     .navbar-back {
       position: absolute;
       left: 32rpx;
-      top: 50%;
-      padding: 20rpx 0;
+      bottom: 30rpx;
+      width: 64rpx;
+      height: 64rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      &:active {
+        background: rgba(0, 0, 0, 0.05);
+      }
 
       .back-icon {
         font-size: 56rpx;
@@ -32,7 +43,6 @@
       font-size: 40rpx;
       font-weight: 700;
       color: #1a1a1a;
-      padding: 20rpx 0;
     }
   }
 

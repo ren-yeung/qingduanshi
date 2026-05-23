@@ -1,10 +1,10 @@
 <view class="detail-page">
   <!-- 自定义导航栏 -->
-  <view class="navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
     <view class="navbar-back" bindtap="onBack">
-      <text class="back-icon">‹</text>
+      <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title">文章详情</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">文章详情</view>
   </view>
 
   <block wx:if="{{article}}">

@@ -1,6 +1,8 @@
+const themeBehavior = require('~/behaviors/theme');
 const { ARTICLES_FULL } = require('../articles');
 
 Page({
+  behaviors: [themeBehavior],
   data: {
     statusBarHeight: 0,
     article: null,
@@ -16,7 +18,7 @@ Page({
     }
 
     const info = wx.getSystemInfoSync();
-    const navContentHeight = 44; // navbar content height (88rpx ≈ 44px on standard device)
+    const navContentHeight = 50; // navbar content height (70rpx + 30rpx ≈ 50px)
     this.setData({
       statusBarHeight: info.statusBarHeight,
       headerMarginTop: info.statusBarHeight + navContentHeight,
