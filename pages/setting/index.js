@@ -11,41 +11,41 @@ Page({
       [
         {
           title: '通用设置',
-          url: '',
+          url: '/pages/general-settings/index',
           icon: '⚙️',
         },
         {
           title: '通知设置',
-          url: '',
+          url: '/pages/notify-settings/index',
           icon: '🔔',
         },
       ],
       [
         {
           title: '深色模式',
-          url: '',
+          url: '/pages/dark-mode/index',
           icon: '🌙',
         },
         {
           title: '字体大小',
-          url: '',
+          url: '/pages/font-size/index',
           icon: '🔤',
         },
         {
           title: '播放设置',
-          url: '',
+          url: '/pages/sound-settings/index',
           icon: '🔊',
         },
       ],
       [
         {
           title: '账号安全',
-          url: '',
+          url: '/pages/account-security/index',
           icon: '🔒',
         },
         {
           title: '隐私',
-          url: '',
+          url: '/pages/privacy/index',
           icon: '🔐',
         },
         {
@@ -93,8 +93,9 @@ Page({
 
   onEleClick(e) {
     const { title, url } = e.currentTarget.dataset.data;
-    if (url) return;
-    wx.showToast({ title, icon: 'none' });
+    if (url) {
+      wx.navigateTo({ url });
+    }
   },
 
   onBack() {

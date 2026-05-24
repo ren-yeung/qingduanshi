@@ -102,6 +102,36 @@
       "root": "pages/notifications",
       "name": "notifications",
       "pages": ["index"]
+    },
+    {
+      "root": "pages/general-settings",
+      "name": "general-settings",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/notify-settings",
+      "name": "notify-settings",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/dark-mode",
+      "name": "dark-mode",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/font-size",
+      "name": "font-size",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/sound-settings",
+      "name": "sound-settings",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/account-security",
+      "name": "account-security",
+      "pages": ["index"]
     }
   ],
   "window": {

@@ -1,0 +1,55 @@
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-icon">‹</text>
+  </view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">播放设置</view>
+</view>
+
+<view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
+
+  <!-- 声音与振动 -->
+  <view class="section-label">声音与振动</view>
+  <view class="card-group">
+    <view class="setting-row" data-key="soundEnabled" bindtap="onSwitchChange">
+      <view class="row-icon bg-indigo"><text class="c-indigo">🔊</text></view>
+      <text class="row-label">提示音效</text>
+      <view class="row-right"><view class="switch {{soundEnabled ? 'on' : 'off'}}"></view></view>
+    </view>
+    <view class="setting-row" data-key="vibrateEnabled" bindtap="onSwitchChange">
+      <view class="row-icon bg-purple"><text class="c-purple">📳</text></view>
+      <text class="row-label">振动反馈</text>
+      <view class="row-right"><view class="switch {{vibrateEnabled ? 'on' : 'off'}}"></view></view>
+    </view>
+    <view class="setting-row" bindtap="onRingtoneClick">
+      <view class="row-icon bg-orange"><text class="c-orange">🔔</text></view>
+      <text class="row-label">提示铃声</text>
+      <view class="row-right"><text class="row-value">{{ringtone}}</text><text class="row-arrow">›</text></view>
+    </view>
+  </view>
+
+  <!-- 动画效果 -->
+  <view class="section-label">动画效果</view>
+  <view class="card-group">
+    <view class="setting-row" data-key="transitionAnim" bindtap="onSwitchChange">
+      <view class="row-icon bg-green"><text class="c-green">✨</text></view>
+      <text class="row-label">页面过渡动画</text>
+      <view class="row-right"><view class="switch {{transitionAnim ? 'on' : 'off'}}"></view></view>
+    </view>
+    <view class="setting-row" data-key="checkinAnim" bindtap="onSwitchChange">
+      <view class="row-icon bg-blue"><text class="c-blue">🎉</text></view>
+      <text class="row-label">打卡成功动效</text>
+      <view class="row-right"><view class="switch {{checkinAnim ? 'on' : 'off'}}"></view></view>
+    </view>
+    <view class="setting-row" data-key="achievementAnim" bindtap="onSwitchChange">
+      <view class="row-icon bg-yellow"><text class="c-yellow">🏆</text></view>
+      <text class="row-label">成就解锁特效</text>
+      <view class="row-right"><view class="switch {{achievementAnim ? 'on' : 'off'}}"></view></view>
+    </view>
+  </view>
+
+  <!-- 省电提示 -->
+  <view class="tip-box">
+    <text class="tip-icon">🔋</text>
+    <text class="tip-text">关闭动画和振动可略微减少电量消耗，建议在低电量模式下关闭。</text>
+  </view>
+</view>

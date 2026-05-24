@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=375, initial-scale=1.0">
+<title>设置子页面设计预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: #e8eaed;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .phone-frame {
+    width: 375px;
+    min-height: 812px;
+    background: #f5f6f8;
+    position: relative;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    border-radius: 40px;
+    border: 8px solid #1a1a1a;
+  }
+
+  /* ===== 页面标签栏 ===== */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    overflow-x: auto;
+    padding: 0 8px;
+    gap: 4px;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-item {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .tab-item:hover { color: #555; }
+  .tab-item.active {
+    color: var(--accent, #2EAF7D);
+    border-bottom-color: var(--accent, #2EAF7D);
+    font-weight: 600;
+  }
+
+  /* ===== 子页面 ===== */
+  .sub-page { display: none; padding-bottom: 30px; }
+  .sub-page.active { display: block; }
+
+  /* ===== 导航栏 ===== */
+  .nav-bar {
+    position: sticky;
+    top: 41px;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 88px;
+    padding-bottom: 14px;
+    background: #f5f6f8;
+  }
+  .nav-back {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .nav-back:hover { background: rgba(0,0,0,0.06); }
+  .back-icon { font-size: 26px; font-weight: 300; color: #1a1a1a; line-height: 1; }
+  .nav-title { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+
+  /* ===== 内容区 ===== */
+  .page-body { padding: 12px 16px; }
+
+  /* ===== 分组标题 ===== */
+  .section-label {
+    font-size: 13px;
+    color: #999;
+    padding: 18px 4px 10px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ===== 菜单卡片容器 ===== */
+  .card-group {
+    margin-bottom: 14px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+
+  /* ===== 设置项行 ===== */
+  .setting-row {
+    display: flex;
+    align-items: center;
+    padding: 15px 18px;
+    min-height: 52px;
+    cursor: pointer;
+    transition: background 0.12s;
+    position: relative;
+  }
+  .setting-row:hover { background: #fafafa; }
+  .setting-row:active { background: #f2f3f5; }
+  .setting-row + .setting-row::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 58px;
+    right: 0;
+    height: 0.5px;
+    background: #f0f0f0;
+  }
+  .setting-row:last-child { border-radius: 0 0 14px 14px; }
+  .setting-row:first-child:last-child { border-radius: 14px; }
+
+  /* 左侧图标 */
+  .row-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+    font-size: 17px;
+  }
+  .row-label {
+    font-size: 15px;
+    color: #333;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .row-right { margin-left: auto; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .row-value { font-size: 14px; color: #999; }
+  .row-arrow { font-size: 18px; color: #ccc; line-height: 1; }
+
+  /* ===== Switch 开关 ===== */
+  .switch {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+  .switch.off { background: #e5e5e5; }
+  .switch.on { background: var(--accent, #2EAF7D); }
+  .switch::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    top: 2px;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .switch.off::after { left: 2px; }
+  .switch.on::after { left: 22px; }
+
+  /* ===== 滑块 ===== */
+  .slider-container { padding: 18px 18px 10px; background: #fff; border-radius: 14px; margin-bottom: 14px; box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
+  .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .slider-label { font-size: 15px; color: #333; font-weight: 500; }
+  .slider-value { font-size: 14px; color: var(--accent, #2EAF7D); font-weight: 600; }
+  .slider-track {
+    width: 100%; height: 6px;
+    background: #e8e8e8;
+    border-radius: 3px;
+    position: relative;
+  }
+  .slider-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent, #2EAF7D), #3dd68f);
+    border-radius: 3px;
+    width: 50%;
+    transition: width 0.2s;
+  }
+  .slider-thumb {
+    width: 22px; height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 8px rgba(46,175,125,0.35);
+    border: 3px solid var(--accent, #2EAF7D);
+    cursor: pointer;
+  }
+  .slider-marks { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: #bbb; }
+
+  /* ===== 单选组 ===== */
+  .radio-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+  .radio-option {
+    display: flex; align-items: center;
+    padding: 15px 18px;
+    cursor: pointer;
+    transition: background 0.12s;
+    position: relative;
+  }
+  .radio-option:hover { background: #fafafa; }
+  .radio-option + .radio-option::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 18px;
+    right: 18px;
+    height: 0.5px;
+    background: #f0f0f0;
+  }
+  .radio-option:last-child .radio-circle { border-radius: 0 0 14px 14px; }
+  .radio-text { font-size: 15px; color: #333; font-weight: 500; }
+  .radio-desc { font-size: 12px; color: #999; margin-top: 2px; }
+  .radio-left { flex: 1; }
+  .radio-circle {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .radio-circle.checked { border-color: var(--accent, #2EAF7D); background: var(--accent, #2EAF7D); }
+  .radio-circle.checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  /* ===== 提示信息 ===== */
+  .tip-box {
+    background: rgba(46,175,125,0.06);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 0 16px 14px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .tip-box .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== 危险按钮 ===== */
+  .danger-btn {
+    display: flex; align-items: center;
+    justify-content: center;
+    width: calc(100% - 32px);
+    margin: 20px 16px 0;
+    padding: 15px;
+    background: #fff;
+    border-radius: 14px;
+    color: #e54d42;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 8px rgba(229,77,66,0.08);
+    transition: all 0.15s;
+  }
+  .danger-btn:hover { background: #fef2f2; }
+  .danger-btn:active { background: #fee2e2; }
+
+  /* ===== 图标配色 ===== */
+  .bg-blue   { background: #EEF2FF; } .c-blue   { color: #4F46E5; }
+  .bg-orange { background: #FFF7ED; } .c-orange { color: #EA580C; }
+  .bg-purple { background: #FDF4FF; } .c-purple { color: #C026D3; }
+  .bg-green  { background: #ECFDF5; } .c-green  { color: #059669; }
+  .bg-indigo { background: #EFF6FF; } .c-indigo { color: #2563EB; }
+  .bg-red    { background: #FEF2F2; } .c-red    { color: #DC2626; }
+  .bg-emerald{ background: #F0FDF4; } .c-emerald{ color: #16A34A; }
+  .bg-yellow { background: #FFFBEB; } .c-yellow { color: #D97706; }
+  .bg-gray   { background: #F9FAFB; } .c-gray   { color: #6B7280; }
+
+  /* ===== 文档型页面（隐私） ===== */
+  .doc-container { padding: 16px; padding-top: 8px; }
+  .doc-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+  }
+  .doc-title { font-size: 15px; font-weight: 700; color: var(--accent, #2EAF7D); margin-bottom: 10px; }
+  .doc-body { font-size: 14px; color: #555; line-height: 1.75; }
+  .doc-highlight {
+    background: rgba(46,175,125,0.07);
+    padding: 12px 14px;
+    border-left: 3px solid var(--accent, #2EAF7D);
+    border-radius: 0 10px 10px 0;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.65;
+  }
+  .doc-footer {
+    text-align: center;
+    padding: 36px 0 20px;
+    font-size: 12px;
+    color: #bbb;
+  }
+
+  /* ===== 底部安全区 ===== */
+  .safe-area { height: 20px; }
+
+  /* 标签角标 */
+  .design-badge {
+    position: sticky;
+    top: 41px;
+    z-index: 150;
+    float: right;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 0 0 0 10px;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <!-- 顶部标签栏 -->
+  <div class="tab-bar" id="tabs">
+    <div class="tab-item active" data-page="general">通用设置</div>
+    <div class="tab-item" data-page="notify">通知</div>
+    <div class="tab-item" data-page="dark">深色模式</div>
+    <div class="tab-item" data-page="font">字体</div>
+    <div class="tab-item" data-page="sound">播放</div>
+    <div class="tab-item" data-page="security">账号安全</div>
+    <div class="tab-item" data-page="privacy">隐私</div>
+  </div>
+
+  <!-- ==================== 1. 通用设置 ==================== -->
+  <div class="sub-page active" id="page-general">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">通用设置</div>
+    </div>
+
+    <div class="page-body">
+      <!-- 语言 -->
+      <div class="section-label">语言与地区</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-blue"><span class="c-blue">🌐</span></div>
+          <span class="row-label">语言</span>
+          <div class="row-right"><span class="row-value">简体中文</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-green"><span class="c-green">📏</span></div>
+          <span class="row-label">单位制</span>
+          <div class="row-right"><span class="row-value">公制 (kg/cm)</span><span class="row-arrow">›</span></div>
+        </div>
+      </div>
+
+      <!-- 默认设置 -->
+      <div class="section-label">默认行为</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-purple"><span class="c-purple">🎯</span></div>
+          <span class="row-label">默认断食方案</span>
+          <div class="row-right"><span class="row-value">16:8 间歇性断食</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-orange"><span class="c-orange">📅</span></div>
+          <span class="row-label">每周起始日</span>
+          <div class="row-right"><span class="row-value">周一</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-indigo"><span class="c-indigo">🔄</span></div>
+          <span class="row-label">自动同步数据</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-emerald"><span class="c-emerald">☁️</span></div>
+          <span class="row-label">仅 Wi-Fi 下同步</span>
+          <div class="row-right"><div class="switch off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <span>开启「自动同步」后，您的断食记录和身体数据将实时备份至云端，换设备不会丢失。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. 通知设置 ==================== -->
+  <div class="sub-page" id="page-notify">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">通知设置</div>
+    </div>
+
+    <div class="page-body">
+      <div class="tip-box">
+        <span class="tip-icon">🔔</span>
+        <span>请确保微信已开启本小程序的通知权限，否则无法收到提醒。</span>
+      </div>
+
+      <!-- 断食提醒 -->
+      <div class="section-label">断食提醒</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-red"><span class="c-red">⏰</span></div>
+          <span class="row-label">开始断食提醒</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-orange"><span class="c-orange">🏁</span></div>
+          <span class="row-label">结束断食提醒</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-yellow"><span class="c-yellow">🕐</span></div>
+          <span class="row-label">中途阶段提醒</span>
+          <div class="row-right"><div class="switch off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+      </div>
+
+      <!-- 打卡提醒 -->
+      <div class="section-label">打卡与互动</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-green"><span class="c-green">✅</span></div>
+          <span class="row-label">每日打卡提醒</span>
+          <div class="row-right"><span class="row-value">21:00</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-indigo"><span class="c-indigo">💬</span></div>
+          <span class="row-label">社区互动通知</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-purple"><span class="c-purple">📢</span></div>
+          <span class="row-label">活动与公告推送</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. 深色模式 ==================== -->
+  <div class="sub-page" id="page-dark">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">深色模式</div>
+    </div>
+
+    <div class="page-body">
+      <div class="section-label">外观主题</div>
+      <div class="radio-card">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-left">
+            <div class="radio-text">跟随系统</div>
+            <div class="radio-desc">自动匹配设备的亮/暗模式设置</div>
+          </div>
+          <div class="radio-circle checked"></div>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-left">
+            <div class="radio-text">☀️ 浅色模式</div>
+            <div class="radio-desc">始终使用明亮界面，适合白天使用</div>
+          </div>
+          <div class="radio-circle"></div>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)" style="border-radius: 0 0 14px 14px;">
+          <div class="radio-left">
+            <div class="radio-text">🌙 深色模式</div>
+            <div class="radio-desc">暗色背景护眼，适合夜间使用</div>
+          </div>
+          <div class="radio-circle"></div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">🌙</span>
+        <span>选择「跟随系统」时，小程序会根据您手机的系统设置自动切换，无需手动操作。</span>
+      </div>
+
+      <!-- 主题预览 -->
+      <div class="section-label">效果预览</div>
+      <div style="display:flex;gap:10px;padding:0 4px;">
+        <div style="flex:1;background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
+          <div style="font-size:12px;color:#999;margin-bottom:8px;">浅色</div>
+          <div style="width:100%;height:60px;background:#f5f6f8;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:12px;color:#333;">预览区域</span>
+          </div>
+        </div>
+        <div style="flex:1;background:#1a1a2e;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.3);">
+          <div style="font-size:12px;color:#666;margin-bottom:8px;">深色</div>
+          <div style="width:100%;height:60px;background:#16213e;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:12px;color:#ccc;">预览区域</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. 字体大小 ==================== -->
+  <div class="sub-page" id="page-font">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">字体大小</div>
+    </div>
+
+    <div class="page-body">
+      <div class="slider-container">
+        <div class="slider-header">
+          <span class="slider-label">文字大小</span>
+          <span class="slider-value" id="fontVal">标准</span>
+        </div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:50%"></div>
+          <div class="slider-thumb" style="left:50%"></div>
+        </div>
+        <div class="slider-marks">
+          <span>小</span>
+          <span>标准</span>
+          <span>大</span>
+          <span>特大</span>
+        </div>
+      </div>
+
+      <!-- 实时预览 -->
+      <div class="section-label">预览效果</div>
+      <div class="card-group" style="padding:18px;">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:15px;font-weight:600;color:#333;margin-bottom:4px;">今日断食进度</div>
+          <div style="font-size:13px;color:#999;">已坚持 6 小时 23 分钟</div>
+        </div>
+        <div style="background:#f5f6f8;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;color:#666;line-height:1.7;">这是一段示例文字，用于预览当前字体大小的显示效果。调整上方滑块即可看到变化。</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;">
+          <div style="flex:1;height:38px;background:var(--accent,#2EAF7D);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;">开始断食</div>
+          <div style="flex:1;height:38px;background:#f0f0f0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;">结束断食</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <span>字体大小仅影响小程序内的显示，不会改变系统字体设置。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5. 播放设置 ==================== -->
+  <div class="sub-page" id="page-sound">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">播放设置</div>
+    </div>
+
+    <div class="page-body">
+      <!-- 声音 -->
+      <div class="section-label">声音与振动</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-indigo"><span class="c-indigo">🔊</span></div>
+          <span class="row-label">提示音效</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-purple"><span class="c-purple">📳</span></div>
+          <span class="row-label">振动反馈</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-orange"><span class="c-orange">🔔</span></div>
+          <span class="row-label">提示铃声</span>
+          <div class="row-right"><span class="row-value">轻柔</span><span class="row-arrow">›</span></div>
+        </div>
+      </div>
+
+      <!-- 动画 -->
+      <div class="section-label">动画效果</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-green"><span class="c-green">✨</span></div>
+          <span class="row-label">页面过渡动画</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-blue"><span class="c-blue">🎉</span></div>
+          <span class="row-label">打卡成功动效</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-yellow"><span class="c-yellow">🏆</span></div>
+          <span class="row-label">成就解锁特效</span>
+          <div class="row-right"><div class="switch on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">🔋</span>
+        <span>关闭动画和振动可略微减少电量消耗，建议在低电量模式下关闭。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. 账号安全 ==================== -->
+  <div class="sub-page" id="page-security">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">账号安全</div>
+    </div>
+
+    <div class="page-body">
+      <!-- 账号信息 -->
+      <div class="section-label">账号信息</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-blue"><span class="c-blue">👤</span></div>
+          <span class="row-label">头像</span>
+          <div class="row-right">
+            <img src="" alt="" style="width:28px;height:28px;border-radius:50%;background:#e8e8e8;" onerror="this.style.display='none'"/>
+            <span class="row-arrow">›</span>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-green"><span class="c-green">📝</span></div>
+          <span class="row-label">昵称</span>
+          <div class="row-right"><span class="row-value">轻断食达人</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-purple"><span class="c-purple">🆔</span></div>
+          <span class="row-label">OpenID</span>
+          <div class="row-right"><span class="row-value" style="font-size:12px;">oX***abc123</span><span class="row-arrow">›</span></div>
+        </div>
+      </div>
+
+      <!-- 安全设置 -->
+      <div class="section-label">安全设置</div>
+      <div class="card-group">
+        <div class="setting-row">
+          <div class="row-icon bg-indigo"><span class="c-indigo">🔐</span></div>
+          <span class="row-label">修改密码</span>
+          <div class="row-right"><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-orange"><span class="c-orange">📱</span></div>
+          <span class="row-label">绑定手机号</span>
+          <div class="row-right"><span class="row-value">138****8888</span><span class="row-arrow">›</span></div>
+        </div>
+        <div class="setting-row">
+          <div class="row-icon bg-emerald"><span class="c-emerald">🛡️</span></div>
+          <span class="row-label">登录设备管理</span>
+          <div class="row-right"><span class="row-arrow">›</span></div>
+        </div>
+      </div>
+
+      <div class="danger-btn" style="background:none;box-shadow:none;font-weight:normal;color:#999;font-size:13px;margin:8px 16px;text-align:left;padding:12px 18px;justify-content:flex-start;">
+        上次登录：2026-05-24 09:30 · iPhone · 北京
+      </div>
+
+      <div class="danger-btn">
+        🚪 退出当前账号
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. 隐私政策（已有） ==================== -->
+  <div class="sub-page" id="page-privacy">
+    <div class="nav-bar">
+      <div class="nav-back"><span class="back-icon">‹</span></div>
+      <div class="nav-title">隐私政策</div>
+    </div>
+
+    <div class="doc-container">
+      <div class="doc-card">
+        <div class="doc-title">《小小轻断食》隐私政策</div>
+        <div style="text-align:center;font-size:12px;color:#bbb;margin-bottom:16px;">更新日期：2026年5月22日</div>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">引言</div>
+        <div class="doc-body">
+          我们深知个人信息对您的重要性。我们将按照法律法规要求，采取相应安全保护措施，尽力保护您的个人信息安全可控。
+        </div>
+      </div>
+
+      <div class="doc-highlight">
+        我们承诺：仅会在实现产品功能所必需的范围内收集您的信息，不会将您的信息用于任何未经授权的用途。
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">一、我们如何收集和使用信息</div>
+        <div class="doc-body" style="margin-top:8px;">
+          <p style="margin-bottom:8px;"><b>（一）账号登录与基本信息</b><br/>微信昵称、头像、OpenID</p>
+          <p style="margin-bottom:8px;"><b>（二）功能使用数据</b><br/>断食记录、饮食日志、身体数据、打卡记录</p>
+          <p><b>（三）设备与系统信息</b><br/>设备型号、操作系统版本、网络状态</p>
+        </div>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">二、我们如何共享、转让、公开披露信息</div>
+        <div class="doc-body" style="margin-top:8px;">我们不会向除微信平台和腾讯云以外的第三方共享您的个人信息。</div>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">三、您的权利</div>
+        <div class="doc-body" style="margin-top:8px;">
+          访问权 · 更正权 · 删除权 · 注销权 · 撤回授权
+        </div>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">联系我们</div>
+        <div class="doc-body" style="margin-top:8px;">
+          📧 y465023714@163.com<br/>
+          或通过「联系客服」页面与我们联系。
+        </div>
+      </div>
+
+      <div class="doc-footer">— 感谢您信任「小小轻断食」 —</div>
+    </div>
+  </div>
+
+  <div class="safe-area"></div>
+
+</div>
+
+<script>
+// Tab 切换
+const tabs = document.querySelectorAll('.tab-item');
+const pages = document.querySelectorAll('.sub-page');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    pages.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-' + tab.dataset.page).classList.add('active');
+  });
+});
+
+// Radio 选择
+function selectRadio(el) {
+  const group = el.parentElement;
+  group.querySelectorAll('.radio-circle').forEach(c => c.classList.remove('checked'));
+  el.querySelector('.radio-circle').classList.add('checked');
+}
+</script>
+
+</body>
+</html>

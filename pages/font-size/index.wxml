@@ -1,0 +1,55 @@
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}}; font-family: {{theme.fontFamily}};">
+  <view class="navbar-back" bindtap="onBack">
+    <text class="back-icon">‹</text>
+  </view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">字体大小</view>
+</view>
+
+<view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{fontSizeScales[fontSizeIndex]}};">
+
+  <!-- 滑块控件 -->
+  <view class="slider-container">
+    <view class="slider-header">
+      <text class="slider-label">文字大小</text>
+      <text class="slider-value">{{fontSizeLabels[fontSizeIndex]}}</text>
+    </view>
+
+    <view class="slider-wrapper">
+      <view class="slider-track" bindtap="onTapSlider">
+        <view class="slider-fill" style="width: {{fontSizeIndex / 3 * 100}}%;"></view>
+        <view class="slider-thumb" style="left: {{fontSizeIndex / 3 * 100}}%;" catchtouchstart="onSliderTouchStart" catchtouchmove="onSliderTouchMove" catchtouchend="onSliderTouchEnd"></view>
+      </view>
+    </view>
+
+    <view class="slider-marks">
+      <text class="mark-item">小</text>
+      <text class="mark-item">标准</text>
+      <text class="mark-item">大</text>
+      <text class="mark-item">特大</text>
+    </view>
+  </view>
+
+  <!-- 实时预览 -->
+  <view class="section-label">预览效果</view>
+  <view class="card-group preview-card">
+    <view class="preview-title-row">
+      <text class="preview-main-title">今日断食进度</text>
+    </view>
+    <text class="preview-sub-title">已坚持 6 小时 23 分钟</text>
+
+    <view class="preview-body-box">
+      <text class="preview-body-text">这是一段示例文字，用于预览当前字体大小的显示效果。调整上方滑块即可看到变化。</text>
+    </view>
+
+    <view class="preview-btn-row">
+      <view class="preview-btn btn-primary">开始断食</view>
+      <view class="preview-btn btn-secondary">结束断食</view>
+    </view>
+  </view>
+
+  <!-- 提示框 -->
+  <view class="tip-box">
+    <text class="tip-icon">📝</text>
+    <text class="tip-text">字体大小仅影响小程序内的显示，不会改变系统字体设置。</text>
+  </view>
+</view>
