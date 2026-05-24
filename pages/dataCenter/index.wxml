@@ -4,21 +4,21 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">数据统计</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '数据统计'}}</view>
   </view>
 
   <!-- 范围切换 -->
   <view class="range-bar">
-    <view class="range-item {{range === 7 ? 'range-item--active' : ''}}" data-range="7" bindtap="onChangeRange">近7天</view>
-    <view class="range-item {{range === 30 ? 'range-item--active' : ''}}" data-range="30" bindtap="onChangeRange">近30天</view>
+    <view class="range-item {{range === 7 ? 'range-item--active' : ''}}" data-range="7" bindtap="onChangeRange">{{t1 || '近7天'}}</view>
+    <view class="range-item {{range === 30 ? 'range-item--active' : ''}}" data-range="30" bindtap="onChangeRange">{{t2 || '近30天'}}</view>
   </view>
 
   <!-- 图表 -->
   <view class="chart-card">
-    <view class="chart-title">体重趋势 (kg)</view>
+    <view class="chart-title">{{t3 || '体重趋势'}} ({{weightUnit || 'kg'}})</view>
     <canvas type="2d" id="weightChart" class="chart-canvas" wx:if="{{weightRecords.length}}"></canvas>
     <view class="empty-chart" wx:else>
-      <text>暂无数据，快去记录体重吧</text>
+      <text>{{t4 || '暂无数据，快去记录体重吧'}}</text>
     </view>
   </view>
 
@@ -26,28 +26,28 @@
   <view class="stats-grid">
     <view class="stats-item">
       <text class="stats-val">{{stats.current}}</text>
-      <text class="stats-name">当前体重</text>
+      <text class="stats-name">{{t5 || '当前体重'}}</text>
     </view>
     <view class="stats-item">
       <text class="stats-val">{{stats.lowest}}</text>
-      <text class="stats-name">最低体重</text>
+      <text class="stats-name">{{t6 || '最低体重'}}</text>
     </view>
     <view class="stats-item">
       <text class="stats-val">{{stats.average}}</text>
-      <text class="stats-name">平均体重</text>
+      <text class="stats-name">{{t7 || '平均体重'}}</text>
     </view>
     <view class="stats-item">
       <text class="stats-val">{{stats.bmi}}</text>
-      <text class="stats-name">BMI</text>
+      <text class="stats-name">{{t8 || 'BMI'}}</text>
     </view>
   </view>
 
   <!-- 数据列表 -->
   <view class="list-card">
-    <view class="list-title">记录明细</view>
+    <view class="list-title">{{t9 || '记录明细'}}</view>
     <view class="list-row" wx:for="{{weightRecords}}" wx:key="date">
       <text class="list-date">{{item.date}}</text>
-      <text class="list-weight">{{item.weight}} kg</text>
+      <text class="list-weight">{{item.weightDisplay}} {{weightUnit || 'kg'}}</text>
       <text class="list-bmi" wx:if="{{item.bmi}}">BMI {{item.bmi}}</text>
     </view>
   </view>

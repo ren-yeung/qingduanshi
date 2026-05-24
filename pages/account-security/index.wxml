@@ -2,17 +2,17 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">账号安全</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '账号安全'}}</view>
 </view>
 
 <view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
 
   <!-- 账号信息 -->
-  <view class="section-label">账号信息</view>
+  <view class="section-label">{{t1 || '账号信息'}}</view>
   <view class="card-group">
     <view class="setting-row" data-type="avatar" bindtap="onRowClick">
       <view class="row-icon bg-blue"><text class="c-blue">👤</text></view>
-      <text class="row-label">头像</text>
+      <text class="row-label">{{t2 || '头像'}}</text>
       <view class="row-right">
         <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="avatar-thumb" mode="aspectFill"></image>
         <text class="row-arrow">›</text>
@@ -20,32 +20,32 @@
     </view>
     <view class="setting-row" data-type="nickname" bindtap="onRowClick">
       <view class="row-icon bg-green"><text class="c-green">📝</text></view>
-      <text class="row-label">昵称</text>
+      <text class="row-label">{{t3 || '昵称'}}</text>
       <view class="row-right"><text class="row-value">{{nickname}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-type="openid" bindtap="onRowClick">
       <view class="row-icon bg-purple"><text class="c-purple">🆔</text></view>
       <text class="row-label">OpenID</text>
-      <view class="row-right"><text class="row-value openid-val">{{maskedOpenid}}</text><text class="row-arrow">›</text></div>
+      <view class="row-right"><text class="row-value openid-val">{{maskedOpenid}}</text><text class="row-arrow">›</text></view>
     </view>
   </view>
 
   <!-- 安全设置 -->
-  <view class="section-label">安全设置</view>
+  <view class="section-label">{{t4 || '安全设置'}}</view>
   <view class="card-group">
     <view class="setting-row" data-type="password" bindtap="onRowClick">
       <view class="row-icon bg-indigo"><text class="c-indigo">🔐</text></view>
-      <text class="row-label">修改密码</text>
+      <text class="row-label">{{t5 || '修改密码'}}</text>
       <view class="row-right"><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-type="phone" bindtap="onRowClick">
       <view class="row-icon bg-orange"><text class="c-orange">📱</text></view>
-      <text class="row-label">绑定手机号</text>
+      <text class="row-label">{{t6 || '绑定手机号'}}</text>
       <view class="row-right"><text class="row-value">{{phone}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-type="device" bindtap="onRowClick">
       <view class="row-icon bg-emerald"><text class="c-emerald">🛡️</text></view>
-      <text class="row-label">登录设备管理</text>
+      <text class="row-label">{{t7 || '登录设备管理'}}</text>
       <view class="row-right"><text class="row-arrow">›</text></view>
     </view>
   </view>

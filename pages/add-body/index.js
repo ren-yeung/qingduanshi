@@ -1,8 +1,30 @@
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const unitUtil = require('~/utils/unit');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: [
+    '记录身体数据',   // t0
+    '体重',           // t1
+    '体脂率',         // t2
+    '腰围',           // t3
+    '臀围',           // t4
+    '今日步数',       // t5
+    '心情评分',       // t6
+    '备注',           // t7
+    '记录今天的感受...', // t8
+    '保存',           // t9
+    '请输入体重',     // t10
+    '例如 131.0',     // t11
+    '例如 65.5',      // t12
+    '例如 22.5',      // t13
+    '例如 78',        // t14
+    '例如 95',        // t15
+    '例如 8000',      // t16
+    '分',             // t17
+  ],
   data: {
     statusBarHeight: 0,
     date: '',
@@ -13,12 +35,18 @@ Page({
     steps: '',
     mood: 5,
     note: '',
+    weightUnitLabel: 'kg',
   },
 
   onLoad(options) {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     const date = options.date;
-    this.setData({ statusBarHeight: info.statusBarHeight, date });
+    this.setData({
+      statusBarHeight: info.statusBarHeight,
+      date,
+      weightUnitLabel: unitUtil.getWeightUnitLabel(),
+    });
 
     // mode=new 时（概览页进入）不回显数据，直接重置
     if (options.mode === 'new') {
@@ -33,7 +61,7 @@ Page({
 
     if (w || b) {
       this.setData({
-        weight: w ? w.weight : '',
+        weight: w ? unitUtil.formatWeightRaw(w.weight) : '',
         bodyFat: b ? b.bodyFat : '',
         waist: b ? b.waist : '',
         hip: b ? b.hip : '',
@@ -68,11 +96,11 @@ Page({
     const { date, weight, bodyFat, waist, hip, steps, mood, note } = this.data;
 
     if (!weight) {
-      wx.showToast({ title: '请输入体重', icon: 'none' });
+      wx.showToast({ title: this.$t('请输入体重'), icon: 'none' });
       return;
     }
 
-    const weightNum = parseFloat(weight);
+    const weightNum = unitUtil.toKg(parseFloat(weight));
     const bmi = this.computeBMI(weightNum);
 
     // 保存体重记录到本地

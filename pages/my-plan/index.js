@@ -1,10 +1,12 @@
 const fasting = require('~/utils/fasting');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const storage = require('~/utils/storage');
 const { getPlan } = require('~/config/fastingPlans');
 const themeBehavior = require('~/behaviors/theme');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['我的计划', '进行中', '已结束', '每日断食', '小时', '进食窗口', '今日', '连续天数', '最长连续', '本月完成率', '累计断食', '切换方案', '结束计划', '本周概览', '查看全部', '日', '一', '二', '三', '四', '五', '六', '已完成', '周进度', '本周断食', '连续中', '成就数据', '详细报告', '累计断食总时长', '天', '历史最长连续', '保持记录中', '本月完成天数', '持续坚持周期', '第', '周', '历史计划', '更多', '完成率', '暂无历史计划', '创建新计划', '向上滑动回到顶部', '较上周', '周后解锁徽章'],
   data: {
     statusBarHeight: 0,
 
@@ -48,6 +50,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
@@ -57,6 +60,7 @@ Page({
   },
 
   onShow() {
+    this.i18nRefresh();
     // 每次显示页面时刷新数据
     this.loadData();
   },
@@ -276,10 +280,10 @@ Page({
         else if (diff >= 2) { icon = '🥗'; iconClass = 'icon-186'; }
         else { icon = '🍃'; iconClass = 'icon-168'; }
 
-        if (days >= 21) tag = '习惯养成';
-        else if (days >= 14) tag = '连续执行';
-        else if (days >= 7) tag = '稳定执行';
-        else tag = '尝试体验';
+        if (days >= 21) tag = this.$t('习惯养成');
+        else if (days >= 14) tag = this.$t('连续执行');
+        else if (days >= 7) tag = this.$t('稳定执行');
+        else tag = this.$t('尝试体验');
 
         return {
           id: group.planId,
@@ -400,14 +404,14 @@ Page({
   // 结束计划
   onEndPlan() {
     wx.showModal({
-      title: '结束计划',
-      content: '确定要结束当前断食计划吗？结束后可以从历史记录中查看。',
+      title: this.$t('结束计划'),
+      content: this.$t('确定要结束当前断食计划吗？') + ' ' + this.$t('结束后可以从历史记录中查看。'),
       success: (res) => {
         if (res.confirm) {
           fasting.stopPlan();
           this.setData({ planStatus: fasting.STATUS.IDLE });
           wx.showToast({
-            title: '计划已结束',
+            title: this.$t('计划已结束'),
             icon: 'success',
           });
         }
@@ -419,7 +423,7 @@ Page({
   onDayTap(e) {
     const { date } = e.currentTarget.dataset;
     wx.showToast({
-      title: `查看 ${date}`,
+      title: this.$t('查看') + ' ' + date,
       icon: 'none',
     });
     // 可扩展：跳转到当日详情
@@ -429,7 +433,7 @@ Page({
   onViewAll() {
     // TODO: 跳转到日历页面
     wx.showToast({
-      title: '功能开发中',
+      title: this.$t('功能开发中'),
       icon: 'none',
     });
   },
@@ -445,7 +449,7 @@ Page({
   onViewHistory() {
     // TODO: 跳转到历史记录页面
     wx.showToast({
-      title: '功能开发中',
+      title: this.$t('功能开发中'),
       icon: 'none',
     });
   },
@@ -454,7 +458,7 @@ Page({
   onHistoryItemTap(e) {
     const { id } = e.currentTarget.dataset;
     wx.showToast({
-      title: `查看计划 ${id}`,
+      title: 'Plan ' + id,
       icon: 'none',
     });
     // 可扩展：跳转到历史计划详情

@@ -3,58 +3,58 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title">联系我们</view>
+  <view class="navbar-title">{{t0 || '联系我们'}}</view>
 </view>
 
 <view class="contact" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
   <!-- ========== 第一组：反馈与支持 ========== -->
-  <view class="section-title">反馈与支持</view>
+  <view class="section-title">{{t1 || '反馈与支持'}}</view>
   <view class="menu-wrapper">
     <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onFeedback">
       <text class="menu-icon">📝</text>
-      <text class="palette-label">意见反馈</text>
+      <text class="palette-label">{{t2 || '意见反馈'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </view>
     <button class="palette-cell" hover-class="palette-cell--hover" open-type="contact" bindcontact="onContactService" session-from="联系我们页面">
       <text class="menu-icon">🎧</text>
-      <text class="palette-label">联系客服</text>
+      <text class="palette-label">{{t3 || '联系客服'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </button>
   </view>
 
   <!-- ========== 第二组：关于 ========== -->
-  <view class="section-title">关于</view>
+  <view class="section-title">{{t4 || '关于'}}</view>
   <view class="menu-wrapper">
     <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onAbout">
       <text class="menu-icon">ℹ️</text>
-      <text class="palette-label">关于轻断食</text>
+      <text class="palette-label">{{t5 || '关于轻断食'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </view>
     <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onCheckUpdate">
       <text class="menu-icon">🔍</text>
-      <text class="palette-label">检查更新</text>
+      <text class="palette-label">{{t6 || '检查更新'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </view>
   </view>
 
   <!-- ========== 第三组：法律信息 ========== -->
-  <view class="section-title">法律信息</view>
+  <view class="section-title">{{t7 || '法律信息'}}</view>
   <view class="menu-wrapper">
     <view class="palette-cell palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onUserAgreement">
       <text class="menu-icon">📄</text>
-      <text class="palette-label">用户协议</text>
+      <text class="palette-label">{{t8 || '用户协议'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </view>
     <view class="palette-cell" hover-class="palette-cell--hover" bindtap="onPrivacyPolicy">
       <text class="menu-icon">🔒</text>
-      <text class="palette-label">隐私政策</text>
+      <text class="palette-label">{{t9 || '隐私政策'}}</text>
       <view class="cell-right-area"><text class="cell-arrow">›</text></view>
     </view>
   </view>
 
   <!-- ========== 底部信息 ========== -->
   <view class="footer">
-    <view class="footer-brand">小小轻断食</view>
+    <view class="footer-brand">{{t10 || '小小轻断食'}}</view>
     <view class="footer-version">v{{version}}</view>
     <view class="footer-copyright">© {{currentYear}} 小小轻断食 · 健康生活每一天</view>
   </view>

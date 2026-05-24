@@ -1,5 +1,6 @@
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 const MEAL_TYPES = [
   { key: 'breakfast', name: '早餐', time: '07:00-09:00' },
@@ -9,7 +10,13 @@ const MEAL_TYPES = [
 ];
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: [
+    '日志', '今日营养', 'kcal 剩余', '热量(kcal)', '蛋白质', '碳水', '脂肪',
+    '点击 + 添加食物', '今日身体数据', '编辑', '记录',
+    '体重(kg)', 'BMI', '体脂(%)', '腰围(cm)', '今日还未记录身体数据',
+    '早餐', '午餐', '晚餐', '加餐', '任意', '提示', '确定要删除这个食物吗？',
+  ],
   data: {
     statusBarHeight: 0,
     currentDate: '',
@@ -22,15 +29,29 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.setToday();
+    this.translateMealNames();
   },
 
   onShow() {
+    this.i18nRefresh();
+    this.translateMealNames();
     // 每次显示页面时重新读取目标（可能已在设置页更新）
     this.setData({ goal: storage.getGoal() });
     this.loadDayData();
+  },
+
+  translateMealNames() {
+    const t = this.$t.bind(this);
+    this.setData({ meals: [
+      { key: 'breakfast', name: t('早餐'), time: '07:00-09:00' },
+      { key: 'lunch', name: t('午餐'), time: '11:30-13:30' },
+      { key: 'dinner', name: t('晚餐'), time: '17:30-19:30' },
+      { key: 'snack', name: t('加餐'), time: t('任意') },
+    ]});
   },
 
   setToday() {
@@ -91,8 +112,8 @@ Page({
     const date = this.data.currentDate;
 
     wx.showModal({
-      title: '提示',
-      content: '确定要删除这个食物吗？',
+      title: this.$t('提示'),
+      content: this.$t('确定要删除这个食物吗？'),
       success: (res) => {
         if (res.confirm) {
           const records = storage.get(storage.KEYS.DIET_RECORDS, []);

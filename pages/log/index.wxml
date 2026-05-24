@@ -1,7 +1,7 @@
 <view class="page log-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
   <!-- 自定义导航栏 -->
   <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">日志</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '日志'}}</view>
   </view>
 
   <!-- 日期选择 -->
@@ -14,8 +14,8 @@
   <!-- 营养总览 -->
   <view class="nutrition-card">
     <view class="nutrition-header">
-      <text class="card-title">今日营养</text>
-      <text class="calories-remain">{{goal.calories - (dietRecord.totalCalories || 0)}} kcal 剩余</text>
+      <text class="card-title">{{t1 || '今日营养'}}</text>
+      <text class="calories-remain">{{goal.calories - (dietRecord.totalCalories || 0)}} {{t2 || 'kcal 剩余'}}</text>
     </view>
     <view class="macro-grid">
       <view class="macro-item">
@@ -23,28 +23,28 @@
           <view class="macro-fill macro-fill--cal" style="width: {{computeProgress(dietRecord.totalCalories, goal.calories)}}%"></view>
         </view>
         <text class="macro-val">{{dietRecord.totalCalories}}/{{goal.calories}}</text>
-        <text class="macro-name">热量(kcal)</text>
+        <text class="macro-name">{{t3 || '热量(kcal)'}}</text>
       </view>
       <view class="macro-item">
         <view class="macro-bar">
           <view class="macro-fill macro-fill--protein" style="width: {{computeProgress(dietRecord.totalProtein, goal.protein)}}%"></view>
         </view>
         <text class="macro-val">{{dietRecord.totalProtein}}/{{goal.protein}}g</text>
-        <text class="macro-name">蛋白质</text>
+        <text class="macro-name">{{t4 || '蛋白质'}}</text>
       </view>
       <view class="macro-item">
         <view class="macro-bar">
           <view class="macro-fill macro-fill--carbs" style="width: {{computeProgress(dietRecord.totalCarbs, goal.carbs)}}%"></view>
         </view>
         <text class="macro-val">{{dietRecord.totalCarbs}}/{{goal.carbs}}g</text>
-        <text class="macro-name">碳水</text>
+        <text class="macro-name">{{t5 || '碳水'}}</text>
       </view>
       <view class="macro-item">
         <view class="macro-bar">
           <view class="macro-fill macro-fill--fat" style="width: {{computeProgress(dietRecord.totalFat, goal.fat)}}%"></view>
         </view>
         <text class="macro-val">{{dietRecord.totalFat}}/{{goal.fat}}g</text>
-        <text class="macro-name">脂肪</text>
+        <text class="macro-name">{{t6 || '脂肪'}}</text>
       </view>
     </view>
   </view>
@@ -69,33 +69,33 @@
         <view class="food-delete" data-meal="{{meal.key}}" data-index="{{index}}" bindtap="onDeleteFood">−</view>
       </view>
     </view>
-    <view class="empty-tip" wx:else>点击 + 添加食物</view>
+    <view class="empty-tip" wx:else>{{t7 || '点击 + 添加食物'}}</view>
   </view>
 
   <!-- 今日身体数据 -->
   <view class="body-card">
     <view class="card-title-row">
-      <text class="card-title">今日身体数据</text>
-      <text class="add-link" bindtap="onAddBodyData">{{weightRecord ? '编辑' : '记录'}}</text>
+      <text class="card-title">{{t8 || '今日身体数据'}}</text>
+      <text class="add-link" bindtap="onAddBodyData">{{weightRecord ? (t9 || '编辑') : (t10 || '记录')}}</text>
     </view>
     <view class="body-grid" wx:if="{{weightRecord || bodyRecord}}">
       <view class="body-item">
         <text class="body-val">{{weightRecord ? weightRecord.weight : '--'}}</text>
-        <text class="body-label">体重(kg)</text>
+        <text class="body-label">{{t11 || '体重(kg)'}}</text>
       </view>
       <view class="body-item">
         <text class="body-val">{{bodyRecord ? (bodyRecord.bmi || '--') : '--'}}</text>
-        <text class="body-label">BMI</text>
+        <text class="body-label">{{t12 || 'BMI'}}</text>
       </view>
       <view class="body-item">
         <text class="body-val">{{bodyRecord ? (bodyRecord.bodyFat || '--') : '--'}}</text>
-        <text class="body-label">体脂(%)</text>
+        <text class="body-label">{{t13 || '体脂(%)'}}</text>
       </view>
       <view class="body-item">
         <text class="body-val">{{bodyRecord ? (bodyRecord.waist || '--') : '--'}}</text>
-        <text class="body-label">腰围(cm)</text>
+        <text class="body-label">{{t14 || '腰围(cm)'}}</text>
       </view>
     </view>
-    <view class="empty-tip" wx:else>今日还未记录身体数据</view>
+    <view class="empty-tip" wx:else>{{t15 || '今日还未记录身体数据'}}</view>
   </view>
 </view>

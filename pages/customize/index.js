@@ -1,7 +1,10 @@
 const app = getApp();
 const themeConfig = require('~/config/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
+  behaviors: [i18nBehavior],
+  i18nKeys: ['个性化', '外观模式', '默认', '自定义配色', '品牌色', '页面背景', '卡片色', '显示设置', '字体', '首页快捷入口', '其他', '恢复默认设置'],
   data: {
     statusBarHeight: 0,
     theme: {},               // 当前全局主题色
@@ -18,23 +21,38 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
+    this.translateDynamicTexts();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
-      modeList: themeConfig.PRESET_MODES.concat([{
-        id: 'custom',
-        name: '自定义',
-        isDefault: false,
-        preview: ['🎨', '📄', '🃏'],
-      }]),
       colorPalette: themeConfig.CUSTOM_PALETTE,
-      fontOptions: themeConfig.FONT_OPTIONS || [],
     });
     this.loadSettings();
   },
 
   onShow() {
+    this.i18nRefresh();
+    this.translateDynamicTexts();
     this.applyTheme();
+  },
+
+  /** 翻译 modeList 模式名和 fontOptions 字体标签 */
+  translateDynamicTexts() {
+    const presetModes = themeConfig.PRESET_MODES.map(m => ({ ...m, name: this.$t(m.name) }));
+    const modeList = presetModes.concat([{
+      id: 'custom',
+      name: this.$t('自定义'),
+      isDefault: false,
+      preview: ['🎨', '📄', '🃏'],
+    }]);
+    const fontOptions = (themeConfig.FONT_OPTIONS || []).map(f => ({ ...f, label: this.$t(f.label) }));
+    const fontOption = fontOptions.find(f => f.value === this.data.fontFamily);
+    this.setData({
+      modeList,
+      fontOptions,
+      fontCurrentLabel: fontOption ? fontOption.label : this.$t('系统默认'),
+    });
   },
 
   // 从存储加载设置
@@ -54,7 +72,7 @@ Page({
   _findFontLabel(fontValue) {
     const opts = this.data.fontOptions || [];
     const found = opts.find(f => f.value === fontValue);
-    return found ? found.label : '系统默认';
+    return found ? found.label : this.$t('系统默认');
   },
 
   // 应用当前模式的主题色到页面
@@ -106,7 +124,7 @@ Page({
     this.setData({ activeMode: modeId });
     this.applyTheme();
     this.saveSettings();
-    wx.showToast({ title: '外观已切换', icon: 'none', duration: 1200 });
+    wx.showToast({ title: this.$t('外观已切换'), icon: 'none', duration: 1200 });
   },
 
   // 自定义配色变化
@@ -131,12 +149,12 @@ Page({
     const fontOption = (this.data.fontOptions || []).find(f => f.value === family);
     this.setData({
       fontFamily: family,
-      fontCurrentLabel: fontOption ? fontOption.label : '系统默认',
+      fontCurrentLabel: fontOption ? fontOption.label : this.$t('系统默认'),
       showFontList: false,
     });
     this.applyTheme();
     this.saveSettings();
-    wx.showToast({ title: '字体已切换', icon: 'none', duration: 1000 });
+    wx.showToast({ title: this.$t('字体已切换'), icon: 'none', duration: 1000 });
   },
 
   // 首页快捷入口 - 跳转概览页面
@@ -147,8 +165,8 @@ Page({
   // 恢复默认
   onResetDefault() {
     wx.showModal({
-      title: '恢复默认',
-      content: '确定要恢复所有个性化设置为默认值吗？',
+      title: this.$t('恢复默认'),
+      content: this.$t('确定要恢复所有个性化设置为默认值吗？'),
       success: (res) => {
         if (res.confirm) {
           wx.removeStorageSync('customizeSettings');
@@ -158,11 +176,11 @@ Page({
             activeMode: 'fresh-green',
             customColors: themeConfig.CUSTOM_DEFAULTS,
             fontFamily: 'system-default',
-            fontCurrentLabel: '系统默认',
+            fontCurrentLabel: this.$t('系统默认'),
           });
           this.applyTheme();
           app.eventBus.emit('theme-changed', app.globalData.theme);
-          wx.showToast({ title: '已恢复默认', icon: 'none' });
+          wx.showToast({ title: this.$t('已恢复默认'), icon: 'none' });
         }
       },
     });

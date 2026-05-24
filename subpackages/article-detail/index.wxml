@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">文章详情</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '文章详情'}}</view>
   </view>
 
   <block wx:if="{{article}}">
@@ -101,7 +101,7 @@
                 <text>{{item}}</text>
               </view>
             </view>
-            <text class="tag-footer yes-hint">以上人群都可以放心尝试 🎉</text>
+            <text class="tag-footer yes-hint">{{yesHint}}</text>
           </view>
           <view class="tag-section" wx:if="{{item.tags.no && item.tags.no.length > 0}}">
             <view class="tag-list tag-no">
@@ -110,7 +110,7 @@
                 <text>{{item}}</text>
               </view>
             </view>
-            <text class="tag-footer no-hint">以上人群请慎重，建议先咨询医生 🤔</text>
+            <text class="tag-footer no-hint">{{noHint}}</text>
           </view>
         </block>
 
@@ -136,7 +136,7 @@
             </view>
             <text class="drink-reason">{{item.reason}}</text>
             <view class="drink-tip" wx:if="{{item.tip}}">
-              <text class="tip-label">💡 小贴士</text>
+              <text class="tip-label">💡 {{tipLabel}}</text>
               <text class="tip-text">{{item.tip}}</text>
             </view>
           </view>
@@ -149,13 +149,13 @@
           <view class="scheme-time">{{item.time}}</view>
           <text class="scheme-desc">{{item.desc}}</text>
           <view class="scheme-pros">
-            <text class="scheme-label good">✅ 优势</text>
+            <text class="scheme-label good">✅ {{prosLabel}}</text>
             <view class="scheme-tag-list">
               <text class="scheme-tag" wx:for="{{item.pros}}" wx:key="*this">{{item}}</text>
             </view>
           </view>
           <view class="scheme-cons">
-            <text class="scheme-label bad">❌ 注意</text>
+            <text class="scheme-label bad">❌ {{consLabel}}</text>
             <view class="scheme-tag-list">
               <text class="scheme-tag dark" wx:for="{{item.cons}}" wx:key="*this">{{item}}</text>
             </view>
@@ -184,7 +184,7 @@
               <text class="zone-item" wx:for="{{item.intensityZones.green.items}}" wx:key="*this">{{item}}</text>
             </view>
             <view class="zone-why">
-              <text class="why-label">为什么适合：</text>
+              <text class="why-label">{{whyGoodLabel}}</text>
               <text class="why-text">{{item.intensityZones.green.why}}</text>
             </view>
           </view>
@@ -196,7 +196,7 @@
               <text class="zone-item" wx:for="{{item.intensityZones.yellow.items}}" wx:key="*this">{{item}}</text>
             </view>
             <view class="zone-why">
-              <text class="why-label">为什么需要谨慎：</text>
+              <text class="why-label">{{whyCautionLabel}}</text>
               <text class="why-text">{{item.intensityZones.yellow.why}}</text>
             </view>
           </view>
@@ -208,7 +208,7 @@
               <text class="zone-item" wx:for="{{item.intensityZones.red.items}}" wx:key="*this">{{item}}</text>
             </view>
             <view class="zone-why">
-              <text class="why-label">为什么避免：</text>
+              <text class="why-label">{{whyAvoidLabel}}</text>
               <text class="why-text">{{item.intensityZones.red.why}}</text>
             </view>
           </view>
@@ -221,18 +221,18 @@
           </view>
           <view class="slot-body">
             <view class="slot-best" wx:if="{{item.bestFor.length > 0}}">
-              <text class="slot-label">推荐运动</text>
+              <text class="slot-label">{{recommendLabel}}</text>
               <view class="slot-tags">
                 <text class="slot-tag" wx:for="{{item.bestFor}}" wx:key="*this">{{item}}</text>
               </view>
             </view>
             <view class="slot-detail">
               <view class="slot-pros">
-                <text class="slot-mini-label good">优势</text>
+                <text class="slot-mini-label good">{{prosLabel}}</text>
                 <text class="slot-mini-item" wx:for="{{item.pros}}" wx:key="*this">{{item}}</text>
               </view>
               <view class="slot-cons">
-                <text class="slot-mini-label bad">注意</text>
+                <text class="slot-mini-label bad">{{consLabel}}</text>
                 <text class="slot-mini-item" wx:for="{{item.cons}}" wx:key="*this">{{item}}</text>
               </view>
             </view>

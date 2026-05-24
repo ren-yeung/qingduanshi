@@ -1,12 +1,14 @@
 const app = getApp();
 const storage = require('~/utils/storage');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['设置', '通用设置', '通知设置', '深色模式', '字体大小', '播放设置', '账号安全', '关于', '退出登录', '注销账号', '确定要退出登录吗？', '注销后所有数据将永久删除，确定要注销吗？', '清理中', '缓存已清除', '清除失败', '注销中', '账号已注销', '注销失败，请重试', '确定要清除所有本地缓存吗？这不会影响您的账号数据。', '隐私', '隐私政策', '用户协议', '清除缓存', '计算中'],
   data: {
     isLogin: false,
-    cacheSize: '计算中...',
+    cacheSize: '...',
     menuData: [
       [
         {
@@ -58,9 +60,12 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
+    this.translateMenu();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
+      cacheSize: this.$t('计算中'),
     });
     this.checkLogin();
     this.getCacheSize();
@@ -75,7 +80,30 @@ Page({
   },
 
   onShow() {
+    this.i18nRefresh();
+    this.translateMenu();
     this.checkLogin();
+  },
+
+  /** 翻译 menuData 中的菜单项标题 */
+  translateMenu() {
+    const menuData = [
+      [
+        { title: this.$t('通用设置'), url: '/pages/general-settings/index', icon: '⚙️' },
+        { title: this.$t('通知设置'), url: '/pages/notify-settings/index', icon: '🔔' },
+      ],
+      [
+        { title: this.$t('深色模式'), url: '/pages/dark-mode/index', icon: '🌙' },
+        { title: this.$t('字体大小'), url: '/pages/font-size/index', icon: '🔤' },
+        { title: this.$t('播放设置'), url: '/pages/sound-settings/index', icon: '🔊' },
+      ],
+      [
+        { title: this.$t('账号安全'), url: '/pages/account-security/index', icon: '🔒' },
+        { title: this.$t('隐私'), url: '/pages/privacy/index', icon: '🔐' },
+        { title: this.$t('清除缓存'), action: 'clearCache', icon: '🧹' },
+      ],
+    ];
+    this.setData({ menuData });
   },
 
   checkLogin() {
@@ -124,20 +152,20 @@ Page({
   // 清除缓存
   onClearCache() {
     wx.showModal({
-      title: '清除缓存',
-      content: '确定要清除所有本地缓存吗？这不会影响您的账号数据。',
+      title: this.$t('清除缓存'),
+      content: this.$t('确定要清除所有本地缓存吗？这不会影响您的账号数据。'),
       success: (res) => {
         if (res.confirm) {
-          wx.showLoading({ title: '清理中...' });
+          wx.showLoading({ title: this.$t('清理中') + '...' });
           wx.clearStorage({
             success: () => {
               wx.hideLoading();
               this.setData({ cacheSize: '0KB' });
-              wx.showToast({ title: '缓存已清除', icon: 'none' });
+              wx.showToast({ title: this.$t('缓存已清除'), icon: 'none' });
             },
             fail: () => {
               wx.hideLoading();
-              wx.showToast({ title: '清除失败', icon: 'none' });
+              wx.showToast({ title: this.$t('清除失败'), icon: 'none' });
             },
           });
         }
@@ -147,8 +175,8 @@ Page({
 
   async onLogout() {
     wx.showModal({
-      title: '提示',
-      content: '确定要退出登录吗？',
+      title: this.$t('提示'),
+      content: this.$t('确定要退出登录吗？'),
       success: async (res) => {
         if (res.confirm) {
           // 退出前先将本地全部数据同步到云端
@@ -172,14 +200,14 @@ Page({
 
   onDestroyAccount() {
     wx.showModal({
-      title: '注销账号',
-      content: '注销后所有数据将永久删除，确定要注销吗？',
+      title: this.$t('注销账号'),
+      content: this.$t('注销后所有数据将永久删除，确定要注销吗？'),
       success: (res) => {
         if (res.confirm) {
           const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
           if (!userInfo || !userInfo.openid) return;
 
-          wx.showLoading({ title: '注销中...', mask: true });
+          wx.showLoading({ title: this.$t('注销中') + '...', mask: true });
 
           // 调用云函数注销用户
           wx.cloud.callFunction({
@@ -204,14 +232,14 @@ Page({
             // 发送注销账号事件，触发页面数据重置
             app.eventBus.emit('user-destroy');
             wx.hideLoading();
-            wx.showToast({ title: '账号已注销', icon: 'none' });
+            wx.showToast({ title: this.$t('账号已注销'), icon: 'none' });
             wx.switchTab({
               url: '/pages/my/index',
             });
           }).catch((err) => {
             wx.hideLoading();
             console.error('注销失败:', err);
-            wx.showToast({ title: '注销失败，请重试', icon: 'none' });
+            wx.showToast({ title: this.$t('注销失败，请重试'), icon: 'none' });
           });
         }
       },

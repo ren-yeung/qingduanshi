@@ -59,6 +59,26 @@ App({
     return this.globalData.theme;
   },
 
+  // 获取当前语言
+  getLang() {
+    try {
+      const settings = wx.getStorageSync('customizeSettings') || {};
+      return settings.language || '简体中文';
+    } catch (e) {
+      return '简体中文';
+    }
+  },
+
+  // 获取当前单位制
+  getUnit() {
+    try {
+      const settings = wx.getStorageSync('customizeSettings') || {};
+      return settings.unitSystem || '公制 (kg/cm)';
+    } catch (e) {
+      return '公制 (kg/cm)';
+    }
+  },
+
   // 检查并跳转登录页
   checkAndRedirectToLogin() {
     const pages = getCurrentPages();

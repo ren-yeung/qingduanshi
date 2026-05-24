@@ -2,18 +2,18 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">深色模式</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '深色模式'}}</view>
 </view>
 
 <view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
 
   <!-- 外观主题 -->
-  <view class="section-label">外观主题</view>
+  <view class="section-label">{{t1 || '外观主题'}}</view>
   <view class="radio-card">
     <!-- 跟随系统 -->
     <view class="radio-option" data-value="follow" bindtap="onRadioChange">
       <view class="radio-left">
-        <text class="radio-text">跟随系统</text>
+        <text class="radio-text">{{t2 || '跟随系统'}}</text>
         <text class="radio-desc">自动匹配设备的亮/暗模式设置</text>
       </view>
       <view class="radio-circle {{darkMode === 'follow' ? 'checked' : ''}}"></view>
@@ -45,21 +45,21 @@
   </view>
 
   <!-- 效果预览 -->
-  <view class="section-label">效果预览</view>
+  <view class="section-label">{{t8 || '效果预览'}}</view>
   <view class="preview-row">
     <!-- 浅色预览 -->
     <view class="preview-card preview-light">
-      <text class="preview-label">浅色</text>
+      <text class="preview-label">{{t9 || '浅色'}}</text>
       <view class="preview-inner">
-        <text class="preview-text-light">预览区域</text>
+        <text class="preview-text-light">{{t10 || '预览区域'}}</text>
       </view>
     </view>
 
     <!-- 深色预览 -->
     <view class="preview-card preview-dark">
-      <text class="preview-label">深色</text>
+      <text class="preview-label">{{t11 || '深色'}}</text>
       <view class="preview-inner">
-        <text class="preview-text-dark">预览区域</text>
+        <text class="preview-text-dark">{{t10 || '预览区域'}}</text>
       </view>
     </view>
   </view>

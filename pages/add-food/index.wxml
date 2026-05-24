@@ -4,14 +4,14 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">记录饮食</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '记录饮食'}}</view>
   </view>
 
   <!-- 搜索栏 -->
   <view class="search-bar">
     <view class="search-wrap">
       <text class="search-icon">🔍</text>
-      <input class="search-input" placeholder="搜索食物名称" value="{{keyword}}" bindinput="onSearch" />
+      <input class="search-input" placeholder="{{t1 || '搜索食物名称'}}" value="{{keyword}}" bindinput="onSearch" />
     </view>
   </view>
 
@@ -48,6 +48,6 @@
     <view class="preview-cal">
       约 {{previewCalories}} kcal
     </view>
-    <button class="confirm-btn" bindtap="onConfirm">确认添加</button>
+    <button class="confirm-btn" bindtap="onConfirm">{{t8 || '确认添加'}}</button>
   </view>
 </view>

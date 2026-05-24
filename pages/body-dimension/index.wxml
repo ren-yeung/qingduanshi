@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">身体维度</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '身体维度'}}</view>
   </view>
 
   <view class="page-content">
@@ -14,33 +14,33 @@
     <view class="overview-inner">
       <view class="overview-header">
         <view class="overview-left">
-          <text class="overview-label">最新体重</text>
+          <text class="overview-label">{{t1 || '最新体重'}}</text>
           <view class="weight-row">
             <text class="weight-big">{{overview.weight}}</text>
-            <text class="weight-unit">kg</text>
+            <text class="weight-unit">{{weightUnit || 'kg'}}</text>
           </view>
           <view class="weight-change {{overview.changeType}}">
-            <text wx:if="{{overview.changeType === 'down'}}">↓ {{overview.change}} kg 较上周</text>
-            <text wx:else>↑ {{overview.change}} kg 较上周</text>
+            <text wx:if="{{overview.changeType === 'down'}}">↓ {{overview.change}} {{weightUnit || 'kg'}} 较上周</text>
+            <text wx:else>↑ {{overview.change}} {{weightUnit || 'kg'}} 较上周</text>
           </view>
         </view>
 
         <view class="overview-metrics">
           <view class="metric-item">
             <text class="metric-val green">{{overview.bmi}}</text>
-            <text class="metric-label">BMI</text>
+            <text class="metric-label">{{t3 || 'BMI'}}</text>
           </view>
           <view class="metric-item">
             <text class="metric-val blue">{{overview.bodyFat}}%</text>
-            <text class="metric-label">体脂率</text>
+            <text class="metric-label">{{t4 || '体脂率'}}</text>
           </view>
           <view class="metric-item">
             <text class="metric-val orange">{{overview.waist}}<text class="metric-unit">cm</text></text>
-            <text class="metric-label">腰围</text>
+            <text class="metric-label">{{t5 || '腰围'}}</text>
           </view>
           <view class="metric-item">
             <text class="metric-val">{{overview.hip}}<text class="metric-unit">cm</text></text>
-            <text class="metric-label">臀围</text>
+            <text class="metric-label">{{t6 || '臀围'}}</text>
           </view>
         </view>
       </view>
@@ -48,14 +48,14 @@
       <!-- BMI指示条 -->
       <view class="bmi-bar-wrap">
         <view class="bmi-bar-header">
-          <text class="bmi-label">BMI 指数</text>
+          <text class="bmi-label">{{t7 || 'BMI 指数'}}</text>
           <text class="bmi-category {{bmiCategoryClass}}">{{bmiCategory}} {{bmiCategoryIcon}}</text>
         </view>
         <view class="bmi-track">
           <view class="bmi-indicator" style="left: {{bmiPosition}}%;"></view>
         </view>
         <view class="bmi-range-labels">
-          <text>偏瘦</text><text>正常</text><text>偏胖</text><text>肥胖</text>
+          <text>{{t24 || '偏瘦'}}</text><text>正常</text><text>{{t26 || '偏胖'}}</text><text>{{t27 || '肥胖'}}</text>
         </view>
       </view>
     </view>
@@ -83,13 +83,13 @@
     </view>
     <view class="goal-progress-wrap">
       <view class="goal-info-row">
-        <text class="goal-text">目标：{{goal.current}} kg → {{goal.target}} kg</text>
-        <text class="goal-numbers">已减 {{goal.lost}} / {{goal.total}} kg</text>
+        <text class="goal-text">目标：{{goal.current}} {{weightUnit || 'kg'}} → {{goal.target}} {{weightUnit || 'kg'}}</text>
+        <text class="goal-numbers">已减 {{goal.lost}} / {{goal.total}} {{weightUnit || 'kg'}}</text>
       </view>
       <view class="progress-track">
         <view class="progress-fill" style="width: {{goal.progress}}%;"></view>
       </view>
-      <text class="goal-hint">🎉 再减 {{goal.remain}} kg 即可达成目标！预计还需 ~{{goal.weeks}} 周</text>
+      <text class="goal-hint">🎉 再减 {{goal.remain}} {{weightUnit || 'kg'}} 即可达成目标！预计还需 ~{{goal.weeks}} 周</text>
     </view>
   </view>
 
@@ -127,15 +127,15 @@
     <view class="chart-summary">
       <view class="chart-stat">
         <text class="chart-stat-val">{{chartSummary.range}}</text>
-        <text class="chart-stat-lbl">区间</text>
+        <text class="chart-stat-lbl">{{t16 || '区间'}}</text>
       </view>
       <view class="chart-stat">
         <text class="chart-stat-val down">{{chartSummary.change}}</text>
-        <text class="chart-stat-lbl">累计变化</text>
+        <text class="chart-stat-lbl">{{t17 || '累计变化'}}</text>
       </view>
       <view class="chart-stat">
         <text class="chart-stat-val">{{chartSummary.count}} 次</text>
-        <text class="chart-stat-lbl">记录次数</text>
+        <text class="chart-stat-lbl">{{t18 || '记录次数'}}</text>
       </view>
     </view>
   </view>
@@ -176,8 +176,8 @@
     <!-- 空状态 -->
     <view class="empty-state" wx:else>
       <text class="empty-icon">📊</text>
-      <text class="empty-text">暂无记录，开始记录你的身体数据吧</text>
-      <button class="empty-btn" bindtap="onRecordToday">立即记录</button>
+      <text class="empty-text">{{t21 || '暂无记录，开始记录你的身体数据吧'}}</text>
+      <button class="empty-btn" bindtap="onRecordToday">{{t22 || '立即记录'}}</button>
     </view>
   </view>
 

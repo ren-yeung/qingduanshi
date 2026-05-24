@@ -3,27 +3,27 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">完善个人信息</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '完善个人信息'}}</view>
 </view>
 
 <view class="page info-collection" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
   <!-- 标题区 -->
   <view class="header">
-    <view class="header-subtitle">帮助我们为你提供更精准的断食方案</view>
+    <view class="header-subtitle">{{t1 || '帮助我们为你提供更精准的断食方案'}}</view>
   </view>
 
   <!-- 表单卡片 -->
   <view class="form-card">
     <!-- 性别 -->
     <view class="form-section">
-      <view class="section-label">选择您的性别</view>
+      <view class="section-label">{{t2 || '选择您的性别'}}</view>
       <view class="gender-row">
         <view class="gender-option {{gender === 'female' ? 'active' : ''}}" bindtap="setGender" data-gender="female">
           <view class="gender-icon-wrap female-icon">
             <text class="gender-emoji">♀</text>
           </view>
           <view class="gender-label-row">
-            <text class="gender-text">女生</text>
+            <text class="gender-text">{{t3 || '女生'}}</text>
             <view class="check-circle {{gender === 'female' ? 'checked' : ''}}"></view>
           </view>
         </view>
@@ -32,7 +32,7 @@
             <text class="gender-emoji">♂</text>
           </view>
           <view class="gender-label-row">
-            <text class="gender-text">男生</text>
+            <text class="gender-text">{{t4 || '男生'}}</text>
             <view class="check-circle {{gender === 'male' ? 'checked' : ''}}"></view>
           </view>
         </view>
@@ -41,7 +41,7 @@
 
     <!-- 出生年月 -->
     <view class="form-section">
-      <view class="section-label">选择您的出生年月</view>
+      <view class="section-label">{{t5 || '选择您的出生年月'}}</view>
       <picker mode="multiSelector" bindchange="onBirthdayChange" value="{{birthdayIndex}}" range="{{birthdayRange}}">
         <view class="birthday-display">
           <text class="birthday-text">{{birthdayDisplay}}</text>
@@ -52,7 +52,7 @@
 
     <!-- 身高 -->
     <view class="form-section">
-      <view class="section-label">选择您的身高</view>
+      <view class="section-label">{{t6 || '选择您的身高'}}</view>
       <view class="ruler-display">
         <text class="ruler-value">{{height}}</text>
         <text class="ruler-unit">cm</text>
@@ -79,7 +79,7 @@
 
     <!-- 体重 -->
     <view class="form-section">
-      <view class="section-label">选择您当前体重</view>
+      <view class="section-label">{{t7 || '选择您当前体重'}}</view>
       <view class="ruler-display">
         <text class="ruler-value">{{weight % 1 === 0 ? weight + '.0' : weight}}</text>
         <text class="ruler-unit">kg</text>
@@ -107,6 +107,6 @@
 
   <!-- 底部按钮（放在 .page 内部以继承 --brand-primary CSS 变量） -->
   <view class="bottom-btn">
-    <button class="submit-btn" bindtap="submitForm">开始体验</button>
+    <button class="submit-btn" bindtap="submitForm">{{t8 || '开始体验'}}</button>
   </view>
 </view>

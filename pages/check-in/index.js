@@ -1,7 +1,9 @@
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['打卡分享', '打卡成功', '天', '连续打卡', '分享给好友', '返回首页'],
   data: {
     statusBarHeight: 0,
     streak: 0,
@@ -17,6 +19,7 @@ Page({
   },
 
   onLoad(options) {
+    this.i18nRefresh();
     const streak = Number(options.streak) || 1;
     const quote = this.data.quotes[Math.floor(Math.random() * this.data.quotes.length)];
     const systemInfo = wx.getSystemInfoSync();

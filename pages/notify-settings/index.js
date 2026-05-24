@@ -1,8 +1,10 @@
 const app = getApp();
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['通知设置', '请确保微信已开启本小程序的通知权限，否则无法收到提醒。', '断食提醒', '开始断食提醒', '结束断食提醒', '中途阶段提醒', '打卡与互动', '每日打卡提醒', '社区互动通知', '活动与公告推送'],
 
   data: {
     statusBarHeight: 0,
@@ -15,6 +17,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.loadSettings();

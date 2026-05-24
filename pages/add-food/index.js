@@ -1,4 +1,5 @@
 const { searchFoods, FOODS } = require('./foodDatabase');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
 
@@ -29,7 +30,8 @@ function getMealByTime() {
 }
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['记录饮食', '搜索食物名称', '蛋白质', '碳水', '脂肪', '（每100g）', '份量', '克', '确认添加', '请选择食物', '请输入有效份量'],
   data: {
     statusBarHeight: 0,
     date: '',
@@ -42,6 +44,7 @@ Page({
   },
 
   onLoad(options) {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     // 如果没有传入 meal 参数，根据当前时间自动判断
     const meal = options.meal || getMealByTime();
@@ -93,12 +96,12 @@ Page({
     const { selectedFood, amount, date, meal } = this.data;
     if (!selectedFood) {
       this._submitting = false;
-      wx.showToast({ title: '请选择食物', icon: 'none' });
+      wx.showToast({ title: this.$t('请选择食物'), icon: 'none' });
       return;
     }
     if (!amount || amount <= 0) {
       this._submitting = false;
-      wx.showToast({ title: '请输入有效份量', icon: 'none' });
+      wx.showToast({ title: this.$t('请输入有效份量'), icon: 'none' });
       return;
     }
 

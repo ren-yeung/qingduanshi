@@ -1,9 +1,11 @@
 const app = getApp();
 const storage = require('~/utils/storage');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['完善个人信息', '帮助我们为你提供更精准的断食方案', '选择您的性别', '女生', '男生', '选择您的出生年月', '选择您的身高', '选择您当前体重', '开始体验', '请选择出生年月'],
   data: {
     statusBarHeight: 0,
     gender: 'female',
@@ -28,6 +30,7 @@ Page({
   },
 
   onLoad(options) {
+    this.i18nRefresh();
     // 获取系统信息（状态栏高度和屏幕宽度）
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
@@ -205,11 +208,11 @@ Page({
     const { gender, birthday, height, weight } = this.data;
 
     if (!birthday || birthday === '请选择出生年月') {
-      wx.showToast({ title: '请选择出生年月', icon: 'none' });
+      wx.showToast({ title: this.$t('请选择出生年月'), icon: 'none' });
       return;
     }
 
-    wx.showLoading({ title: '保存中...', mask: true });
+    wx.showLoading({ title: this.$t('保存中...'), mask: true });
 
     try {
       // 先获取 openid（如果没有的话）
@@ -227,7 +230,7 @@ Page({
 
       if (!openid) {
         wx.hideLoading();
-        wx.showToast({ title: '获取登录信息失败', icon: 'none' });
+        wx.showToast({ title: this.$t('获取登录信息失败'), icon: 'none' });
         return;
       }
 
@@ -266,7 +269,7 @@ Page({
       storage.clearLoggedOutMark();
 
       wx.hideLoading();
-      wx.showToast({ title: '设置成功', icon: 'success' });
+      wx.showToast({ title: this.$t('设置成功'), icon: 'success' });
 
       // 标记登录成功，跳转到我的页面
       app.eventBus.emit('user-login-success');
@@ -280,7 +283,7 @@ Page({
     } catch (err) {
       wx.hideLoading();
       console.error('保存信息失败:', err);
-      wx.showToast({ title: '保存失败，请重试', icon: 'none' });
+      wx.showToast({ title: this.$t('保存失败，请重试'), icon: 'none' });
     }
   }
 });

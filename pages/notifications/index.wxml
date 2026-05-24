@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon">‹</text>
     </view>
-    <view class="navbar-title">消息通知</view>
+    <view class="navbar-title">{{t0 || '消息通知'}}</view>
   </view>
 
   <!-- 通知列表 -->

@@ -2,7 +2,7 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">通知设置</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '通知设置'}}</view>
 </view>
 
 <view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
@@ -10,45 +10,45 @@
   <!-- 权限提示框 -->
   <view class="tip-box tip-warn">
     <text class="tip-icon">🔔</text>
-    <text class="tip-text">请确保微信已开启本小程序的通知权限，否则无法收到提醒。</text>
+    <text class="tip-text">{{t1 || '请确保微信已开启本小程序的通知权限，否则无法收到提醒。'}}</text>
   </view>
 
   <!-- 断食提醒 -->
-  <view class="section-label">断食提醒</view>
+  <view class="section-label">{{t2 || '断食提醒'}}</view>
   <view class="card-group">
     <view class="setting-row" data-key="notifyStart" bindtap="onSwitchChange">
       <view class="row-icon bg-red"><text class="c-red">⏰</text></view>
-      <text class="row-label">开始断食提醒</text>
+      <text class="row-label">{{t3 || '开始断食提醒'}}</text>
       <view class="row-right"><view class="switch {{notifyStart ? 'on' : 'off'}}"></view></view>
     </view>
     <view class="setting-row" data-key="notifyEnd" bindtap="onSwitchChange">
       <view class="row-icon bg-orange"><text class="c-orange">🏁</text></view>
-      <text class="row-label">结束断食提醒</text>
+      <text class="row-label">{{t4 || '结束断食提醒'}}</text>
       <view class="row-right"><view class="switch {{notifyEnd ? 'on' : 'off'}}"></view></view>
     </view>
     <view class="setting-row" data-key="notifyMidway" bindtap="onSwitchChange">
       <view class="row-icon bg-yellow"><text class="c-yellow">🕐</text></view>
-      <text class="row-label">中途阶段提醒</text>
+      <text class="row-label">{{t5 || '中途阶段提醒'}}</text>
       <view class="row-right"><view class="switch {{notifyMidway ? 'on' : 'off'}}"></view></view>
     </view>
   </view>
 
   <!-- 打卡与互动 -->
-  <view class="section-label">打卡与互动</view>
+  <view class="section-label">{{t6 || '打卡与互动'}}</view>
   <view class="card-group">
     <view class="setting-row" bindtap="onCheckInTimeClick">
       <view class="row-icon bg-green"><text class="c-green">✅</text></view>
-      <text class="row-label">每日打卡提醒</text>
+      <text class="row-label">{{t7 || '每日打卡提醒'}}</text>
       <view class="row-right"><text class="row-value">{{checkInTime}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-key="communityNotify" bindtap="onSwitchChange">
       <view class="row-icon bg-indigo"><text class="c-indigo">💬</text></view>
-      <text class="row-label">社区互动通知</text>
+      <text class="row-label">{{t8 || '社区互动通知'}}</text>
       <view class="row-right"><view class="switch {{communityNotify ? 'on' : 'off'}}"></view></view>
     </view>
     <view class="setting-row" data-key="announceNotify" bindtap="onSwitchChange">
       <view class="row-icon bg-purple"><text class="c-purple">📢</text></view>
-      <text class="row-label">活动与公告推送</text>
+      <text class="row-label">{{t9 || '活动与公告推送'}}</text>
       <view class="row-right"><view class="switch {{announceNotify ? 'on' : 'off'}}"></view></view>
     </view>
   </view>

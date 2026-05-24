@@ -1,8 +1,10 @@
 const app = getApp();
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['播放设置', '提示音效', '振动反馈', '铃声选择', '动画效果', '过渡动画', '打卡动效', '成就特效', '电量提示', '提示铃声', '页面过渡动画', '打卡成功动效', '成就解锁特效', '关闭动画和振动可略微减少电量消耗', '清脆', '柔和'],
 
   data: {
     statusBarHeight: 0,
@@ -15,6 +17,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.loadSettings();

@@ -3,7 +3,7 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">设置</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '设置'}}</view>
 </view>
 
 <view class="setting" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
@@ -32,12 +32,12 @@
   <view class="logout-wrapper" wx:if="{{isLogin}}">
     <view class="palette-cell palette-cell--danger palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onLogout">
       <text class="menu-icon">🚪</text>
-      <text class="palette-label palette-label--danger">退出登录</text>
+      <text class="palette-label palette-label--danger">{{t8 || '退出登录'}}</text>
       <text class="cell-arrow cell-arrow--danger">›</text>
     </view>
     <view class="palette-cell palette-cell--danger" hover-class="palette-cell--hover" bindtap="onDestroyAccount">
       <text class="menu-icon">🗑️</text>
-      <text class="palette-label palette-label--danger">注销账号</text>
+      <text class="palette-label palette-label--danger">{{t9 || '注销账号'}}</text>
       <text class="cell-arrow cell-arrow--danger">›</text>
     </view>
   </view>

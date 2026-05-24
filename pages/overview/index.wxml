@@ -1,12 +1,12 @@
 <view class="page overview-page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
   <!-- 自定义导航栏 -->
   <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px; background: {{theme.navBg}};">
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">概览</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '概览'}}</view>
   </view>
 
   <!-- 顶部区域 -->
   <view class="page-header">
-    <view class="app-name">轻断食</view>
+    <view class="app-name">{{t1 || '轻断食'}}</view>
     <view class="header-actions">
       <view class="action-btn" bindtap="onNotification">🔔</view>
       <view class="action-btn" bindtap="onSettings">⚙️</view>
@@ -15,7 +15,7 @@
 
   <!-- 问候语 -->
   <view class="greeting-row">
-    <text class="greeting-text">{{fastingState.status === 'idle' ? '准备开始今天的断食吗？' : fastingState.status === 'fasting' ? '坚持住，断食进行中' : '享受你的进食窗口'}}</text>
+    <text class="greeting-text">{{fastingState.status === 'idle' ? (t2 || '准备开始今天的断食吗？') : fastingState.status === 'fasting' ? (t3 || '坚持住，断食进行中') : (t4 || '享受你的进食窗口')}}</text>
     <text class="greeting-emoji">💪</text>
   </view>
 
@@ -26,15 +26,15 @@
   <view class="stats-grid">
     <view class="stats-item">
       <text class="stats-value">{{todayStats.weight}}</text>
-      <text class="stats-label">当前体重(kg)</text>
+      <text class="stats-label">{{t5 || '当前体重'}}({{weightUnitLabel || 'kg'}})</text>
     </view>
     <view class="stats-item green">
       <text class="stats-value">{{todayStats.calories}}</text>
-      <text class="stats-label">热量(kcal)</text>
+      <text class="stats-label">{{t6 || '热量(kcal)'}}</text>
     </view>
     <view class="stats-item">
       <text class="stats-value">{{streak}}</text>
-      <text class="stats-label">连续打卡</text>
+      <text class="stats-label">{{t7 || '连续打卡'}}</text>
     </view>
   </view>
 
@@ -43,7 +43,7 @@
     <block wx:if="{{fastingState.status !== 'idle'}}">
       <!-- 断食进行中/进食窗口：小圆环 + 横向布局 -->
       <view class="card-header">
-        <text class="card-title">今日断食</text>
+        <text class="card-title">{{t8 || '今日断食'}}</text>
         <text class="card-tag">{{fastingState.plan ? fastingState.plan.name : '16:8'}}</text>
       </view>
       <view class="ring-wrapper">
@@ -58,17 +58,17 @@
           </svg>
           <view class="ring-inner">
             <text class="ring-time">{{fastingState.remainingText}}</text>
-            <text class="ring-status-text">剩余</text>
+            <text class="ring-status-text">{{t9 || '剩余'}}</text>
           </view>
         </view>
         <view class="ring-info">
-          <text class="ring-info-main">{{fastingState.plan ? fastingState.plan.name : '16:8 轻断食'}}</text>
-          <text class="ring-info-sub">{{fastingState.status === 'fasting' ? '断食中，已进行 ' + fastingState.elapsedText : '觅食中，已进行 ' + fastingState.elapsedText}}</text>
+          <text class="ring-info-main">{{fastingState.plan ? fastingState.plan.name : (t10 || '16:8 轻断食')}}</text>
+          <text class="ring-info-sub">{{fastingState.status === 'fasting' ? (t11 || '断食中，已进行 ') + fastingState.elapsedText : (t12 || '觅食中，已进行 ') + fastingState.elapsedText}}</text>
           <view class="action-buttons">
             <view class="btn btn-primary" bindtap="onToggleState">
-              {{fastingState.status === 'fasting' ? '提前进食' : '开始断食'}}
+              {{fastingState.status === 'fasting' ? (t13 || '提前进食') : (t14 || '开始断食')}}
             </view>
-            <view class="btn btn-outline" bindtap="onStopFasting">结束</view>
+            <view class="btn btn-outline" bindtap="onStopFasting">{{t15 || '结束'}}</view>
           </view>
         </view>
       </view>
@@ -77,8 +77,8 @@
       <!-- 空闲状态：大圆环 + 居中布局 -->
       <view class="fasting-idle">
         <view class="idle-icon">🍃</view>
-        <text class="idle-text">当前没有进行中的断食计划</text>
-        <view class="btn btn-primary idle-btn" bindtap="onStartFasting">开始断食</view>
+        <text class="idle-text">{{t16 || '当前没有进行中的断食计划'}}</text>
+        <view class="btn btn-primary idle-btn" bindtap="onStartFasting">{{t14 || '开始断食'}}</view>
       </view>
     </block>
   </view>
@@ -86,17 +86,17 @@
   <!-- 热量卡片 -->
   <view class="card">
     <view class="stats-header">
-      <text class="stats-title">今日摄入</text>
-      <text class="stats-link" bindtap="goToDataCenter">数据统计 ›</text>
+      <text class="stats-title">{{t17 || '今日摄入'}}</text>
+      <text class="stats-link" bindtap="goToDataCenter">{{t31 || '数据统计'}} ›</text>
     </view>
     <view class="calorie-display">
       <view class="calorie-current">
         <text class="calorie-num">{{todayStats.calories}}</text>
-        <text class="calorie-unit">千卡</text>
+        <text class="calorie-unit">{{t18 || '千卡'}}</text>
       </view>
       <view class="calorie-target">
-        <text class="calorie-target-num">目标 {{todayStats.calorieTarget}}</text>
-        <text class="calorie-target-label">剩余 {{todayStats.calorieRemaining}}</text>
+        <text class="calorie-target-num">{{t19 || '目标'}} {{todayStats.calorieTarget}}</text>
+        <text class="calorie-target-label">{{t9 || '剩余'}} {{todayStats.calorieRemaining}}</text>
       </view>
     </view>
     <view class="progress-section">
@@ -104,23 +104,23 @@
         <view class="progress-fill" style="width: {{todayStats.calorieProgress}}%"></view>
       </view>
       <view class="progress-info">
-        <text>已完成 {{todayStats.calorieProgress}}%</text>
-        <text class="progress-left">剩余 {{todayStats.calorieRemaining}} 千卡</text>
+        <text>{{t20 || '已完成'}} {{todayStats.calorieProgress}}%</text>
+        <text class="progress-left">{{t9 || '剩余'}} {{todayStats.calorieRemaining}} {{t18 || '千卡'}}</text>
       </view>
     </view>
     <view class="macros">
       <view class="macro-item">
-        <text class="macro-name">碳水</text>
+        <text class="macro-name">{{t21 || '碳水'}}</text>
         <text class="macro-value">{{todayStats.carbs}}g</text>
         <text class="macro-remain {{todayStats.carbsRemaining > 0 ? 'active' : ''}}">剩余 {{todayStats.carbsRemaining}}g</text>
       </view>
       <view class="macro-item">
-        <text class="macro-name">蛋白质</text>
+        <text class="macro-name">{{t22 || '蛋白质'}}</text>
         <text class="macro-value">{{todayStats.protein}}g</text>
         <text class="macro-remain {{todayStats.proteinRemaining > 0 ? 'active' : ''}}">剩余 {{todayStats.proteinRemaining}}g</text>
       </view>
       <view class="macro-item">
-        <text class="macro-name">脂肪</text>
+        <text class="macro-name">{{t23 || '脂肪'}}</text>
         <text class="macro-value">{{todayStats.fat}}g</text>
         <text class="macro-remain {{todayStats.fatRemaining > 0 ? 'active' : ''}}">剩余 {{todayStats.fatRemaining}}g</text>
       </view>
@@ -132,32 +132,32 @@
     <view class="checkin-left">
       <view class="checkin-icon done">{{checkedIn ? '✓' : '+'}}</view>
       <view class="checkin-text">
-        <text class="title">{{checkedIn ? '今日已打卡' : '今日打卡'}}</text>
-        <text class="sub">连续 {{streak}} 天</text>
+        <text class="title">{{checkedIn ? (t24 || '今日已打卡') : (t25 || '今日打卡')}}</text>
+        <text class="sub">{{t38 || '连续'}} {{streak}} {{t39 || '天'}}</text>
       </view>
     </view>
     <view class="checkin-btn {{checkedIn ? 'done' : ''}}">
-      <text>{{checkedIn ? '已打卡' : '去打卡'}}</text>
+      <text>{{checkedIn ? (t26 || '已打卡') : (t27 || '去打卡')}}</text>
     </view>
   </view>
 
   <!-- 快捷入口 -->
   <view class="card">
     <view class="card-header">
-      <text class="card-title">快捷操作</text>
+      <text class="card-title">{{t28 || '快捷操作'}}</text>
     </view>
     <view class="quick-grid">
       <view class="quick-item" bindtap="goToAddFood">
         <text class="quick-icon">🍽️</text>
-        <text class="quick-text">记录饮食</text>
+        <text class="quick-text">{{t29 || '记录饮食'}}</text>
       </view>
       <view class="quick-item" bindtap="goToAddBody">
         <text class="quick-icon">⚖️</text>
-        <text class="quick-text">记录体重</text>
+        <text class="quick-text">{{t30 || '记录体重'}}</text>
       </view>
       <view class="quick-item" bindtap="goToDataCenter">
         <text class="quick-icon">📊</text>
-        <text class="quick-text">数据统计</text>
+        <text class="quick-text">{{t31 || '数据统计'}}</text>
       </view>
     </view>
   </view>

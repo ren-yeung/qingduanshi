@@ -3,7 +3,7 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title">隐私政策</view>
+  <view class="navbar-title">{{t0 || '隐私政策'}}</view>
 </view>
 
 <view class="page-content" style="background: {{theme.bgColor}}; color: {{theme.textColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
@@ -11,7 +11,7 @@
   <view class="doc-update-time">更新日期：2026年5月22日</view>
 
   <view class="doc-section">
-    <view class="section-title">引言</view>
+    <view class="section-title">{{t1 || '引言'}}</view>
     <view class="section-body">
       <text class="paragraph">
         「小小轻断食」（以下简称"我们"）深知个人信息对您的重要性。我们将按照法律法规要求，采取相应安全保护措施，尽力保护您的个人信息安全可控。

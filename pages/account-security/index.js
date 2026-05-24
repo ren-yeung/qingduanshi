@@ -1,9 +1,11 @@
 const app = getApp();
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const storage = require('~/utils/storage');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['账号安全', '账号信息', '头像', '昵称', '安全设置', '修改密码', '绑定手机号', '登录设备管理', '上次登录：', '退出当前账号', '确定要退出当前账号吗？退出后需要重新登录。'],
 
   data: {
     statusBarHeight: 0,
@@ -17,6 +19,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.loadUserInfo();

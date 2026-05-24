@@ -1,9 +1,12 @@
 const app = getApp();
 const storage = require('~/utils/storage');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
+const unitUtil = require('~/utils/unit');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['身体维度', '最新体重', '较上周', 'BMI', '体脂率', '腰围', '臀围', 'BMI 指数', '记录今天的数据', '历史记录', '目标进度', '修改', '目标', '已减', '趋势变化', '近30天', '区间', '累计变化', '记录次数', '记录历史', '全部', '暂无记录，开始记录你的身体数据吧', '立即记录', '向上滑动回到顶部', '偏瘦', '正常范围', '偏胖', '肥胖'],
   data: {
     statusBarHeight: 0,
 
@@ -58,6 +61,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
@@ -68,9 +72,11 @@ Page({
   },
 
   onShow() {
+    this.i18nRefresh();
     // 每次显示时刷新数据
     this.loadOverviewData();
     this.loadHistoryData();
+    this.setData({ weightUnit: unitUtil.getWeightUnitLabel() });
   },
 
   onPullDownRefresh() {
@@ -130,7 +136,7 @@ Page({
 
       this.setData({
         overview: {
-          weight: latest.weight,
+          weight: unitUtil.formatWeightRaw(latest.weight),
           change: change,
           changeType: changeType,
           bmi: bmi,
@@ -169,8 +175,8 @@ Page({
       // 无目标或未设置初始体重
       this.setData({
         goal: {
-          current: firstWeight ? firstWeight.toFixed(1) : '--',
-          target: weightGoal ? weightGoal.target : '--',
+          current: firstWeight ? unitUtil.formatWeightRaw(firstWeight) : '--',
+          target: weightGoal ? unitUtil.formatWeightRaw(parseFloat(weightGoal.target)) : '--',
           lost: '--',
           total: '--',
           remain: '--',
@@ -201,11 +207,11 @@ Page({
 
     this.setData({
       goal: {
-        current: firstWeight.toFixed(1),
-        target: targetWeight.toFixed(1),
-        lost: lostWeight,
-        total: targetLoss,
-        remain: remain,
+        current: unitUtil.formatWeightRaw(firstWeight),
+        target: unitUtil.formatWeightRaw(targetWeight),
+        lost: unitUtil.formatWeightRaw(parseFloat(lostWeight)),
+        total: unitUtil.formatWeightRaw(parseFloat(targetLoss)),
+        remain: unitUtil.formatWeightRaw(parseFloat(remain)),
         progress: progress,
         weeks: weeks,
       }

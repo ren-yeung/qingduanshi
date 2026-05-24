@@ -1,4 +1,5 @@
 const app = getApp();
+const i18n = require('../utils/i18n');
 
 // 基准色：图标原始绿色 #2EAF7D 的色相（HSL H ≈ 152°）
 const BASE_HUE = 152;
@@ -45,11 +46,16 @@ Component({
   lifetimes: {
     ready() {
       this.refreshActiveColor();
+      this.refreshI18n();
 
       if (!this.__themeListener) {
         this.__themeListener = () => this.refreshActiveColor();
       }
       app.eventBus.on('theme-changed', this.__themeListener);
+      if (!this.__langListener) {
+        this.__langListener = () => this.refreshI18n();
+      }
+      app.eventBus.on('language-changed', this.__langListener);
       this.updateSelected();
 
       const pages = getCurrentPages();
@@ -68,10 +74,20 @@ Component({
       if (this.__themeListener) {
         app.eventBus.off('theme-changed', this.__themeListener);
       }
+      if (this.__langListener) {
+        app.eventBus.off('language-changed', this.__langListener);
+      }
     },
   },
 
   methods: {
+    refreshI18n() {
+      const tabs = this.data.tabs.map(t => ({
+        ...t,
+        label: i18n.t(t.value === 'overview' ? '概览' : t.value === 'log' ? '日志' : t.value === 'dry-goods' ? '干货' : '我的'),
+      }));
+      this.setData({ tabs });
+    },
     refreshActiveColor() {
       const theme = app.getTheme();
       if (!theme || !theme.brandPrimary) return;

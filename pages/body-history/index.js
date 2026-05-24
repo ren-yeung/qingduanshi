@@ -1,8 +1,10 @@
 const storage = require('~/utils/storage');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['全部记录', '身体数据', '编辑', '记录', '体重(kg)', 'BMI', '体脂率', '腰围', '臀围', '步', '步数', '当天暂无记录', '当天心情', '备注'],
   data: {
     statusBarHeight: 0,
     currentDate: '',
@@ -13,12 +15,14 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.setToday();
   },
 
   onShow() {
+    this.i18nRefresh();
     this.loadDayData();
   },
 

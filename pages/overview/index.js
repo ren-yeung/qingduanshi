@@ -2,6 +2,9 @@ const app = getApp();
 const fasting = require('~/utils/fasting');
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const unitUtil = require('~/utils/unit');
+const i18nBehavior = require('../../utils/i18n-behavior');
+const i18n = require('~/utils/i18n');
 
 function getTodayStr() {
   const d = new Date();
@@ -41,7 +44,49 @@ function getMealByTime() {
 }
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: [
+    '概览',          // t0
+    '轻断食',        // t1
+    '准备开始今天的断食吗？', // t2
+    '坚持住，断食进行中',   // t3
+    '享受你的进食窗口',     // t4
+    '当前体重',      // t5
+    '热量(kcal)',    // t6
+    '连续打卡',      // t7
+    '今日断食',      // t8
+    '剩余',          // t9
+    '16:8 轻断食',   // t10
+    '断食中，已进行 ',// t11
+    '觅食中，已进行 ',// t12
+    '提前进食',      // t13
+    '开始断食',      // t14
+    '结束',          // t15
+    '当前没有进行中的断食计划', // t16
+    '今日摄入',      // t17
+    '千卡',          // t18
+    '目标',          // t19
+    '已完成',        // t20
+    '碳水',          // t21
+    '蛋白质',        // t22
+    '脂肪',          // t23
+    '今日已打卡',    // t24
+    '今日打卡',      // t25
+    '已打卡',        // t26
+    '去打卡',        // t27
+    '快捷操作',      // t28
+    '记录饮食',      // t29
+    '记录体重',      // t30
+    '数据统计',      // t31
+    '需要登录',      // t32 (JS only)
+    '请先登录后再使用此功能', // t33 (JS only)
+    '去登录',        // t34 (JS only)
+    '确认结束',      // t35 (JS only)
+    '确定要结束当前断食周期吗？', // t36 (JS only)
+    '今日已打卡_toast', // t37 (JS only)
+    '连续',          // t38
+    '天',            // t39
+  ],
   data: {
     statusBarHeight: 0,
     todayDate: '',
@@ -64,15 +109,18 @@ Page({
   },
 
   async onShow() {
+    this.i18nRefresh();
     this.setTodayDate();
     this.refreshState();
     await this.loadTodayStats();
     this.loadCheckInStatus();
+    this.refreshUnitLabel();
   },
 
   onLoad() {
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
+    this.i18nRefresh();
     
     // 监听注销账号事件（只注销账号会清空数据并重置页面）
     app.eventBus.on('user-destroy', this.onUserDestroy.bind(this));
@@ -234,7 +282,7 @@ Page({
     }
 
     this.setData({
-      'todayStats.weight': todayWeight ? todayWeight.weight : '--',
+      'todayStats.weight': todayWeight ? unitUtil.formatWeight(todayWeight.weight) : '--',
       'todayStats.calories': calories,
       'todayStats.calorieTarget': goal.calories,
       'todayStats.calorieRemaining': Math.round(remaining * 10) / 10,
@@ -246,6 +294,11 @@ Page({
       'todayStats.fat': fat,
       'todayStats.fatRemaining': Math.round(Math.max(0, goal.fat - fat) * 10) / 10,
     });
+  },
+
+  /** 刷新单位标签（响应设置变更） */
+  refreshUnitLabel() {
+    this.setData({ weightUnitLabel: unitUtil.getWeightUnitLabel() });
   },
 
   loadCheckInStatus() {
@@ -269,9 +322,9 @@ Page({
     const isLoggedOut = wx.getStorageSync('isLoggedOut');
     if (!userInfo || isLoggedOut) {
       wx.showModal({
-        title: '需要登录',
-        content: '请先登录后再使用此功能',
-        confirmText: '去登录',
+        title: this.$t('需要登录'),
+        content: this.$t('请先登录后再使用此功能'),
+        confirmText: this.$t('去登录'),
         success: (res) => {
           if (res.confirm) {
             wx.switchTab({ url: '/pages/my/index' });
@@ -285,7 +338,7 @@ Page({
 
   onCheckIn() {
     if (this.data.checkedIn) {
-      wx.showToast({ title: '今日已打卡', icon: 'none' });
+      wx.showToast({ title: this.$t('今日已打卡'), icon: 'none' });
       return;
     }
 
@@ -332,8 +385,8 @@ Page({
 
   onStopFasting() {
     wx.showModal({
-      title: '确认结束',
-      content: '确定要结束当前断食周期吗？',
+      title: this.$t('确认结束'),
+      content: this.$t('确定要结束当前断食周期吗？'),
       success: (res) => {
         if (res.confirm) {
           fasting.stopPlan();

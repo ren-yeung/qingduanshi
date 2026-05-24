@@ -4,16 +4,16 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">我的目标</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '我的目标'}}</view>
   </view>
 
   <view class="page-content">
     <view class="section">
-      <view class="section-title">每日摄入目标</view>
+      <view class="section-title">{{t1 || '每日摄入目标'}}</view>
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">🔥</text>
-          <text>热量</text>
+          <text>{{t2 || '热量'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -30,7 +30,7 @@
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">🥩</text>
-          <text>蛋白质</text>
+          <text>{{t3 || '蛋白质'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -47,7 +47,7 @@
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">🍞</text>
-          <text>碳水</text>
+          <text>{{t4 || '碳水'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -64,7 +64,7 @@
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">🥑</text>
-          <text>脂肪</text>
+          <text>{{t5 || '脂肪'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -81,11 +81,11 @@
     </view>
 
     <view class="section">
-      <view class="section-title">体重目标</view>
+      <view class="section-title">{{t6 || '体重目标'}}</view>
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">⚖️</text>
-          <text>我的身高</text>
+          <text>{{t7 || '我的身高'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -102,7 +102,7 @@
       <view class="goal-item">
         <view class="goal-label">
           <text class="label-icon">🎯</text>
-          <text>目标体重</text>
+          <text>{{t8 || '目标体重'}}</text>
         </view>
         <view class="goal-input-wrap">
           <input
@@ -113,27 +113,27 @@
             bindinput="onWeightTargetChange"
             placeholder="请输入"
           />
-          <text class="unit">kg</text>
+          <text class="unit">{{weightUnitLabel || 'kg'}}</text>
         </view>
       </view>
     </view>
 
     <view class="section">
-      <view class="section-title">说明</view>
+      <view class="section-title">{{t9 || '说明'}}</view>
       <view class="tips">
-        <text>• 热量：每日摄入的总能量目标</text>
-        <text>• 蛋白质：帮助维持肌肉和代谢</text>
-        <text>• 碳水：提供日常活动能量</text>
-        <text>• 脂肪：维持激素和细胞健康</text>
+        <text>• {{t10 || '热量：每日摄入的总能量目标'}}</text>
+        <text>• {{t11 || '蛋白质：帮助维持肌肉和代谢'}}</text>
+        <text>• {{t12 || '碳水：提供日常活动能量'}}</text>
+        <text>• {{t13 || '脂肪：维持激素和细胞健康'}}</text>
       </view>
     </view>
 
     <view class="reset-btn" bindtap="onReset">
-      <text>恢复默认目标</text>
+      <text>{{t14 || '恢复默认目标'}}</text>
     </view>
   </view>
 
   <view class="save-bar">
-    <button class="save-btn" bindtap="onSave">保存</button>
+    <button class="save-btn" bindtap="onSave">{{t15 || '保存'}}</button>
   </view>
 </view>

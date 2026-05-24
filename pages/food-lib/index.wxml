@@ -4,14 +4,14 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">食物库</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '食物库'}}</view>
   </view>
 
   <!-- 搜索栏 -->
   <view class="search-bar">
     <view class="search-wrap">
       <text class="search-icon">🔍</text>
-      <input class="search-input" placeholder="搜索食物名称" value="{{keyword}}" bindinput="onSearch" />
+      <input class="search-input" placeholder="{{t1 || '搜索食物名称'}}" value="{{keyword}}" bindinput="onSearch" />
     </view>
   </view>
 
@@ -45,7 +45,7 @@
       <text>蛋白质 {{selectedFood.protein}}g · 碳水 {{selectedFood.carbs}}g · 脂肪 {{selectedFood.fat}}g（每100g）</text>
     </view>
     <view class="detail-calories">
-      <text class="cal-label">热量</text>
+      <text class="cal-label">{{t6 || '热量'}}</text>
       <text class="cal-value">{{selectedFood.caloriesPer100g}} kcal/100g</text>
     </view>
   </view>

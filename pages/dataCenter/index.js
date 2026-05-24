@@ -1,8 +1,14 @@
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const unitUtil = require('~/utils/unit');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: [
+    '数据统计', '近7天', '近30天', '体重趋势',
+    '暂无数据，快去记录体重吧', '当前体重', '最低体重', '平均体重', 'BMI', '记录明细',
+  ],
   data: {
     statusBarHeight: 0,
     range: 7, // 7 or 30
@@ -13,9 +19,11 @@ Page({
       average: '--',
       bmi: '--',
     },
+    weightUnit: 'kg',
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.loadData();
@@ -26,7 +34,9 @@ Page({
   },
 
   onShow() {
+    this.i18nRefresh();
     this.loadData();
+    this.setData({ weightUnit: unitUtil.getWeightUnitLabel() });
   },
 
   onChangeRange(e) {
@@ -44,11 +54,18 @@ Page({
     const cutoffStr = `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, '0')}-${String(cutoff.getDate()).padStart(2, '0')}`;
 
     const records = allRecords.filter((r) => r.date >= cutoffStr);
-    this.setData({ weightRecords: records });
+    // 为每条记录附加转换后的显示值
+    const displayRecords = records.map(r => ({
+      ...r,
+      weightDisplay: unitUtil.formatWeightRaw(r.weight),
+    }));
+    this.setData({ weightRecords: displayRecords });
+    // computeStats 需要原始 records（weight 是 kg）
+    this.computeStats(records);
     this.computeStats(records);
 
     if (records.length > 0) {
-      this.drawChart(records);
+      this.drawChart(displayRecords);
     }
   },
 
@@ -57,7 +74,7 @@ Page({
       this.setData({ stats: { current: '--', lowest: '--', average: '--', bmi: '--' } });
       return;
     }
-    const weights = records.map((r) => r.weight);
+    const weights = records.map((r) => unitUtil.formatWeightRaw(r.weight));
     const current = weights[weights.length - 1];
     const lowest = Math.min(...weights);
     const average = (weights.reduce((a, b) => a + b, 0) / weights.length).toFixed(1);
@@ -91,7 +108,7 @@ Page({
         const chartW = width - padding.left - padding.right;
         const chartH = height - padding.top - padding.bottom;
 
-        const weights = records.map((r) => r.weight);
+        const weights = records.map((r) => r.weightDisplay || r.weight);
         const minW = Math.min(...weights);
         const maxW = Math.max(...weights);
         const rangeW = maxW - minW || 1;
@@ -119,7 +136,8 @@ Page({
         ctx.beginPath();
         records.forEach((r, i) => {
           const x = padding.left + (chartW / (records.length - 1 || 1)) * i;
-          const y = padding.top + chartH - ((r.weight - minW) / rangeW) * chartH;
+          const w = r.weightDisplay || r.weight;
+          const y = padding.top + chartH - ((w - minW) / rangeW) * chartH;
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         });
@@ -128,7 +146,8 @@ Page({
         // 画点和日期
         records.forEach((r, i) => {
           const x = padding.left + (chartW / (records.length - 1 || 1)) * i;
-          const y = padding.top + chartH - ((r.weight - minW) / rangeW) * chartH;
+          const w = r.weightDisplay || r.weight;
+          const y = padding.top + chartH - ((w - minW) / rangeW) * chartH;
 
           ctx.fillStyle = this.data.theme.brandPrimary || '#2EAF7D';
           ctx.beginPath();

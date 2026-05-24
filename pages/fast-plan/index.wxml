@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">选择断食计划</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '选择断食计划'}}</view>
   </view>
 
   <view class="page-content">
@@ -18,24 +18,24 @@
     >
       <view class="plan-header">
         <text class="plan-name">{{item.name}}</text>
-        <t-tag variant="light" size="small">难度{{item.difficulty || '?'}}</t-tag>
+        <t-tag variant="light" size="small">{{diffLabel}} {{item.difficulty || '?'}}</t-tag>
       </view>
       <text class="plan-desc">{{item.description}}</text>
       <view class="plan-meta" wx:if="{{item.type !== 'custom'}}">
-        <text class="meta-text">断食 {{item.fastHours}}h · 进食 {{item.eatHours}}h</text>
+        <text class="meta-text">{{fastLabel}}{{item.fastHours}}h{{eatLabel}}{{item.eatHours}}h</text>
       </view>
 
       <!-- 自定义设置面板 -->
       <view class="custom-panel" wx:if="{{item.id === 'custom' && selectedPlanId === 'custom'}}">
         <view class="slider-row">
-          <text class="slider-label">断食时长: {{customFast}} 小时</text>
+          <text class="slider-label">{{fastDurationLabel}}: {{customFast}} {{hourLabel}}</text>
           <t-slider value="{{customFast}}" min="1" max="48" step="1" bind:change="onCustomFastChange" />
         </view>
         <view class="slider-row">
-          <text class="slider-label">进食时长: {{customEat}} 小时</text>
+          <text class="slider-label">{{eatDurationLabel}}: {{customEat}} {{hourLabel}}</text>
           <t-slider value="{{customEat}}" min="1" max="12" step="1" bind:change="onCustomEatChange" />
         </view>
-        <button style="background:var(--brand-primary); color:#fff; width:100%; height:80rpx; border-radius:40rpx; border:none; font-size:28rpx; font-weight:600; display:flex; align-items:center; justify-content:center;" bindtap="onStartCustom">开始自定义计划</button>
+        <button style="background:var(--brand-primary); color:#fff; width:100%; height:80rpx; border-radius:40rpx; border:none; font-size:28rpx; font-weight:600; display:flex; align-items:center; justify-content:center;" bindtap="onStartCustom">{{t4 || '开始自定义计划'}}</button>
       </view>
     </view>
   </view>

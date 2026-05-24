@@ -1,8 +1,10 @@
 const app = getApp();
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['联系我们', '反馈与支持', '意见反馈', '联系客服', '关于', '关于轻断食', '检查更新', '法律信息', '用户协议', '隐私政策', '小小轻断食', '健康生活每一天'],
 
   data: {
     statusBarHeight: 0,
@@ -11,6 +13,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     // 获取应用版本号
     const accountInfo = wx.getAccountInfoSync();
@@ -28,7 +31,7 @@ Page({
 
   // 意见反馈
   onFeedback() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.showToast({ title: this.$t('功能开发中'), icon: 'none' });
   },
 
   // 联系客服回调

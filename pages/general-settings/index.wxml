@@ -3,47 +3,47 @@
   <view class="navbar-back" bindtap="onBack">
     <text class="back-icon">‹</text>
   </view>
-  <view class="navbar-title" style="color: {{theme.textPrimary}};">通用设置</view>
+  <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '通用设置'}}</view>
 </view>
 
 <view class="page" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
 
   <!-- 语言与地区 -->
-  <view class="section-label">语言与地区</view>
+  <view class="section-label">{{t1 || '语言与地区'}}</view>
   <view class="card-group">
     <view class="setting-row" data-type="language" bindtap="onRowClick">
       <view class="row-icon bg-blue"><text class="c-blue">🌐</text></view>
-      <text class="row-label">语言</text>
-      <view class="row-right"><text class="row-value">{{language}}</text><text class="row-arrow">›</text></view>
+      <text class="row-label">{{t2 || '语言'}}</text>
+      <view class="row-right"><text class="row-value">{{langVal || language}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-type="unitSystem" bindtap="onRowClick">
       <view class="row-icon bg-green"><text class="c-green">📏</text></view>
-      <text class="row-label">单位制</text>
-      <view class="row-right"><text class="row-value">{{unitSystem}}</text><text class="row-arrow">›</text></view>
+      <text class="row-label">{{t3 || '单位制'}}</text>
+      <view class="row-right"><text class="row-value">{{unitVal || unitSystem}}</text><text class="row-arrow">›</text></view>
     </view>
   </view>
 
   <!-- 默认行为 -->
-  <view class="section-label">默认行为</view>
+  <view class="section-label">{{t4 || '默认行为'}}</view>
   <view class="card-group">
     <view class="setting-row" data-type="defaultPlan" bindtap="onRowClick">
       <view class="row-icon bg-purple"><text class="c-purple">🎯</text></view>
-      <text class="row-label">默认断食方案</text>
+      <text class="row-label">{{t5 || '默认断食方案'}}</text>
       <view class="row-right"><text class="row-value">{{defaultPlan}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-type="weekStartDay" bindtap="onRowClick">
       <view class="row-icon bg-orange"><text class="c-orange">📅</text></view>
-      <text class="row-label">每周起始日</text>
+      <text class="row-label">{{t6 || '每周起始日'}}</text>
       <view class="row-right"><text class="row-value">{{weekStartDay}}</text><text class="row-arrow">›</text></view>
     </view>
     <view class="setting-row" data-key="autoSync" bindtap="onSwitchChange">
       <view class="row-icon bg-indigo"><text class="c-indigo">🔄</text></view>
-      <text class="row-label">自动同步数据</text>
+      <text class="row-label">{{t7 || '自动同步数据'}}</text>
       <view class="row-right"><view class="switch {{autoSync ? 'on' : 'off'}}"></view></view>
     </view>
     <view class="setting-row" data-key="wifiOnly" bindtap="onSwitchChange">
       <view class="row-icon bg-emerald"><text class="c-emerald">☁️</text></view>
-      <text class="row-label">仅 Wi-Fi 下同步</text>
+      <text class="row-label">{{t8 || '仅 Wi-Fi 下同步'}}</text>
       <view class="row-right"><view class="switch {{wifiOnly ? 'on' : 'off'}}"></view></view>
     </view>
   </view>
@@ -51,6 +51,6 @@
   <!-- 提示框 -->
   <view class="tip-box">
     <text class="tip-icon">💡</text>
-    <text class="tip-text">开启「自动同步」后，您的断食记录和身体数据将实时备份至云端，换设备不会丢失。</text>
+    <text class="tip-text">{{t9 || '开启「自动同步」后，您的断食记录和身体数据将实时备份至云端，换设备不会丢失。'}}</text>
   </view>
 </view>

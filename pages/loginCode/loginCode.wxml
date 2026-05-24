@@ -3,7 +3,7 @@
   <view class="login-code__title"> 请输入验证码 </view>
   <view class="login-code__tips"> 验证码已通过短信发送至 {{ phoneNumber }} </view>
   <view class="login-code__input">
-    <t-input placeholder="输入验证码" value="{{verifyCode}}" type="number" bindchange="onVerifycodeChange">
+    <t-input placeholder="{{t3 || '输入验证码'}}" value="{{verifyCode}}" type="number" bindchange="onVerifycodeChange">
       <view slot="suffix" class="suffix">
         <view class="suffix--line"></view>
         <t-link
@@ -19,6 +19,6 @@
   </view>
 
   <view class="login-code__button">
-    <button style="background:var(--brand-primary); color:#fff; width:100%; height:88rpx; border-radius:44rpx; border:none; font-size:32rpx; font-weight:500; display:flex; align-items:center; justify-content:center;" disabled="{{!verifyCode}}" bindtap="login">登录</button>
+    <button style="background:var(--brand-primary); color:#fff; width:100%; height:88rpx; border-radius:44rpx; border:none; font-size:32rpx; font-weight:500; display:flex; align-items:center; justify-content:center;" disabled="{{!verifyCode}}" bindtap="login">{{t0 || '登录'}}</button>
   </view>
 </view>

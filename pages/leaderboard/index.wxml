@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">排行榜</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '排行榜'}}</view>
   </view>
 
   <view class="page-content">
@@ -34,7 +34,7 @@
 
     <view class="champion-streak">
       <text class="streak-number">{{champion.streak}}</text>
-      <text class="streak-unit">天连续断食</text>
+      <text class="streak-unit">{{t1 || '天连续断食'}}</text>
     </view>
 
     <view class="champion-stats">
@@ -44,7 +44,7 @@
       </view>
       <view class="champion-stat">
         <text class="champion-stat-val down">{{champion.weightLoss}}</text>
-        <text class="champion-stat-lbl">本周减重</text>
+        <text class="champion-stat-lbl">{{t2 || '本周减重'}}</text>
       </view>
       <view class="champion-stat">
         <text class="champion-stat-val">{{champion.completionRate}}%</text>
@@ -97,7 +97,7 @@
           <view class="rank-name">
             <text>{{item.nickName}}</text>
             <text wx:if="{{item.isVip}}" class="rank-tag tag-vip">VIP</text>
-            <text wx:if="{{item.isMe}}" class="rank-tag tag-me">我</text>
+            <text wx:if="{{item.isMe}}" class="rank-tag tag-me">{{t3 || '我'}}</text>
           </view>
           <text class="rank-meta">{{item.fastingHours}}h断食 · {{item.completionRate}}%完成率</text>
         </view>
@@ -112,7 +112,7 @@
       <!-- 空状态 -->
       <view class="ranking-empty" wx:if="{{rankingList.length === 0}}">
         <text class="empty-icon">🏆</text>
-        <text class="empty-text">暂无排行数据</text>
+        <text class="empty-text">{{t4 || '暂无排行数据'}}</text>
       </view>
     </view>
   </view>
@@ -124,12 +124,12 @@
       <text class="my-rank-num">{{myRank.rank}}</text>
       <view class="my-rank-avatar">
         <image wx:if="{{myRank.avatarUrl}}" src="{{myRank.avatarUrl}}" class="avatar-img" />
-        <text wx:else>我</text>
+        <text wx:else>{{t3 || '我'}}</text>
       </view>
       <view class="my-rank-info">
         <view class="my-rank-name">
           <text>{{myRank.nickName || '我'}}</text>
-          <text class="rank-tag tag-me">我</text>
+          <text class="rank-tag tag-me">{{t3 || '我'}}</text>
         </view>
         <text class="my-rank-progress">{{myRank.progress}}</text>
       </view>

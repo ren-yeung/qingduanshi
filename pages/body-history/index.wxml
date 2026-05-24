@@ -4,7 +4,7 @@
     <view class="navbar-back" bindtap="onBack">
       <text class="back-icon" style="color: {{theme.textPrimary}};">‹</text>
     </view>
-    <view class="navbar-title" style="color: {{theme.textPrimary}};">全部记录</view>
+    <view class="navbar-title" style="color: {{theme.textPrimary}};">{{t0 || '全部记录'}}</view>
   </view>
 
   <view class="page-content">
@@ -19,43 +19,43 @@
     <!-- 身体数据卡片 -->
     <view class="body-card">
       <view class="card-title-row">
-        <text class="card-title">身体数据</text>
+        <text class="card-title">{{t1 || '身体数据'}}</text>
         <text class="edit-link" bindtap="onEditBody">{{weightRecord || bodyRecord ? '编辑' : '记录'}}</text>
       </view>
 
       <view class="body-grid" wx:if="{{weightRecord || bodyRecord}}">
         <view class="body-item">
           <text class="body-val">{{weightRecord ? weightRecord.weight : '--'}}</text>
-          <text class="body-label">体重(kg)</text>
+          <text class="body-label">{{t4 || '体重(kg)'}}</text>
         </view>
         <view class="body-item">
           <text class="body-val">{{bodyRecord ? (bodyRecord.bmi || '--') : '--'}}</text>
-          <text class="body-label">BMI</text>
+          <text class="body-label">{{t5 || 'BMI'}}</text>
         </view>
         <view class="body-item">
           <text class="body-val">{{bodyRecord ? (bodyRecord.bodyFat || '--') : '--'}}<text class="body-unit">%</text></text>
-          <text class="body-label">体脂率</text>
+          <text class="body-label">{{t6 || '体脂率'}}</text>
         </view>
         <view class="body-item">
           <text class="body-val">{{bodyRecord ? (bodyRecord.waist || '--') : '--'}}<text class="body-unit">cm</text></text>
-          <text class="body-label">腰围</text>
+          <text class="body-label">{{t7 || '腰围'}}</text>
         </view>
         <view class="body-item">
           <text class="body-val">{{bodyRecord ? (bodyRecord.hip || '--') : '--'}}<text class="body-unit">cm</text></text>
-          <text class="body-label">臀围</text>
+          <text class="body-label">{{t8 || '臀围'}}</text>
         </view>
         <view class="body-item">
-          <text class="body-val">{{bodyRecord && bodyRecord.steps ? bodyRecord.steps : '--'}}<text class="body-unit">步</text></text>
-          <text class="body-label">步数</text>
+          <text class="body-val">{{bodyRecord && bodyRecord.steps ? bodyRecord.steps : '--'}}<text class="body-unit">{{t9 || '步'}}</text></text>
+          <text class="body-label">{{t10 || '步数'}}</text>
         </view>
       </view>
 
-      <view class="empty-tip" wx:else>当天暂无记录</view>
+      <view class="empty-tip" wx:else>{{t11 || '当天暂无记录'}}</view>
     </view>
 
     <!-- 心情记录 -->
     <view class="mood-card" wx:if="{{bodyRecord && bodyRecord.mood}}">
-      <text class="mood-label">当天心情</text>
+      <text class="mood-label">{{t12 || '当天心情'}}</text>
       <text class="mood-emoji">
         <block wx:if="{{bodyRecord.mood === 1}}">😢</block>
         <block wx:elif="{{bodyRecord.mood === 2}}">😔</block>
@@ -69,7 +69,7 @@
 
     <!-- 备注 -->
     <view class="note-card" wx:if="{{bodyRecord && bodyRecord.note}}">
-      <text class="note-label">备注</text>
+      <text class="note-label">{{t13 || '备注'}}</text>
       <text class="note-text">{{bodyRecord.note}}</text>
     </view>
 

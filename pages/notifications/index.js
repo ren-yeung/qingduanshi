@@ -1,7 +1,9 @@
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['消息通知', '公告', '版本', '指南', '活动', '收起详情', '展开详情'],
 
   data: {
     statusBarHeight: 0,
@@ -116,6 +118,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
   },

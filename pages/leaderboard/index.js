@@ -1,9 +1,11 @@
 const app = getApp();
 const storage = require('~/utils/storage');
+const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['排行榜', '天连续断食', '本周减重', '我', '暂无排行数据', '数据每日凌晨更新', '已获成就', '全部', '个'],
   data: {
     statusBarHeight: 0,
 
@@ -38,6 +40,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
@@ -48,6 +51,7 @@ Page({
   },
 
   onShow() {
+    this.i18nRefresh();
     this.loadRankingData();
   },
 

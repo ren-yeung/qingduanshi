@@ -1,8 +1,10 @@
 const app = getApp();
 const themeBehavior = require('~/behaviors/theme');
+const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
-  behaviors: [themeBehavior],
+  behaviors: [themeBehavior, i18nBehavior],
+  i18nKeys: ['字体大小', '小', '标准', '大', '特大', '预览效果', '今日断食进度', '已坚持 6 小时 23 分钟', '字体预览文本', '字体提示2'],
 
   data: {
     statusBarHeight: 0,
@@ -15,6 +17,7 @@ Page({
   },
 
   onLoad() {
+    this.i18nRefresh();
     const info = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: info.statusBarHeight });
     this.loadSettings();
