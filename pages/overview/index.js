@@ -2,6 +2,7 @@ const app = getApp();
 const fasting = require('~/utils/fasting');
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const shareBehavior = require('~/behaviors/share');
 const unitUtil = require('~/utils/unit');
 const i18nBehavior = require('../../utils/i18n-behavior');
 const i18n = require('~/utils/i18n');
@@ -44,7 +45,7 @@ function getMealByTime() {
 }
 
 Page({
-  behaviors: [themeBehavior, i18nBehavior],
+  behaviors: [themeBehavior, i18nBehavior, shareBehavior],
   i18nKeys: [
     '概览',          // t0
     '轻断食',        // t1
@@ -160,7 +161,7 @@ Page({
     const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     const month = d.getMonth() + 1;
     const date = d.getDate();
-    const weekday = weekdays[d.getDay()];
+    const weekday = this.$t(weekdays[d.getDay()]);
     const str = `${month}月${date}日 ${weekday}`;
     this.setData({ todayDate: str });
   },

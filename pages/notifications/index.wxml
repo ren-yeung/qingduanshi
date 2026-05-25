@@ -14,14 +14,14 @@
         <view class="notify-header" data-id="{{item.id}}" bindtap="onToggleExpand">
           <view class="notify-tag-row">
             <view class="tag tag-{{item.type}}">
-              {{item.type === 'notice' ? '公告' : item.type === 'version' ? '版本' : item.type === 'guide' ? '指南' : '活动'}}
+              {{item.type === 'notice' ? (t1 || '公告') : item.type === 'version' ? (t2 || '版本') : item.type === 'guide' ? (t3 || '指南') : (t4 || '活动')}}
             </view>
             <text class="notify-time">{{item.time}}</text>
           </view>
           <text class="notify-title">{{item.title}}</text>
           <text class="notify-summary">{{item.summary}}</text>
           <view class="expand-hint">
-            <text class="hint-text">{{expandedIds[item.id] ? '收起详情' : '展开详情'}}</text>
+            <text class="hint-text">{{expandedIds[item.id] ? (t5 || '收起详情') : (t6 || '展开详情')}}</text>
             <text class="hint-arrow {{expandedIds[item.id] ? 'up' : ''}}">›</text>
           </view>
         </view>

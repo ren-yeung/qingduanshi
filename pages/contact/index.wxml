@@ -56,6 +56,6 @@
   <view class="footer">
     <view class="footer-brand">{{t10 || '小小轻断食'}}</view>
     <view class="footer-version">v{{version}}</view>
-    <view class="footer-copyright">© {{currentYear}} 小小轻断食 · 健康生活每一天</view>
+    <view class="footer-copyright">© {{currentYear}} 小小轻断食 · {{t11 || '健康生活每一天'}}</view>
   </view>
 </view>

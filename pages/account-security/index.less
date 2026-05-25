@@ -115,21 +115,61 @@
   line-height: 1.5;
 }
 
-.danger-btn {
+// 昵称编辑浮层
+.nickname-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(100% - 64rpx);
-  margin: 24rpx 32rpx;
-  padding: 28rpx 0;
+}
+.nickname-dialog {
+  width: 560rpx;
   background: #ffffff;
-  border-radius: 20rpx;
-  color: #e54d42;
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx 36rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
+}
+.nickname-dialog-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 28rpx;
+  text-align: center;
+}
+.nickname-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f5f6f8;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+.nickname-dialog-btns {
+  display: flex;
+  margin-top: 32rpx;
+  gap: 20rpx;
+}
+.dialog-btn-cancel, .dialog-btn-confirm {
+  flex: 1;
+  text-align: center;
+  padding: 22rpx 0;
+  border-radius: 16rpx;
   font-size: 30rpx;
   font-weight: 600;
-  box-shadow: 0 2rpx 12rpx rgba(229, 77, 66, 0.08);
-
-  &:active { background: #fef2f2; }
+}
+.dialog-btn-cancel {
+  background: var(--brand-light);
+  color: var(--brand-primary);
+}
+.dialog-btn-confirm {
+  background: #4F46E5;
+  color: #ffffff;
 }
 
 .bg-blue    { background: #EEF2FF; } .c-blue    { color: #4F46E5; }

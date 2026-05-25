@@ -14,7 +14,7 @@
     <view class="radio-option" data-value="follow" bindtap="onRadioChange">
       <view class="radio-left">
         <text class="radio-text">{{t2 || '跟随系统'}}</text>
-        <text class="radio-desc">自动匹配设备的亮/暗模式设置</text>
+        <text class="radio-desc">{{t3 || '自动根据手机系统的深色/浅色模式切换外观'}}</text>
       </view>
       <view class="radio-circle {{darkMode === 'follow' ? 'checked' : ''}}"></view>
     </view>
@@ -22,8 +22,8 @@
     <!-- 浅色模式 -->
     <view class="radio-option" data-value="light" bindtap="onRadioChange">
       <view class="radio-left">
-        <text class="radio-text">☀️ 浅色模式</text>
-        <text class="radio-desc">始终使用明亮界面，适合白天使用</text>
+        <text class="radio-text">☀️ {{t4 || '浅色模式'}}</text>
+        <text class="radio-desc">{{t5 || '始终使用浅色模式，适合大多数场景'}}</text>
       </view>
       <view class="radio-circle {{darkMode === 'light' ? 'checked' : ''}}"></view>
     </view>
@@ -31,8 +31,8 @@
     <!-- 深色模式 -->
     <view class="radio-option radio-option-last" data-value="dark" bindtap="onRadioChange">
       <view class="radio-left">
-        <text class="radio-text">🌙 深色模式</text>
-        <text class="radio-desc">暗色背景护眼，适合夜间使用</text>
+        <text class="radio-text">🌙 {{t6 || '深色模式'}}</text>
+        <text class="radio-desc">{{t7 || '适合夜间或低光环境使用，更护眼并省电'}}</text>
       </view>
       <view class="radio-circle {{darkMode === 'dark' ? 'checked' : ''}}"></view>
     </view>
@@ -41,25 +41,25 @@
   <!-- 提示框 -->
   <view class="tip-box">
     <text class="tip-icon">🌙</text>
-    <text class="tip-text">选择「跟随系统」时，小程序会根据您手机的系统设置自动切换，无需手动操作。</text>
+    <text class="tip-text">{{t8 || '选择「跟随系统」时，小程序将根据手机系统的深色/浅色模式自动切换外观。'}}</text>
   </view>
 
   <!-- 效果预览 -->
-  <view class="section-label">{{t8 || '效果预览'}}</view>
+  <view class="section-label">{{t9 || '效果预览'}}</view>
   <view class="preview-row">
     <!-- 浅色预览 -->
     <view class="preview-card preview-light">
-      <text class="preview-label">{{t9 || '浅色'}}</text>
+      <text class="preview-label">{{t10 || '浅色'}}</text>
       <view class="preview-inner">
-        <text class="preview-text-light">{{t10 || '预览区域'}}</text>
+        <text class="preview-text-light">{{t11 || '预览区域'}}</text>
       </view>
     </view>
 
     <!-- 深色预览 -->
     <view class="preview-card preview-dark">
-      <text class="preview-label">{{t11 || '深色'}}</text>
+      <text class="preview-label">{{t12 || '深色'}}</text>
       <view class="preview-inner">
-        <text class="preview-text-dark">{{t10 || '预览区域'}}</text>
+        <text class="preview-text-dark">{{t11 || '预览区域'}}</text>
       </view>
     </view>
   </view>

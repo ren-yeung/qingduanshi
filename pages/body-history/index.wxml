@@ -20,7 +20,7 @@
     <view class="body-card">
       <view class="card-title-row">
         <text class="card-title">{{t1 || '身体数据'}}</text>
-        <text class="edit-link" bindtap="onEditBody">{{weightRecord || bodyRecord ? '编辑' : '记录'}}</text>
+        <text class="edit-link" bindtap="onEditBody">{{weightRecord || bodyRecord ? (t2 || '编辑') : (t3 || '记录')}}</text>
       </view>
 
       <view class="body-grid" wx:if="{{weightRecord || bodyRecord}}">

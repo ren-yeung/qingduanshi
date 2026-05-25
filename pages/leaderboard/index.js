@@ -5,7 +5,11 @@ const themeBehavior = require('~/behaviors/theme');
 
 Page({
   behaviors: [themeBehavior, i18nBehavior],
-  i18nKeys: ['排行榜', '天连续断食', '本周减重', '我', '暂无排行数据', '数据每日凌晨更新', '已获成就', '全部', '个'],
+  i18nKeys: ['排行榜', '天连续断食', '本周减重', '我', '暂无排行数据', '数据每日凌晨更新', '已获成就', '全部', '个',
+    '总榜', '连续天数', '本月断食', '本周', '本月', '历史',
+    '本周断食', '完成率', '连续', '天', '功能开发中', '加载中...',
+    '7天连续', '早鸟早起', '月度达人', '21天挑战', '钻石会员', '冠军之路',
+    '30天挑战', '减重大师', '完美月度', '百日挑战'],
   data: {
     statusBarHeight: 0,
 
@@ -41,6 +45,7 @@ Page({
 
   onLoad() {
     this.i18nRefresh();
+    this.translateData();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
@@ -52,7 +57,25 @@ Page({
 
   onShow() {
     this.i18nRefresh();
+    this.translateData();
     this.loadRankingData();
+  },
+
+  /** 翻译排行榜中的硬编码数据数组 */
+  translateData() {
+    const t = this.$t.bind(this);
+    this.setData({
+      filterTypes: [
+        { type: 'total', name: t('总榜'), icon: '🏆' },
+        { type: 'streak', name: t('连续天数'), icon: '🔥' },
+        { type: 'monthly', name: t('本月断食'), icon: '📅' },
+      ],
+      timeRanges: [
+        { type: 'week', name: t('本周') },
+        { type: 'month', name: t('本月') },
+        { type: 'all', name: t('历史') },
+      ],
+    });
   },
 
   onPullDownRefresh() {
@@ -84,7 +107,7 @@ Page({
 
   // 加载排行榜数据
   async loadRankingData() {
-    wx.showLoading({ title: '加载中...', mask: true });
+    wx.showLoading({ title: this.$t('加载中...'), mask: true });
 
     try {
       const { currentFilter, currentTimeRange } = this.data;
@@ -141,17 +164,18 @@ Page({
   },
 
   getAllBadgesConfig() {
+    const t = this.$t.bind(this);
     return [
-      { id: 'streak_7', name: '7天连续', icon: '🔥' },
-      { id: 'early_bird', name: '早鸟早起', icon: '🌙' },
-      { id: 'month_master', name: '月度达人', icon: '📅' },
-      { id: 'streak_21', name: '21天挑战', icon: '⭐' },
-      { id: 'diamond', name: '钻石会员', icon: '💎' },
-      { id: 'champion_road', name: '冠军之路', icon: '👑' },
-      { id: 'streak_30', name: '30天挑战', icon: '🎯' },
-      { id: 'weight_master', name: '减重大师', icon: '💪' },
-      { id: 'perfect_month', name: '完美月度', icon: '🌈' },
-      { id: 'century', name: '百日挑战', icon: '🏆' },
+      { id: 'streak_7', name: t('7天连续'), icon: '🔥' },
+      { id: 'early_bird', name: t('早鸟早起'), icon: '🌙' },
+      { id: 'month_master', name: t('月度达人'), icon: '📅' },
+      { id: 'streak_21', name: t('21天挑战'), icon: '⭐' },
+      { id: 'diamond', name: t('钻石会员'), icon: '💎' },
+      { id: 'champion_road', name: t('冠军之路'), icon: '👑' },
+      { id: 'streak_30', name: t('30天挑战'), icon: '🎯' },
+      { id: 'weight_master', name: t('减重大师'), icon: '💪' },
+      { id: 'perfect_month', name: t('完美月度'), icon: '🌈' },
+      { id: 'century', name: t('百日挑战'), icon: '🏆' },
     ];
   },
 
@@ -164,15 +188,15 @@ Page({
 
   // 查看用户详情
   onViewUser(e) {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.showToast({ title: this.$t('功能开发中'), icon: 'none' });
   },
 
   onViewAllBadges() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.showToast({ title: this.$t('功能开发中'), icon: 'none' });
   },
 
   onViewBadge(e) {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.showToast({ title: this.$t('功能开发中'), icon: 'none' });
   },
 
   // 返回

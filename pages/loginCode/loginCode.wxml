@@ -1,7 +1,7 @@
 <t-navbar left-arrow />
 <view class="page login-code" style="--brand-primary:{{theme.brandPrimary}};--brand-light:{{theme.brandLight}};--brand-dark:{{theme.brandDark}};--brand-primary-rgb:{{theme.brandPrimaryRgb}};--brand-dark-rgb:{{theme.brandDarkRgb}}; background: {{theme.bgColor}}; font-family: {{theme.fontFamily}}; --font-size-scale: {{theme.fontSizeScale}};">
-  <view class="login-code__title"> 请输入验证码 </view>
-  <view class="login-code__tips"> 验证码已通过短信发送至 {{ phoneNumber }} </view>
+  <view class="login-code__title"> {{t1 || '请输入验证码'}} </view>
+  <view class="login-code__tips"> {{t2 || '验证码已通过短信发送至'}} {{ phoneNumber }} </view>
   <view class="login-code__input">
     <t-input placeholder="{{t3 || '输入验证码'}}" value="{{verifyCode}}" type="number" bindchange="onVerifycodeChange">
       <view slot="suffix" class="suffix">
@@ -11,7 +11,7 @@
           hover
           disabled="{{sendCodeCount !== 0}}"
           theme="primary"
-          content="{{sendCodeCount === 0 ? '发送验证码' : sendCodeCount+'秒后重发' }}"
+          content="{{sendCodeCount === 0 ? (t4 || '发送验证码') : sendCodeCount+(t5 || '秒后重发') }}"
           bindtap="sendCode"
         />
       </view>

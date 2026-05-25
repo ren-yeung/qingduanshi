@@ -1,5 +1,6 @@
 const storage = require('~/utils/storage');
 const themeBehavior = require('~/behaviors/theme');
+const shareBehavior = require('~/behaviors/share');
 const i18nBehavior = require('../../utils/i18n-behavior');
 
 const MEAL_TYPES = [
@@ -10,7 +11,7 @@ const MEAL_TYPES = [
 ];
 
 Page({
-  behaviors: [themeBehavior, i18nBehavior],
+  behaviors: [themeBehavior, i18nBehavior, shareBehavior],
   i18nKeys: [
     '日志', '今日营养', 'kcal 剩余', '热量(kcal)', '蛋白质', '碳水', '脂肪',
     '点击 + 添加食物', '今日身体数据', '编辑', '记录',

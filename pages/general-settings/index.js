@@ -80,10 +80,11 @@ Page({
     const { type } = e.currentTarget.dataset;
 
     if (type === 'language') {
+      const langOptions = ['简体中文', 'English'];
       wx.showActionSheet({
-        itemList: ['简体中文', 'English'],
+        itemList: langOptions.map(o => this.$t(o)),
         success(res) {
-          const selected = res.tapIndex === 0 ? '简体中文' : 'English';
+          const selected = langOptions[res.tapIndex];
           if (selected !== that.data.language) {
             that.setData({ language: selected });
             that.saveSetting('language', selected);
@@ -93,10 +94,11 @@ Page({
         },
       });
     } else if (type === 'unitSystem') {
+      const unitOptions = ['公制 (kg/cm)', '斤/cm'];
       wx.showActionSheet({
-        itemList: ['公制 (kg/cm)', '斤/cm'],
+        itemList: unitOptions.map(o => this.$t(o)),
         success(res) {
-          const selected = res.tapIndex === 0 ? '公制 (kg/cm)' : '斤/cm';
+          const selected = unitOptions[res.tapIndex];
           if (selected !== that.data.unitSystem) {
             that.setData({ unitSystem: selected });
             that.saveSetting('unitSystem', selected);
@@ -107,10 +109,10 @@ Page({
     } else if (type === 'defaultPlan') {
       wx.showToast({ title: this.$t('请在首页选择方案'), icon: 'none' });
     } else if (type === 'weekStartDay') {
+      const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
       wx.showActionSheet({
-        itemList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        itemList: days.map(d => this.$t(d)),
         success(res) {
-          const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
           that.setData({ weekStartDay: days[res.tapIndex] });
           that.saveSetting('weekStartDay', days[res.tapIndex]);
         },

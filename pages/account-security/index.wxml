@@ -52,11 +52,19 @@
 
   <!-- 最后登录信息 -->
   <view class="login-info">
-    上次登录：{{lastLoginTime}} · {{lastLoginDevice}} · {{lastLoginLocation}}
+    {{t8 || '上次登录：'}}{{lastLoginTime}} · {{lastLoginDevice}} · {{lastLoginLocation}}
   </view>
 
-  <!-- 退出登录按钮 -->
-  <view class="danger-btn" bindtap="onLogout">
-    🚪 退出当前账号
+  <!-- 昵称编辑浮层 -->
+  <view wx:if="{{isEditingNickname}}" class="nickname-overlay" catchtap="onCancelNickname">
+    <view class="nickname-dialog" catchtap="">
+      <text class="nickname-dialog-title">{{t3 || '昵称'}}</text>
+      <input class="nickname-input" value="{{tempNickname}}" placeholder="{{t9 || '请输入昵称'}}" bindinput="onNicknameInput" bindconfirm="onConfirmNickname" focus="{{true}}" />
+      <view class="nickname-dialog-btns">
+        <text class="dialog-btn-cancel" bindtap="onCancelNickname">{{t10 || '取消'}}</text>
+        <text class="dialog-btn-confirm" style="background: {{theme.brandPrimary}};" bindtap="onConfirmNickname">{{t11 || '完成'}}</text>
+      </view>
+    </view>
   </view>
+
 </view>

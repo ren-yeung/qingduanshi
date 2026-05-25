@@ -62,6 +62,7 @@ Page({
 
   onLoad() {
     this.i18nRefresh();
+    this.translateChartTypes();
     const info = wx.getSystemInfoSync();
     this.setData({
       statusBarHeight: info.statusBarHeight,
@@ -73,10 +74,22 @@ Page({
 
   onShow() {
     this.i18nRefresh();
+    this.translateChartTypes();
     // 每次显示时刷新数据
     this.loadOverviewData();
     this.loadHistoryData();
     this.setData({ weightUnit: unitUtil.getWeightUnitLabel() });
+  },
+
+  translateChartTypes() {
+    this.setData({
+      chartTypes: [
+        { type: 'weight', name: this.$t('体重') },
+        { type: 'bodyfat', name: this.$t('体脂率') },
+        { type: 'waist', name: this.$t('腰围') },
+        { type: 'hip', name: this.$t('臀围') },
+      ],
+    });
   },
 
   onPullDownRefresh() {
@@ -120,15 +133,15 @@ Page({
       const bmiPos = Math.min(Math.max((bmi - 15) / 20 * 100, 0), 100);
 
       // BMI分类
-      let category = '正常范围', categoryClass = '', icon = '✅';
+      let category = this.$t('正常范围'), categoryClass = '', icon = '✅';
       if (bmi < 18.5) {
-        category = '偏瘦'; categoryClass = 'warning'; icon = '📉';
+        category = this.$t('偏瘦'); categoryClass = 'warning'; icon = '📉';
       } else if (bmi < 24) {
-        category = '正常范围'; categoryClass = ''; icon = '✅';
+        category = this.$t('正常范围'); categoryClass = ''; icon = '✅';
       } else if (bmi < 28) {
-        category = '偏胖'; categoryClass = 'warning'; icon = '⚠️';
+        category = this.$t('偏胖'); categoryClass = 'warning'; icon = '⚠️';
       } else {
-        category = '肥胖'; categoryClass = 'danger'; icon = '🚨';
+        category = this.$t('肥胖'); categoryClass = 'danger'; icon = '🚨';
       }
 
       // 获取最新的身体维度数据
@@ -246,7 +259,7 @@ Page({
     // 格式化显示
     const formatRecords = mergedRecords.slice(0, 10).map(record => {
       const date = new Date(record.date);
-      const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']; // keys in i18n
 
       // 计算BMI
       const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
@@ -261,9 +274,9 @@ Page({
       return {
         ...record,
         day: date.getDate(),
-        dow: weekdays[date.getDay()],
+        dow: translatedDow,
         bmi: bmi,
-        mood: `心情 ${mood}`,
+        mood: `${this.$t('心情 ')}${mood}`,
       };
     });
 

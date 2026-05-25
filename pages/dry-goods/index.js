@@ -2,10 +2,11 @@ const { ARTICLES_FULL } = require('./articles');
 const { ARTICLES_FULL_EN } = require('./articles-en');
 const i18nBehavior = require('../../utils/i18n-behavior');
 const themeBehavior = require('~/behaviors/theme');
+const shareBehavior = require('~/behaviors/share');
 const i18n = require('~/utils/i18n');
 
 Page({
-  behaviors: [themeBehavior, i18nBehavior],
+  behaviors: [themeBehavior, i18nBehavior, shareBehavior],
   i18nKeys: ['干货', '轻断食干货'],
   data: {
     statusBarHeight: 0,

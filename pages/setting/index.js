@@ -5,7 +5,7 @@ const themeBehavior = require('~/behaviors/theme');
 
 Page({
   behaviors: [themeBehavior, i18nBehavior],
-  i18nKeys: ['设置', '通用设置', '通知设置', '深色模式', '字体大小', '播放设置', '账号安全', '关于', '退出登录', '注销账号', '确定要退出登录吗？', '注销后所有数据将永久删除，确定要注销吗？', '清理中', '缓存已清除', '清除失败', '注销中', '账号已注销', '注销失败，请重试', '确定要清除所有本地缓存吗？这不会影响您的账号数据。', '隐私', '隐私政策', '用户协议', '清除缓存', '计算中'],
+  i18nKeys: ['设置', '通用设置', '通知设置', '深色模式', '播放设置', '账号安全', '关于', '注销账号', '确定要退出登录吗？', '注销后所有数据将永久删除，确定要注销吗？', '清理中', '缓存已清除', '清除失败', '注销中', '账号已注销', '注销失败，请重试', '确定要清除所有本地缓存吗？这不会影响您的账号数据。', '隐私', '隐私政策', '用户协议', '清除缓存', '计算中'],
   data: {
     isLogin: false,
     cacheSize: '...',
@@ -27,11 +27,6 @@ Page({
           title: '深色模式',
           url: '/pages/dark-mode/index',
           icon: '🌙',
-        },
-        {
-          title: '字体大小',
-          url: '/pages/font-size/index',
-          icon: '🔤',
         },
         {
           title: '播放设置',
@@ -83,6 +78,10 @@ Page({
     this.i18nRefresh();
     this.translateMenu();
     this.checkLogin();
+    this.setData({
+      logoutLabel: this.$t('退出登录'),
+      destroyLabel: this.$t('注销账号'),
+    });
   },
 
   /** 翻译 menuData 中的菜单项标题 */
@@ -94,7 +93,6 @@ Page({
       ],
       [
         { title: this.$t('深色模式'), url: '/pages/dark-mode/index', icon: '🌙' },
-        { title: this.$t('字体大小'), url: '/pages/font-size/index', icon: '🔤' },
         { title: this.$t('播放设置'), url: '/pages/sound-settings/index', icon: '🔊' },
       ],
       [

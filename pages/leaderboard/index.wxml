@@ -40,7 +40,7 @@
     <view class="champion-stats">
       <view class="champion-stat">
         <text class="champion-stat-val">{{champion.fastingHours}}h</text>
-        <text class="champion-stat-lbl">本周断食</text>
+        <text class="champion-stat-lbl">{{t20 || '本周断食'}}</text>
       </view>
       <view class="champion-stat">
         <text class="champion-stat-val down">{{champion.weightLoss}}</text>
@@ -48,7 +48,7 @@
       </view>
       <view class="champion-stat">
         <text class="champion-stat-val">{{champion.completionRate}}%</text>
-        <text class="champion-stat-lbl">完成率</text>
+        <text class="champion-stat-lbl">{{t21 || '完成率'}}</text>
       </view>
     </view>
   </view>
@@ -57,7 +57,7 @@
   <!-- ========== 3. 排行榜列表 ========== -->
   <view class="ranking-section">
     <view class="ranking-header">
-      <text class="ranking-title">🏅 排行榜</text>
+      <text class="ranking-title">🏅 {{t0 || '排行榜'}}</text>
       <view class="ranking-tabs">
         <button 
           wx:for="{{timeRanges}}" 
@@ -104,8 +104,8 @@
         
         <!-- 数值 -->
         <view class="rank-value">
-          <text class="rank-score">{{item.streak}}天</text>
-          <text class="rank-score-label">连续</text>
+          <text class="rank-score">{{item.streak}}{{t22 || '天'}}</text>
+          <text class="rank-score-label">{{t23 || '连续'}}</text>
         </view>
       </view>
 
@@ -135,8 +135,8 @@
       </view>
     </view>
     <view class="my-rank-value">
-      <text class="my-rank-score">{{myRank.streak}}天</text>
-      <text class="my-rank-label">连续</text>
+      <text class="my-rank-score">{{myRank.streak}}{{t22 || '天'}}</text>
+      <text class="my-rank-label">{{t23 || '连续'}}</text>
     </view>
   </view>
 
@@ -144,8 +144,8 @@
   <!-- ========== 5. 成就徽章 ========== -->
   <view class="badge-section" wx:if="{{badges.length > 0}}">
     <view class="section-header">
-      <text class="section-title">🏆 已获成就</text>
-      <text class="section-more" bindtap="onViewAllBadges">全部 {{totalBadges}} 个 ›</text>
+      <text class="section-title">🏆 {{t6 || '已获成就'}}</text>
+      <text class="section-more" bindtap="onViewAllBadges">{{t7 || '全部'}} {{totalBadges}} {{t8 || '个'}} ›</text>
     </view>
 
     <scroll-view class="badge-scroll" scroll-x>
@@ -167,7 +167,7 @@
 
 
   <!-- 底部间距 -->
-  <view class="bottom-tip">— 数据每日凌晨更新 —</view>
+  <view class="bottom-tip">— {{t5 || '数据每日凌晨更新'}} —</view>
 
   </view>
 </view>

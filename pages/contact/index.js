@@ -43,16 +43,16 @@ Page({
   // 关于轻断食
   onAbout() {
     wx.showModal({
-      title: '关于轻断食',
-      content: '轻断食是一款科学健康的断食追踪助手，帮助您轻松管理饮食计划，养成健康的生活习惯。\n\n版本：v' + this.data.version,
+      title: this.$t('关于轻断食'),
+      content: this.$t('关于轻断食\n描述') + this.data.version,
       showCancel: false,
-      confirmText: '知道了',
+      confirmText: this.$t('知道了'),
     });
   },
 
   // 检查更新
   onCheckUpdate() {
-    wx.showToast({ title: '已是最新的', icon: 'none' });
+    wx.showToast({ title: this.$t('已是最新的'), icon: 'none' });
   },
 
   // 用户协议

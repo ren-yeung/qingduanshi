@@ -32,12 +32,12 @@
   <view class="logout-wrapper" wx:if="{{isLogin}}">
     <view class="palette-cell palette-cell--danger palette-cell--bordered" hover-class="palette-cell--hover" bindtap="onLogout">
       <text class="menu-icon">🚪</text>
-      <text class="palette-label palette-label--danger">{{t8 || '退出登录'}}</text>
+      <text class="palette-label palette-label--danger">{{logoutLabel || '退出登录'}}</text>
       <text class="cell-arrow cell-arrow--danger">›</text>
     </view>
     <view class="palette-cell palette-cell--danger" hover-class="palette-cell--hover" bindtap="onDestroyAccount">
       <text class="menu-icon">🗑️</text>
-      <text class="palette-label palette-label--danger">{{t9 || '注销账号'}}</text>
+      <text class="palette-label palette-label--danger">{{destroyLabel || '注销账号'}}</text>
       <text class="cell-arrow cell-arrow--danger">›</text>
     </view>
   </view>

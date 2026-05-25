@@ -119,11 +119,6 @@
       "pages": ["index"]
     },
     {
-      "root": "pages/font-size",
-      "name": "font-size",
-      "pages": ["index"]
-    },
-    {
       "root": "pages/sound-settings",
       "name": "sound-settings",
       "pages": ["index"]

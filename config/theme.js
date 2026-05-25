@@ -137,7 +137,38 @@ function getThemeColors(modeId, customColors) {
     return { ...customColors, navBg: customColors.bgColor };
   }
   const preset = PRESET_MODES.find(m => m.id === modeId);
-  return preset ? preset.colors : PRESET_MODES[0].colors;
+  return preset ? { ...preset.colors } : { ...PRESET_MODES[0].colors };
+}
+
+// ========== 深色模式叠加色 ==========
+// 当启用深色模式时，这些颜色会覆盖基础色板的背景/文字色
+// 品牌色（brandPrimary/brandLight/brandDark）保持不变
+const DARK_MODE_OVERLAY = {
+  bgColor: '#4a4a4a',
+  cardBg: '#555555',
+  textPrimary: '#f0f0f0',
+  textSecondary: '#c0c0c0',
+  textTertiary: '#a0a0a0',
+  divider: '#5e5e5e',
+  navBg: '#4a4a4a',
+  tabUnselected: '#999999',
+};
+
+/**
+ * 判断当前是否应使用深色模式
+ * @param {'follow'|'light'|'dark'} darkMode
+ * @returns {boolean}
+ */
+function shouldDark(darkMode) {
+  if (darkMode === 'dark') return true;
+  if (darkMode === 'light') return false;
+  // 'follow' → 跟随系统
+  try {
+    const info = wx.getSystemInfoSync();
+    return info.theme === 'dark';
+  } catch (_) {
+    return false;
+  }
 }
 
 module.exports = {
@@ -145,5 +176,7 @@ module.exports = {
   CUSTOM_DEFAULTS,
   CUSTOM_PALETTE,
   FONT_OPTIONS,
+  DARK_MODE_OVERLAY,
   getThemeColors,
+  shouldDark,
 };

@@ -9,6 +9,12 @@ App({
       traceUser: true,
     });
 
+    // 显示转发按钮（好友分享）
+    wx.showShareMenu({
+      withShareTicket: false,
+      menus: ['shareAppMessage', 'shareTimeline'],
+    });
+
     // 获取状态栏高度并设置到全局 CSS 变量
     const info = wx.getSystemInfoSync();
     wx.setStorageSync('statusBarHeight', info.statusBarHeight);
@@ -35,7 +41,13 @@ App({
     const activeMode = settings.activeMode || 'fresh-green';
     const customColors = settings.customColors || themeConfig.CUSTOM_DEFAULTS;
     const fontFamily = settings.fontFamily || 'system-default';
-    const theme = themeConfig.getThemeColors(activeMode, customColors);
+    const darkMode = settings.darkMode || 'follow';
+    const theme = { ...themeConfig.getThemeColors(activeMode, customColors) };
+
+    // 叠加深色模式配色
+    if (themeConfig.shouldDark(darkMode)) {
+      Object.assign(theme, themeConfig.DARK_MODE_OVERLAY);
+    }
 
     // 注入字体信息
     const fontOption = (themeConfig.FONT_OPTIONS || []).find(f => f.value === fontFamily);
@@ -49,6 +61,9 @@ App({
 
     this.globalData.customizeSettings = settings;
     this.globalData.theme = theme;
+
+    // 广播主题变更，所有使用了 themeBehavior 的页面会自动刷新
+    this.eventBus.emit('theme-changed', theme);
   },
 
   // 获取当前主题（供各页面调用）
@@ -113,6 +128,45 @@ App({
           }
         },
       });
+    });
+  },
+
+  // ========== 全局转发给好友（页面可 override） ==========
+  onShareAppMessage() {
+    return {
+      title: '轻断食 - 科学断食，健康减脂',
+      path: '/pages/overview/index',
+    };
+  },
+
+  // ========== 全局分享到朋友圈（页面可 override） ==========
+  onShareTimeline() {
+    return {
+      title: '轻断食 - 科学断食，健康减脂',
+      query: '',
+    };
+  },
+
+  // ========== 复制当前页面链接 ==========
+  copyCurrentLink() {
+    const pages = getCurrentPages();
+    if (!pages.length) return;
+    const curPage = pages[pages.length - 1];
+    let path = '/' + curPage.route;
+    const options = curPage.options || {};
+    const params = Object.keys(options)
+      .map(k => `${k}=${options[k]}`)
+      .join('&');
+    if (params) path += '?' + params;
+
+    wx.setClipboardData({
+      data: '轻断食小程序：' + path,
+      success: () => {
+        wx.showToast({ title: '已复制链接', icon: 'success' });
+      },
+      fail: () => {
+        wx.showToast({ title: '复制失败', icon: 'none' });
+      },
     });
   },
 

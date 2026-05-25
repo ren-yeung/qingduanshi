@@ -77,7 +77,7 @@ Page({
 
   // 应用当前模式的主题色到页面
   applyTheme() {
-    const theme = themeConfig.getThemeColors(this.data.activeMode, this.data.customColors);
+    const theme = { ...themeConfig.getThemeColors(this.data.activeMode, this.data.customColors) };
 
     // 注入字体信息
     const fontOption = (this.data.fontOptions || []).find(f => f.value === this.data.fontFamily);
@@ -95,25 +95,16 @@ Page({
   // 保存设置并广播
   saveSettings() {
     const { activeMode, customColors, fontFamily } = this.data;
-    const settings = { activeMode, customColors, fontFamily };
+
+    // 合并到现有设置，避免覆盖 darkMode / language 等其他字段
+    const settings = wx.getStorageSync('customizeSettings') || {};
+    settings.activeMode = activeMode;
+    settings.customColors = customColors;
+    settings.fontFamily = fontFamily;
     wx.setStorageSync('customizeSettings', settings);
 
-    // 同步到全局
-    app.globalData.customizeSettings = settings;
-    const theme = themeConfig.getThemeColors(activeMode, customColors);
-    // 注入字体信息到全局 theme
-    const fontOption = (this.data.fontOptions || []).find(f => f.value === fontFamily);
-    if (fontOption) {
-      theme.fontFamily = fontOption.family;
-      theme.fontSizeScale = fontOption.sizeScale || 1;
-    } else {
-      theme.fontFamily = "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif";
-      theme.fontSizeScale = 1;
-    }
-    app.globalData.theme = theme;
-
-    // 广播主题变更，各页面 onShow 刷新
-    app.eventBus.emit('theme-changed', theme);
+    // 统一走 app.loadTheme()，包含深色模式判断 + 广播
+    app.loadTheme();
   },
 
   // 选择外观模式
@@ -169,9 +160,13 @@ Page({
       content: this.$t('确定要恢复所有个性化设置为默认值吗？'),
       success: (res) => {
         if (res.confirm) {
-          wx.removeStorageSync('customizeSettings');
-          app.globalData.customizeSettings = null;
-          app.globalData.theme = themeConfig.getThemeColors('fresh-green');
+          // 只重置外观相关字段，保留其他设置（语言、深色模式等）
+          const settings = wx.getStorageSync('customizeSettings') || {};
+          settings.activeMode = 'fresh-green';
+          settings.customColors = themeConfig.CUSTOM_DEFAULTS;
+          settings.fontFamily = 'system-default';
+          wx.setStorageSync('customizeSettings', settings);
+
           this.setData({
             activeMode: 'fresh-green',
             customColors: themeConfig.CUSTOM_DEFAULTS,
@@ -179,7 +174,7 @@ Page({
             fontCurrentLabel: this.$t('系统默认'),
           });
           this.applyTheme();
-          app.eventBus.emit('theme-changed', app.globalData.theme);
+          app.loadTheme();
           wx.showToast({ title: this.$t('已恢复默认'), icon: 'none' });
         }
       },

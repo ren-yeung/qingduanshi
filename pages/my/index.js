@@ -1,9 +1,10 @@
 const app = getApp();
 const storage = require('~/utils/storage');
 const i18nBehavior = require('../../utils/i18n-behavior');
+const shareBehavior = require('~/behaviors/share');
 
 Page({
-  behaviors: [i18nBehavior],
+  behaviors: [i18nBehavior, shareBehavior],
   i18nKeys: [
     '我的', '请输入昵称', '完成', '小小的新用户', '点击头像登录',
     '我的目标', '数据统计', '食物库', '断食计划',
@@ -302,7 +303,7 @@ Page({
       console.error('[silentLogin] 静默登录异常:', err);
       wx.hideLoading();
       // 不再跳转登录页，仅提示错误，用户可重试
-      wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+      wx.showToast({ title: this.$t('登录失败，请重试'), icon: 'none' });
     }
   },
 

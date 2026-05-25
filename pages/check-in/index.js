@@ -3,7 +3,7 @@ const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
   behaviors: [themeBehavior, i18nBehavior],
-  i18nKeys: ['打卡分享', '打卡成功', '天', '连续打卡', '分享给好友', '返回首页'],
+  i18nKeys: ['打卡分享', '打卡成功', '天', '连续打卡', '分享给好友', '返回首页', '功能开发中'],
   data: {
     statusBarHeight: 0,
     streak: 0,
@@ -35,7 +35,7 @@ Page({
   },
 
   onSaveImage() {
-    wx.showToast({ title: '保存功能开发中', icon: 'none' });
+    wx.showToast({ title: this.$t('功能开发中'), icon: 'none' });
   },
 
   onBack() {

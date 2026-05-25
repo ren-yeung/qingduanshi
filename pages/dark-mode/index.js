@@ -4,7 +4,21 @@ const i18nBehavior = require('../../utils/i18n-behavior');
 
 Page({
   behaviors: [themeBehavior, i18nBehavior],
-  i18nKeys: ['深色模式', '外观主题', '跟随系统', '自动匹配设备的亮暗模式', '浅色模式', '始终使用明亮界面', '暗色背景护眼', '预览模式提示', '效果预览', '浅色', '预览区域', '深色'],
+  i18nKeys: [
+    '深色模式',      // t0  导航栏标题
+    '外观主题',      // t1  分区标题
+    '跟随系统',      // t2  选项1标题
+    '跟随系统描述',  // t3  选项1描述
+    '浅色模式',      // t4  选项2标题
+    '浅色模式描述',  // t5  选项2描述
+    '深色主题',      // t6  选项3标题
+    '深色模式描述',  // t7  选项3描述
+    '模式说明',      // t8  提示框文字
+    '效果预览',      // t9  预览分区标题
+    '浅色',          // t10 预览标签
+    '预览区域',      // t11 预览文字
+    '深色',          // t12 预览标签
+  ],
 
   data: {
     statusBarHeight: 0,
@@ -36,7 +50,7 @@ Page({
       settings.darkMode = value;
       wx.setStorageSync('customizeSettings', settings);
 
-      // 触发主题刷新
+      // loadTheme 会自动叠加深色配色并广播 theme-changed
       if (typeof app.loadTheme === 'function') {
         app.loadTheme();
       }
